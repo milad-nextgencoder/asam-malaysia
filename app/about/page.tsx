@@ -38,15 +38,15 @@ export default async function AboutPage() {
       />
 
       {/* Who We Are */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-7">
               <div className="inline-flex items-center gap-2 mb-4">
                 <span className="h-px w-8 bg-gold" />
                 <span className="text-xs font-bold uppercase tracking-widest text-gold-dark">{whoWeAre?.eyebrow || 'Who We Are'}</span>
               </div>
-              <h2 className="font-display text-3xl lg:text-4xl font-bold mb-6 text-balance">
+              <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold mb-4 text-balance">
                 {whoWeAre?.title || 'A community-driven national student platform'}
               </h2>
               <div className="space-y-4 text-base lg:text-lg text-muted-foreground leading-relaxed">
@@ -60,8 +60,8 @@ export default async function AboutPage() {
               </div>
             </div>
             <div className="lg:col-span-5">
-              <div className="p-8 rounded-3xl border border-border bg-card shadow-premium">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl gradient-navy mb-6">
+              <div className="p-5 rounded-xl border border-border bg-card shadow-premium">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-navy mb-6">
                   <Target className="h-7 w-7 text-gold" />
                 </div>
                 <h3 className="font-display text-xl font-bold mb-3">{purpose?.title || 'Our Purpose'}</h3>
@@ -75,23 +75,23 @@ export default async function AboutPage() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="p-8 lg:p-12 rounded-3xl border border-border bg-card shadow-premium">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl gradient-navy mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="p-5 lg:p-6 rounded-xl border border-border bg-card shadow-premium">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-navy mb-6">
                 <Eye className="h-7 w-7 text-gold" />
               </div>
-              <h3 className="font-display text-2xl font-bold mb-4">{vision?.title || 'Our Vision'}</h3>
+              <h3 className="font-display text-xl font-bold mb-3.5">{vision?.title || 'Our Vision'}</h3>
               <p className="text-base text-muted-foreground leading-relaxed">
                 {vision?.body || 'To build a connected, empowered, and thriving Afghan student community across Malaysia — one where every student has access to support, opportunity, and a sense of belonging, regardless of which university they attend.'}
               </p>
             </div>
-            <div className="p-8 lg:p-12 rounded-3xl border border-border bg-card shadow-premium">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl gradient-gold mb-6">
+            <div className="p-5 lg:p-6 rounded-xl border border-border bg-card shadow-premium">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-gold mb-6">
                 <Compass className="h-7 w-7 text-navy" />
               </div>
-              <h3 className="font-display text-2xl font-bold mb-4">{mission?.title || 'Our Mission'}</h3>
+              <h3 className="font-display text-xl font-bold mb-3.5">{mission?.title || 'Our Mission'}</h3>
               <p className="text-base text-muted-foreground leading-relaxed">
                 {mission?.body || 'To connect Afghan students across Malaysian universities through academic collaboration, student welfare, professional development, cultural engagement, leadership, and community building — creating a national platform that serves and empowers its members.'}
               </p>
@@ -101,7 +101,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Core Values */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="about"
@@ -109,11 +109,11 @@ export default async function AboutPage() {
             title="What we stand for"
             description="The principles that guide everything we do."
           />
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((value, i) => (
               <div
                 key={value.title}
-                className="p-6 rounded-2xl border border-border bg-card shadow-premium hover:shadow-premium-lg transition-all duration-300 animate-fade-up"
+                className="p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg transition-all duration-300 animate-fade-up"
                 style={{ animationDelay: `${i * 0.08}s` }}
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold/10 mb-4">
@@ -128,7 +128,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Why ASAM Exists */}
-      <section className="py-16 bg-navy text-white relative overflow-hidden">
+      <section className="py-12 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
@@ -136,7 +136,7 @@ export default async function AboutPage() {
               <span className="h-px w-8 bg-gold" />
               <span className="text-xs font-bold uppercase tracking-widest text-gold">Why ASAM Exists</span>
             </div>
-            <h2 className="font-display text-3xl lg:text-4xl font-bold text-white mb-6 text-balance">
+            <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold text-white mb-4 text-balance">
               {whyAsam?.title || 'Because community is not optional — it is essential'}
             </h2>
             <div className="space-y-4 text-base lg:text-lg text-white/60 leading-relaxed">
@@ -152,7 +152,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="about"
@@ -160,14 +160,14 @@ export default async function AboutPage() {
             title="The road ahead"
             description="ASAM is being built in phases, each one bringing us closer to a fully realized national platform."
           />
-          <div className="mt-16">
+          <div className="mt-10">
             <Timeline items={timeline} />
           </div>
         </div>
       </section>
 
       {/* Roadmap */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="about"
@@ -175,18 +175,18 @@ export default async function AboutPage() {
             title="Eight phases to national scale"
             description="Our strategic plan for building ASAM from foundation to a self-sustaining alumni ecosystem."
           />
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {roadmap.map((phase, i) => (
               <div
                 key={phase.phase}
-                className="p-6 rounded-2xl border border-border bg-card shadow-premium animate-fade-up"
+                className="p-5 rounded-xl border border-border bg-card shadow-premium animate-fade-up"
                 style={{ animationDelay: `${i * 0.08}s` }}
               >
-                <div className="font-display text-3xl font-bold text-gradient-gold mb-2">
+                <div className="font-display text-2xl font-bold text-gradient-gold mb-2">
                   {phase.phase}
                 </div>
                 <h3 className="font-display text-lg font-bold mb-2">{phase.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3">{phase.description}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-2.5">{phase.description}</p>
               <span className="text-xs font-semibold text-gold-dark bg-gold/10 px-3 py-1 rounded-full">
                   {phase.status}
                 </span>
@@ -197,7 +197,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Long-Term Vision */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 mb-4">
@@ -205,7 +205,7 @@ export default async function AboutPage() {
               <span className="text-xs font-bold uppercase tracking-widest text-gold-dark">Long-Term Vision</span>
               <span className="h-px w-8 bg-gold" />
             </div>
-            <h2 className="font-display text-3xl lg:text-4xl font-bold mb-6 text-balance">
+            <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold mb-4 text-balance">
               {longTermVision?.title || 'A self-sustaining community for generations'}
             </h2>
             <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">

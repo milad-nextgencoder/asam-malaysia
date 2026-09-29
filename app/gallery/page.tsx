@@ -46,7 +46,7 @@ export default function GalleryPage() {
         description="Photos, videos, and albums from ASAM events, programs, and community activities."
       />
 
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Filters */}
           <div className="flex flex-wrap gap-2 mb-8">
@@ -68,7 +68,7 @@ export default function GalleryPage() {
           {/* Published album cards */}
           <div className="mb-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {visibleAlbums.map((album) => (
-              <Link key={album.id} href={`/gallery/${album.id}`} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-premium transition-all hover:-translate-y-1 hover:border-gold/30 hover:shadow-premium-lg">
+              <Link key={album.id} href={`/gallery/${album.id}`} className="group overflow-hidden rounded-xl border border-border bg-card shadow-premium transition-all hover:-translate-y-1 hover:border-gold/30 hover:shadow-premium-lg">
                 {album.cover_image_url ? <img src={album.cover_image_url} loading="lazy" alt={`${album.name} album cover`} className="aspect-[16/9] w-full object-cover"/> : <div className="flex aspect-[16/9] items-center justify-center bg-secondary/60"><ImageIcon className="h-10 w-10 text-muted-foreground/40"/></div>}
                 <div className="p-4"><div className="text-[10px] font-bold uppercase tracking-widest text-gold-dark">{album.category || 'ASAM Album'}</div><h3 className="mt-1 font-display text-lg font-semibold">{album.name}</h3><p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{album.description || 'View published photos from this album.'}</p></div>
               </Link>
@@ -81,7 +81,7 @@ export default function GalleryPage() {
                 key={item.id}
                 type="button"
                 onClick={() => setSelectedImage(item.image_url)}
-                className="overflow-hidden rounded-2xl border border-border bg-card shadow-premium hover:border-gold/30 transition-all duration-300 animate-fade-up text-left"
+                className="overflow-hidden rounded-xl border border-border bg-card shadow-premium hover:border-gold/30 transition-all duration-300 animate-fade-up text-left"
                 style={{ animationDelay: `${i * 0.04}s` }}
               >
                 <img
@@ -121,14 +121,14 @@ export default function GalleryPage() {
       )}
 
       {/* Video Section */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Videos"
             title="Video content"
             description="Videos from ASAM events, interviews, and community features."
           />
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
@@ -146,14 +146,14 @@ export default function GalleryPage() {
       </section>
 
       {/* Albums */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Albums"
             title="Photo albums"
             description="Browse albums from past ASAM events and activities."
           />
-          <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{visibleAlbums.map((album)=><Link key={album.id} href={`/gallery/${album.id}`} className="rounded-xl border bg-card p-5 hover:border-gold/40"><h3 className="font-display font-semibold">{album.name}</h3><p className="mt-1 text-xs text-muted-foreground">{album.category || 'Gallery'} · View album</p></Link>)}</div>
+          <div className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{visibleAlbums.map((album)=><Link key={album.id} href={`/gallery/${album.id}`} className="rounded-xl border bg-card p-5 hover:border-gold/40"><h3 className="font-display font-semibold">{album.name}</h3><p className="mt-1 text-xs text-muted-foreground">{album.category || 'Gallery'} · View album</p></Link>)}</div>
         </div>
       </section>
 

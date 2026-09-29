@@ -27,7 +27,7 @@ export default async function AlumniPage() {
       />
 
       {/* Lifecycle */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="alumni"
@@ -35,7 +35,7 @@ export default async function AlumniPage() {
             title="From student to supporter"
             description="ASAM is designed to be a lifelong community. Your journey doesn't end at graduation — it evolves."
           />
-          <div className="mt-12 max-w-4xl mx-auto">
+          <div className="mt-7 max-w-3xl mx-auto">
             <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6">
               <ManagedPageItemCards pageKey="alumni" collectionKey="lifecycle" variant="lifecycle" fallback={lifecycle.map((title) => ({ title }))} />
             </div>
@@ -44,7 +44,7 @@ export default async function AlumniPage() {
       </section>
 
       {/* Meet the Alumni */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="alumni"
@@ -52,7 +52,7 @@ export default async function AlumniPage() {
             title="Afghan graduates of Malaysian universities"
             description="Alumni who have studied in Malaysia and are now making an impact around the world."
           />
-          <div className="mt-12">
+          <div className="mt-7">
             <EmptyState
               title="Alumni Directory Coming Soon"
               message="ASAM is building an alumni directory. Alumni profiles, professional stories, and mentorship connections will appear here as alumni register."
@@ -62,7 +62,7 @@ export default async function AlumniPage() {
       </section>
 
       {/* Alumni Programs */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="alumni"
@@ -70,7 +70,7 @@ export default async function AlumniPage() {
             title="Ways to stay connected"
             description="ASAM offers multiple ways for alumni to stay engaged with the community."
           />
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <ManagedPageItemCards pageKey="alumni" collectionKey="programs" fallback={[
               { title: 'Alumni Mentorship', description: 'Mentor current students and share your experience and guidance.', icon: 'Heart' },
               { title: 'Career Network', description: 'Share job opportunities and professional connections with the community.', icon: 'Briefcase' },
@@ -78,19 +78,19 @@ export default async function AlumniPage() {
               { title: 'Professional Stories', description: 'Share your professional journey and inspire current students.', icon: 'Users' },
               { title: 'Alumni Opportunities', description: 'Post jobs, internships, and opportunities for the community.', icon: 'TrendingUp' },
               { title: 'Alumni Recognition', description: 'Recognizing alumni achievements and contributions to the community.', icon: 'Award' },
-            ]} cardClassName="group p-6 rounded-2xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300" iconClassName="h-6 w-6 text-navy mb-4" />
+            ]} cardClassName="group p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300" iconClassName="h-6 w-6 text-navy mb-4" />
           </div>
         </div>
       </section>
 
       {/* Volunteer as Mentor */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto p-8 lg:p-12 rounded-3xl border border-border bg-card shadow-premium text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl gradient-navy mx-auto mb-6">
+          <div className="max-w-3xl mx-auto p-5 lg:p-6 rounded-xl border border-border bg-card shadow-premium text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl gradient-navy mx-auto mb-6">
               <Heart className="h-8 w-8 text-gold" />
             </div>
-            <h2 className="font-display text-2xl lg:text-3xl font-bold mb-4">{mentorContent?.title || 'Volunteer as a Mentor'}</h2>
+            <h2 className="font-display text-xl lg:text-2xl font-bold mb-4">{mentorContent?.title || 'Volunteer as a Mentor'}</h2>
             <p className="text-base text-muted-foreground leading-relaxed mb-6">
               {mentorContent?.body || 'If you are an Afghan alumnus of a Malaysian university, you can make a lasting impact by mentoring current students. Share your knowledge, experience, and network to help the next generation succeed.'}
             </p>
@@ -106,19 +106,19 @@ export default async function AlumniPage() {
       </section>
 
       {/* Alumni Registration */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl gradient-navy p-8 lg:p-16 text-center">
+          <div className="relative overflow-hidden rounded-2xl gradient-navy p-6 lg:p-12 text-center">
             <div className="absolute inset-0 bg-grid opacity-10" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-gold/10 blur-3xl" />
             <div className="relative">
-              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white text-balance">
+              <h2 className="font-display text-xl sm:text-2xl lg:text-[1.75rem] font-bold text-white text-balance">
                 {alumniCta?.title || 'Join the Alumni Network'}
               </h2>
               <p className="mt-4 text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
                 {alumniCta?.body || 'If you are an Afghan graduate of a Malaysian university, register with ASAM’s Alumni Network and stay connected with the community.'}
               </p>
-              <div className="mt-8">
+              <div className="mt-7">
                 <a
                   href={alumniCtaHref}
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gold text-navy font-bold text-base shadow-gold hover:scale-[1.03] transition-all"

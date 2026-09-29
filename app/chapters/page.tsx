@@ -26,7 +26,7 @@ export default function ChaptersPage() {
         description="ASAM is building state, city, and university chapters across Malaysia. Chapter information will appear here as new chapters are established."
       />
 
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="State Chapters"
@@ -35,7 +35,7 @@ export default function ChaptersPage() {
           />
 
           {/* Filter */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-2">
             {[
               { key: 'all', label: 'All States' },
               { key: 'coming_soon', label: 'Coming Soon' },
@@ -57,13 +57,13 @@ export default function ChaptersPage() {
           </div>
 
           {/* States Grid */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredStates.map((state, i) => (
               <button
                 key={state.id}
                 onClick={() => setSelectedState(state.id)}
                 className={cn(
-                  'text-left p-6 rounded-2xl border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up',
+                  'text-left p-5 rounded-xl border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up',
                   selectedState === state.id ? 'border-gold/40 ring-2 ring-gold/20' : 'border-border'
                 )}
                 style={{ animationDelay: `${i * 0.04}s` }}
@@ -91,10 +91,10 @@ export default function ChaptersPage() {
 
           {/* Selected State Detail */}
           {selected && (
-            <div className="mt-8 p-8 rounded-3xl border border-gold/30 bg-card shadow-premium-lg animate-scale-in">
+            <div className="mt-7 p-5 rounded-xl border border-gold/30 bg-card shadow-premium-lg animate-scale-in">
               <div className="flex items-start justify-between flex-wrap gap-4">
                 <div>
-                  <h3 className="font-display text-2xl font-bold mb-2">{selected.name}</h3>
+                  <h3 className="font-display text-xl font-bold mb-1.5">{selected.name}</h3>
                   <p className="text-sm text-muted-foreground">{selected.chapters.map((chapter) => chapter.description).filter(Boolean).join(' ')}</p>
                 </div>
                 <span className={cn(
@@ -120,14 +120,14 @@ export default function ChaptersPage() {
       </section>
 
       {/* City & University Chapters */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="City & University Chapters"
             title="Local community chapters"
             description="City and university chapters bring the ASAM community to your doorstep. These chapters will be established as the network grows."
           />
-          <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="mt-7 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <EmptyState
                 title={chapters.some((chapter) => chapter.city) ? 'City Chapters' : 'No City Chapters Yet'}

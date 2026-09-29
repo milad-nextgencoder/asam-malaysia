@@ -26,20 +26,20 @@ export default async function DepartmentsPage() {
         description="Each ASAM department focuses on a specific area of student life, working together to create a comprehensive support system for Afghan students in Malaysia."
       />
 
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="space-y-8">
             {renderedDepartments.map((dept, i) => (
               <div
                 key={dept.id}
                 id={dept.id}
-                className="group p-8 lg:p-10 rounded-3xl border border-border bg-card shadow-premium hover:shadow-premium-lg transition-all duration-300 scroll-mt-24 animate-fade-up"
+                className="group p-5 lg:p-6 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg transition-all duration-300 scroll-mt-24 animate-fade-up"
                 style={{ animationDelay: `${i * 0.05}s` }}
               >
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div className="lg:col-span-4">
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl gradient-navy shadow-premium">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl gradient-navy shadow-premium">
                         <dept.icon className="h-8 w-8 text-gold" />
                       </div>
                       <div>
@@ -51,7 +51,7 @@ export default async function DepartmentsPage() {
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">{dept.mission}</p>
                     {dept.leader && <p className="mt-3 text-xs text-muted-foreground">Department leader: <span className="font-semibold text-foreground">{dept.leader}</span></p>}
-                    {dept.image_url && <img src={dept.image_url} alt="" className="mt-4 max-h-44 w-full rounded-xl object-cover" />}
+                    {dept.image_url && <img src={dept.image_url} alt="" className="mt-4 max-h-36 w-full rounded-xl object-cover" />}
                   </div>
 
                   <div className="lg:col-span-4">

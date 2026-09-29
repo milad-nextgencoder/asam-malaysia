@@ -21,7 +21,7 @@ export default async function TransparencyPage() {
       />
 
       {/* Transparency Pillars */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -29,19 +29,19 @@ export default async function TransparencyPage() {
             title="What transparency means to us"
             description="ASAM is built on the principle that members deserve to know how their organization operates."
           />
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <ManagedPageItemCards pageKey="transparency" collectionKey="pillars" fallback={[
               { title: 'Open Governance', description: 'Clear organizational structure, roles, and decision-making processes.', icon: 'Eye' },
               { title: 'Public Policies', description: 'Constitution, code of conduct, and policies available to all members.', icon: 'FileText' },
               { title: 'Annual Reports', description: 'Regular reports on activities, finances, and impact.', icon: 'ScrollText' },
               { title: 'Data Privacy', description: 'Clear data handling practices and member privacy protections.', icon: 'Lock' },
-            ]} cardClassName="p-6 rounded-2xl border border-border bg-card shadow-premium hover:shadow-premium-lg transition-all duration-300" iconClassName="h-6 w-6 text-navy mb-4" />
+            ]} cardClassName="p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg transition-all duration-300" iconClassName="h-6 w-6 text-navy mb-4" />
           </div>
         </div>
       </section>
 
       {/* Documents */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -49,26 +49,26 @@ export default async function TransparencyPage() {
             title="Official documents"
             description="ASAM's official documents will be published here once they are finalized and approved."
           />
-          {documentsError ? <p role="status" className="mt-8 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">Official documents are temporarily unavailable.</p> : documents?.length ? <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {documentsError ? <p role="status" className="mt-7 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">Official documents are temporarily unavailable.</p> : documents?.length ? <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {documents.map((item, i) => (
               <div
                 key={item.id}
-                className="p-6 rounded-2xl border border-border bg-card hover:border-gold/30 transition-all duration-300 animate-fade-up"
+                className="p-5 rounded-xl border border-border bg-card hover:border-gold/30 transition-all duration-300 animate-fade-up"
                 style={{ animationDelay: `${i * 0.08}s` }}
               >
                 <FileText className="h-8 w-8 text-muted-foreground/40 mb-4" />
                 <h3 className="font-display text-base font-bold mb-2">{item.title}</h3>
-                {item.description&&<p className="text-sm text-muted-foreground leading-relaxed mb-3">{item.description}</p>}
+                {item.description&&<p className="text-sm text-muted-foreground leading-relaxed mb-2.5">{item.description}</p>}
                 <div className="mb-3 text-xs text-muted-foreground">{item.category||'Document'}{item.published_at?` · ${new Date(item.published_at).toLocaleDateString()}`:''}</div>
                 {typeof item.file_url==='string'&&/^https:\/\//i.test(item.file_url)&&<a href={item.file_url} target="_blank" rel="noreferrer" className="text-sm font-semibold text-gold-dark underline">View / download</a>}
               </div>
             ))}
-          </div> : <div className="mt-12 rounded-xl border border-dashed border-border p-12 text-center text-sm text-muted-foreground">No official documents have been published yet.</div>}
+          </div> : <div className="mt-7 rounded-xl border border-dashed border-border p-12 text-center text-sm text-muted-foreground">No official documents have been published yet.</div>}
         </div>
       </section>
 
       {/* Privacy Policy */}
-      <section id="privacy" className="py-16">
+      <section id="privacy" className="py-12">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -76,7 +76,7 @@ export default async function TransparencyPage() {
             title="How we handle your data"
             description="ASAM is committed to protecting member privacy and handling data responsibly."
           />
-          <div className="mt-8 p-8 rounded-3xl border border-border bg-card shadow-premium space-y-4">
+          <div className="mt-7 p-5 rounded-xl border border-border bg-card shadow-premium space-y-4">
             <ManagedPageItemCards pageKey="transparency" collectionKey="privacy" variant="sections" fallback={[
               { title: 'Data Collection', description: 'ASAM collects member information necessary for membership management, including name, university enrollment, contact details, and membership preferences. We do not collect sensitive personal information such as passport numbers or financial details through the website.' },
               { title: 'Data Usage', description: 'Member data is used for membership verification, communication, event registration, and community building. We do not sell or share member data with third parties.' },
@@ -89,7 +89,7 @@ export default async function TransparencyPage() {
       </section>
 
       {/* Code of Conduct */}
-      <section id="conduct" className="py-16 bg-secondary/30">
+      <section id="conduct" className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -97,7 +97,7 @@ export default async function TransparencyPage() {
             title="Our community standards"
             description="The standards of behavior expected from all ASAM members and leaders."
           />
-          <div className="mt-8 p-8 rounded-3xl border border-border bg-card shadow-premium">
+          <div className="mt-7 p-5 rounded-xl border border-border bg-card shadow-premium">
             <div className="space-y-3">
               <ManagedPageItemCards pageKey="transparency" collectionKey="conduct" variant="list" fallback={[
                 'Treat all members with respect, dignity, and fairness',

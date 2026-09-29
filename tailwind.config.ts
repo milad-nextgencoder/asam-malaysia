@@ -9,16 +9,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // Refined display scale: the top of the range is reduced ~12-15% so headings
-      // feel restrained and professional rather than oversized. Small sizes
-      // (xs / sm / base) are intentionally untouched to preserve readability.
+      // Refined display scale, pass 2. The workhorse sizes (2xl/3xl/4xl) are
+      // intentionally left alone so body-adjacent text stays comfortable;
+      // only the oversized top of the range is pulled back.
       fontSize: {
         '2xl': ['1.375rem', { lineHeight: '1.75rem' }],
         '3xl': ['1.625rem', { lineHeight: '2rem' }],
         '4xl': ['1.875rem', { lineHeight: '2.25rem' }],
-        '5xl': ['2.25rem', { lineHeight: '2.5rem' }],
-        '6xl': ['2.875rem', { lineHeight: '3.125rem' }],
-        '7xl': ['3.5rem', { lineHeight: '3.75rem' }],
+        '5xl': ['2.125rem', { lineHeight: '2.375rem' }],
+        '6xl': ['2.5rem', { lineHeight: '2.75rem' }],
+        '7xl': ['3rem', { lineHeight: '3.25rem' }],
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],

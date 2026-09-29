@@ -50,15 +50,15 @@ export default function EventsPage() {
       {featured && (
         <section className="py-12">
           <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-premium-lg">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-premium-lg">
               <div className="absolute top-0 left-0 right-0 h-1 gradient-gold" />
               <div className="grid grid-cols-1 lg:grid-cols-2">
-                <div className="p-8 lg:p-12">
+                <div className="p-6 lg:p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Star className="h-5 w-5 text-gold" />
                     <span className="text-xs font-bold uppercase tracking-wider text-gold-dark">Featured ASAM Event</span>
                   </div>
-                  <h2 className="font-display text-2xl lg:text-3xl font-bold mb-4">{featured.title}</h2>
+                  <h2 className="font-display text-xl lg:text-2xl font-bold mb-4">{featured.title}</h2>
                   <p className="text-base text-muted-foreground leading-relaxed mb-6">{featured.description}</p>
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="flex items-center gap-2 text-sm">
@@ -84,7 +84,7 @@ export default function EventsPage() {
                     {isUpcoming(featured) ? 'Upcoming Event' : isPlanned(featured) ? 'Date to be announced' : 'Past Event'}
                   </span>
                 </div>
-                <div className="bg-navy p-8 lg:p-12 flex items-center justify-center text-center relative overflow-hidden">
+                <div className="bg-navy p-6 lg:p-12 flex items-center justify-center text-center relative overflow-hidden">
                   <div className="absolute inset-0 bg-grid opacity-5" />
                   <div className="relative">
                     <Calendar className="h-16 w-16 text-gold mx-auto mb-4" />
@@ -99,7 +99,7 @@ export default function EventsPage() {
       )}
 
       {/* Events List */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="All Events"
@@ -113,7 +113,7 @@ export default function EventsPage() {
           </div>
 
           {/* Filters */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-2">
             <button
               onClick={() => setFilter('all')}
               className={cn(
@@ -158,14 +158,14 @@ export default function EventsPage() {
 
           {/* Event Cards */}
           {filtered.length > 0 ? (
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="mt-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((event, i) => (
                 <div
                   key={event.id}
-                  className="group p-6 rounded-2xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up"
+                  className="group p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up"
                   style={{ animationDelay: `${i * 0.08}s` }}
                 >
-                  {event.featured_image_url && <img src={event.featured_image_url} alt="" className="mb-4 h-40 w-full rounded-xl object-cover"/>}
+                  {event.featured_image_url && <img src={event.featured_image_url} alt="" className="mb-4 h-32 w-full rounded-xl object-cover"/>}
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-semibold text-gold-dark bg-gold/10 px-3 py-1 rounded-full">
                       {event.category}
@@ -198,7 +198,7 @@ export default function EventsPage() {
               ))}
             </div>
           ) : (
-            <div className="mt-12">
+            <div className="mt-7">
               <EmptyState title="No Events Found" message="No events match your current filters. Try adjusting your search criteria." />
             </div>
           )}
@@ -206,14 +206,14 @@ export default function EventsPage() {
       </section>
 
       {/* Past Events */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Past Events"
             title="Events we've held"
             description="A record of past ASAM events will appear here as events are held."
           />
-          <div className="mt-12">
+          <div className="mt-7">
             <EmptyState
               title="No Past Events Yet"
               message="ASAM is a new organization. Past events will be documented here as they are held."

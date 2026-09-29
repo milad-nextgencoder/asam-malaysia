@@ -32,7 +32,7 @@ export default function OpportunitiesPage() {
         description="A central hub for scholarships, internships, jobs, competitions, conferences, fellowships, training, and volunteering opportunities."
       />
 
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Search & Filter */}
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -69,10 +69,10 @@ export default function OpportunitiesPage() {
               {filtered.map((opp, i) => (
                 <div
                   key={opp.id}
-                  className="group p-6 rounded-2xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up"
+                  className="group p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up"
                   style={{ animationDelay: `${i * 0.08}s` }}
                 >
-                  {opp.image_url && <img src={opp.image_url} alt="" className="mb-4 h-40 w-full rounded-xl object-cover"/>}
+                  {opp.image_url && <img src={opp.image_url} alt="" className="mb-4 h-32 w-full rounded-xl object-cover"/>}
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-semibold text-gold-dark bg-gold/10 px-3 py-1 rounded-full">
                       {opp.category}
@@ -129,18 +129,18 @@ export default function OpportunitiesPage() {
       </section>
 
       {/* Categories Overview */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Categories"
             title="Types of opportunities"
             description="ASAM curates opportunities across multiple categories."
           />
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="mt-7 grid grid-cols-2 sm:grid-cols-4 gap-4">
             {opportunityCategories.map((cat, i) => (
               <div
                 key={cat}
-                className="p-4 rounded-2xl border border-border bg-card shadow-premium text-center animate-fade-up"
+                className="p-4 rounded-xl border border-border bg-card shadow-premium text-center animate-fade-up"
                 style={{ animationDelay: `${i * 0.05}s` }}
               >
                 <h3 className="font-display text-sm font-bold">{cat}</h3>

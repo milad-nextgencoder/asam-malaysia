@@ -114,18 +114,18 @@ export default function JoinAsamPage() {
         </div>
       </PageHero>
 
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Ways to help"
             title="There is a place for you in ASAM"
             description="Whether you have a lot of time or a little, these are the roles that keep the association running."
           />
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-7 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {waysToHelp.map((role) => (
               <article
                 key={role.title}
-                className="rounded-2xl border border-border bg-card p-6 shadow-sm transition hover:shadow-md"
+                className="rounded-xl border border-border bg-card p-6 shadow-sm transition hover:shadow-md"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-navy/5">
                   <role.icon className="h-6 w-6 text-navy" />
@@ -138,16 +138,16 @@ export default function JoinAsamPage() {
         </div>
       </section>
 
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="How to get involved"
             title="Three steps to start"
             description="You do not need prior experience. Tell us what you are interested in and the team will guide you from there."
           />
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="mt-7 grid grid-cols-1 gap-6 lg:grid-cols-3">
             {steps.map((step) => (
-              <article key={step.phase} className="rounded-2xl border border-border bg-card p-6">
+              <article key={step.phase} className="rounded-xl border border-border bg-card p-6">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-navy/5 font-display text-sm font-bold text-navy">
                   {step.phase}
                 </div>
@@ -159,29 +159,29 @@ export default function JoinAsamPage() {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Membership"
             title="Accounts and membership are different"
             description="Creating an account gives you access to the member portal. Official ASAM membership is granted after your application is reviewed and approved by the executive team."
           />
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            <div className="rounded-2xl border border-border bg-card p-6">
+          <div className="mt-7 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <div className="rounded-xl border border-border bg-card p-6">
               <Users className="h-6 w-6 text-navy" />
               <h3 className="mt-4 font-display text-base font-bold text-gray-900">Member account</h3>
               <p className="mt-2 text-sm text-muted-foreground">
                 Sign up to use the member portal, update your profile and register for events.
               </p>
             </div>
-            <div className="rounded-2xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border bg-card p-6">
               <Info className="h-6 w-6 text-navy" />
               <h3 className="mt-4 font-display text-base font-bold text-gray-900">Membership application</h3>
               <p className="mt-2 text-sm text-muted-foreground">
                 Submit your application once your profile is complete. The team reviews and approves it.
               </p>
             </div>
-            <div className="rounded-2xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border bg-card p-6">
               <Phone className="h-6 w-6 text-navy" />
               <h3 className="mt-4 font-display text-base font-bold text-gray-900">Questions</h3>
               <p className="mt-2 text-sm text-muted-foreground">

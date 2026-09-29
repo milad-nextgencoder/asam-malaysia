@@ -16,7 +16,7 @@ export function PageHero({
   className,
 }: PageHeroProps) {
   return (
-    <section className={cn('relative pt-28 lg:pt-32 pb-12 lg:pb-16 overflow-hidden', className)}>
+    <section className={cn('relative pt-24 lg:pt-28 pb-10 lg:pb-12 overflow-hidden', className)}>
       <div className="absolute inset-0 bg-grid opacity-40" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
       <div className="absolute top-20 right-0 w-96 h-96 rounded-full bg-gold/5 blur-3xl" />
@@ -31,15 +31,15 @@ export function PageHero({
               </span>
             </div>
           )}
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-balance">
+          <h1 className="font-display text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-bold tracking-tight text-balance">
             {title}
           </h1>
           {description && (
-            <p className="mt-5 text-base lg:text-lg text-muted-foreground leading-relaxed text-pretty max-w-xl">
+            <p className="mt-4 text-base text-muted-foreground leading-relaxed text-pretty max-w-xl">
               {description}
             </p>
           )}
-          {children && <div className="mt-7">{children}</div>}
+          {children && <div className="mt-6">{children}</div>}
         </div>
       </div>
     </section>

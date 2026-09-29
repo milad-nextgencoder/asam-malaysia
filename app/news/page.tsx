@@ -30,12 +30,12 @@ export default function NewsPage() {
         description="Latest updates, announcements, stories, and opportunities from the Afghan student community in Malaysia."
       />
 
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {loadFailed && <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">The latest stories could not be loaded. Please refresh in a moment.</p>}
           {/* Published stories retain the existing editorial card layout. */}
           {filtered[0] && <div className="mb-12">
-            <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-premium-lg">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-premium-lg">
               <div className="absolute top-0 left-0 right-0 h-1 gradient-gold" />
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="bg-navy p-12 flex items-center justify-center text-center min-h-[300px]">
@@ -44,11 +44,11 @@ export default function NewsPage() {
                     <p className="text-white/40 text-sm">Featured Article — Coming Soon</p>
                   </div>}
                 </div>
-                <div className="p-8 lg:p-12">
+                <div className="p-6 lg:p-6">
                   <span className="text-xs font-semibold text-gold-dark bg-gold/10 px-3 py-1 rounded-full">
                     {filtered[0].category || 'ASAM News'}
                   </span>
-                  <h2 className="font-display text-2xl lg:text-3xl font-bold mt-4 mb-4">
+                  <h2 className="font-display text-xl lg:text-2xl font-bold mt-4 mb-4">
                     {filtered[0].title}
                   </h2>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-6">
@@ -93,7 +93,7 @@ export default function NewsPage() {
           </div>
 
           {/* Articles */}
-          {filtered.length > (filtered[0] ? 1 : 0) ? <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{filtered.slice(filtered[0] ? 1 : 0).map((article) => <article key={article.id} className="overflow-hidden rounded-2xl border border-border bg-card shadow-premium">{article.featured_image_url && <img src={article.featured_image_url} alt="" className="h-44 w-full object-cover"/>}<div className="p-5">{article.category && <span className="text-xs font-semibold text-gold-dark">{article.category}</span>}<h2 className="mt-2 font-display text-lg font-bold">{article.title}</h2>{article.excerpt && <p className="mt-2 text-sm text-muted-foreground">{article.excerpt}</p>}<details className="mt-4 text-sm"><summary className="cursor-pointer font-semibold text-gold-dark">Read article</summary><p className="mt-3 whitespace-pre-wrap leading-relaxed text-muted-foreground">{article.content || article.excerpt || ''}</p></details></div></article>)}</div> : !filtered.length && <EmptyState title="No Articles Yet" message="Published ASAM stories and announcements will appear here when available."/>}
+          {filtered.length > (filtered[0] ? 1 : 0) ? <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{filtered.slice(filtered[0] ? 1 : 0).map((article) => <article key={article.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-premium">{article.featured_image_url && <img src={article.featured_image_url} alt="" className="h-36 w-full object-cover"/>}<div className="p-5">{article.category && <span className="text-xs font-semibold text-gold-dark">{article.category}</span>}<h2 className="mt-2 font-display text-lg font-bold">{article.title}</h2>{article.excerpt && <p className="mt-2 text-sm text-muted-foreground">{article.excerpt}</p>}<details className="mt-4 text-sm"><summary className="cursor-pointer font-semibold text-gold-dark">Read article</summary><p className="mt-3 whitespace-pre-wrap leading-relaxed text-muted-foreground">{article.content || article.excerpt || ''}</p></details></div></article>)}</div> : !filtered.length && <EmptyState title="No Articles Yet" message="Published ASAM stories and announcements will appear here when available."/>}
         </div>
       </section>
 

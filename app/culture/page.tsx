@@ -19,15 +19,15 @@ export default function CulturePage() {
       />
 
       {/* Heritage */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
             <div>
               <div className="inline-flex items-center gap-2 mb-4">
                 <span className="h-px w-8 bg-gold" />
                 <span className="text-xs font-bold uppercase tracking-widest text-gold-dark">Afghan Heritage</span>
               </div>
-              <h2 className="font-display text-3xl lg:text-4xl font-bold mb-6 text-balance">
+              <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold mb-4 text-balance">
                 A rich cultural legacy
               </h2>
               <p className="text-base lg:text-lg text-muted-foreground leading-relaxed mb-6">
@@ -46,10 +46,10 @@ export default function CulturePage() {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-square rounded-3xl gradient-navy p-12 flex items-center justify-center text-center overflow-hidden">
+              <div className="aspect-[4/5] rounded-2xl gradient-navy p-8 flex items-center justify-center text-center overflow-hidden">
                 <div className="absolute inset-0 bg-grid opacity-10" />
                 <div className="relative">
-                  <div className="font-display text-6xl lg:text-7xl font-bold text-gradient-gold mb-4">
+                  <div className="font-display text-3xl lg:text-4xl font-bold text-gradient-gold mb-4">
                     افغانستان
                   </div>
                   <p className="text-white/60 text-sm">Afghanistan — Our heritage, our identity</p>
@@ -61,7 +61,7 @@ export default function CulturePage() {
       </section>
 
       {/* Language */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="culture"
@@ -69,7 +69,7 @@ export default function CulturePage() {
             title="Preserving Dari and Pashto"
             description="Our languages are the heart of our culture. ASAM supports the preservation and celebration of Dari and Pashto within our community."
           />
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <ManagedPageItemCards pageKey="culture" collectionKey="language" fallback={[
               { title: 'Dari', description: 'The Persian dialect spoken by many Afghans, rich in poetry and literature.', icon: 'Languages' },
               { title: 'Pashto', description: 'The language of the Pashtun people, with a deep oral tradition and poetry.', icon: 'Languages' },
@@ -81,7 +81,7 @@ export default function CulturePage() {
       </section>
 
       {/* Afghan-Malaysian Connection */}
-      <section className="py-16 bg-navy text-white relative overflow-hidden">
+      <section className="py-12 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
@@ -89,7 +89,7 @@ export default function CulturePage() {
               <span className="h-px w-8 bg-gold" />
               <span className="text-xs font-bold uppercase tracking-widest text-gold">Afghan-Malaysian Connection</span>
             </div>
-            <h2 className="font-display text-3xl lg:text-4xl font-bold text-white mb-6 text-balance">
+            <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold text-white mb-4 text-balance">
               Building bridges between cultures
             </h2>
             <p className="text-base lg:text-lg text-white/60 leading-relaxed mb-6">
@@ -110,7 +110,7 @@ export default function CulturePage() {
       </section>
 
       {/* Cultural Events */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="culture"
@@ -118,12 +118,12 @@ export default function CulturePage() {
             title="Celebrating together"
             description="ASAM cultural events bring the community together to celebrate Afghan heritage."
           />
-          <div className="mt-12"><PublicEventList category="Cultural" /></div>
+          <div className="mt-7"><PublicEventList category="Cultural" /></div>
         </div>
       </section>
 
       {/* Student Stories */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-12 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="culture"
@@ -131,7 +131,7 @@ export default function CulturePage() {
             title="From Kabul to Kuala Lumpur"
             description="Real stories from Afghan students about their journey, their culture, and their life in Malaysia."
           />
-          <div className="mt-12">
+          <div className="mt-7">
             <EmptyState
               title="Stories Coming Soon"
               message="ASAM will feature authentic stories from Afghan students about their experiences, their culture, and their life in Malaysia. If you have a story to share, contact us."
