@@ -49,6 +49,7 @@ export function SiteHeader() {
             {/* Logo */}
             <Link href="/" className="flex items-center group" aria-label="ASAM Home">
               <div className="relative h-12 w-12 overflow-hidden rounded-full lg:h-16 lg:w-16">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={logoUrl} alt="ASAM logo" className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
               </div>
             </Link>
@@ -153,6 +154,7 @@ export function SiteHeader() {
             <div className="flex items-center justify-between p-4 border-b border-border">
               <div className="flex items-center gap-3">
                 <div className="relative h-10 w-10 overflow-hidden rounded-full">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={logoUrl} alt="ASAM logo" className="absolute inset-0 h-full w-full object-cover" />
                 </div>
               </div>
