@@ -16,9 +16,32 @@ export function normaliseSiteUrl(value: string | null | undefined): string {
   return (value || '').trim().replace(/\/+$/, '');
 }
 
-/** Empty string when NEXT_PUBLIC_SITE_URL is not configured. */
+/**
+ * Normalises a configured origin, returning '' when the value cannot be used as
+ * one. Rejecting a malformed value here matters: app/layout.tsx builds
+ * `new URL(getServerSiteUrl())` at module load, so a typo such as
+ * NEXT_PUBLIC_SITE_URL=https:/asam.org.my would otherwise throw during render
+ * and take down every route, not just the certificate pages.
+ *
+ * The parsed origin is returned rather than the raw string because the WHATWG
+ * URL parser silently repairs a missing slash ("https:/asam.org.my"), which
+ * would otherwise leak into certificate QR codes as an unopenable URL.
+ */
+function toSafeOrigin(value: string | null | undefined): string {
+  const candidate = normaliseSiteUrl(value);
+  if (!candidate) return '';
+  try {
+    const url = new URL(candidate);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return '';
+    return url.origin;
+  } catch {
+    return '';
+  }
+}
+
+/** The configured origin, or '' when unset or malformed. */
 export function getConfiguredSiteUrl(): string {
-  return normaliseSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
+  return toSafeOrigin(process.env.NEXT_PUBLIC_SITE_URL);
 }
 
 export function getServerSiteUrl(): string {

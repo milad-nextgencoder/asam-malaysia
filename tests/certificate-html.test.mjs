@@ -21,7 +21,7 @@ import {
   escapeHtml,
   formatCertificateDate,
 } from '../lib/member/certificate-html.ts';
-import { getCertificateVerifyUrl } from '../lib/member/site-url.ts';
+import { getCertificateVerifyUrl, getConfiguredSiteUrl, getServerSiteUrl } from '../lib/member/site-url.ts';
 
 const VIEW = {
   memberId: 'ASAM-2026-000123',
@@ -159,6 +159,44 @@ test('member supplied text cannot inject markup into either renderer', () => {
   assert.ok(html.includes('&quot;&gt;&lt;script&gt;bad()&lt;/script&gt;'));
 });
 
+
+test('a malformed NEXT_PUBLIC_SITE_URL cannot break the app', () => {
+  // app/layout.tsx builds new URL(getServerSiteUrl()) at module load, so a bad
+  // value must be rejected here rather than thrown during render.
+  const original = process.env.NEXT_PUBLIC_SITE_URL;
+
+  for (const bad of [
+    'not a url',
+    'javascript:alert(1)',
+    'ftp://asam.org.my',
+    '   ',
+    '',
+  ]) {
+    process.env.NEXT_PUBLIC_SITE_URL = bad;
+    assert.equal(getConfiguredSiteUrl(), '', 'should reject: ' + JSON.stringify(bad));
+    assert.equal(
+      getServerSiteUrl(),
+      'https://asam.org.my',
+      'should fall back to production for: ' + JSON.stringify(bad)
+    );
+  }
+
+  // A missing slash is repaired by the URL parser rather than rejected, and the
+  // repaired origin is what ends up in the QR code.
+  process.env.NEXT_PUBLIC_SITE_URL = 'https:/asam.org.my';
+  assert.equal(getConfiguredSiteUrl(), 'https://asam.org.my');
+  assert.equal(
+    getCertificateVerifyUrl('ASAM-2026-000001'),
+    'https://asam.org.my/certificate/ASAM-2026-000001'
+  );
+
+  process.env.NEXT_PUBLIC_SITE_URL = 'https://staging.asam.org.my/';
+  assert.equal(getConfiguredSiteUrl(), 'https://staging.asam.org.my');
+  assert.equal(getCertificateVerifyUrl('ASAM-2026-000001'), 'https://staging.asam.org.my/certificate/ASAM-2026-000001');
+
+  if (original === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
+  else process.env.NEXT_PUBLIC_SITE_URL = original;
+});
 
 test('the page is A4 landscape at 96 dpi', () => {
   assert.equal(CERTIFICATE_WIDTH_PX, 1123);

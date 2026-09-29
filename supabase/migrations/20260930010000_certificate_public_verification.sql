@@ -57,7 +57,17 @@ AS $function$
   LIMIT 1;
 $function$;
 
--- Exposed to anonymous visitors (QR scanners) and to signed-in members/admins.
+-- Execute permissions.
+--
+-- PostgreSQL grants EXECUTE to PUBLIC on every newly created function by
+-- default, so the privilege is revoked first and then granted only to the two
+-- roles that need it. Without the REVOKE, "anon, authenticated" would be
+-- redundant and every other role (service_role, supabase_auth_admin, any role
+-- added later) would retain EXECUTE by default.
+--
+-- This matches the pattern already used in 20260927000000 for the ASAM helper
+-- functions.
+REVOKE ALL ON FUNCTION public.get_public_certificate(text) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.get_public_certificate(text) TO anon, authenticated;
 
 COMMENT ON FUNCTION public.get_public_certificate(text) IS

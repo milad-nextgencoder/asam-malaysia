@@ -32,15 +32,38 @@ function resolveFromPath(binaryName: string): string | null {
   return null;
 }
 
+export type ChromeLaunch = {
+  executablePath: string;
+  args: string[];
+  /** True when the browser came from @sparticuz/chromium (serverless build). */
+  serverless: boolean;
+};
+
+const BASE_ARGS = ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--font-render-hinting=none'];
+
+/** True on AWS Lambda / Netlify Functions, where no system browser exists. */
+function isServerless(): boolean {
+  return Boolean(process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.AWS_EXECUTION_ENV || process.env.NETLIFY);
+}
+
 /**
- * Resolves a Chrome/Chromium binary for puppeteer-core.
+ * Resolves a Chrome/Chromium binary and its launch flags for puppeteer-core.
  *
- * Order: explicit environment variables, then platform defaults (Windows, macOS,
- * common Linux locations), then a PATH lookup. Previously only two Windows paths
- * were checked and the fallback was the bare string "chrome", which made PDF
- * generation fail on any Linux host such as a container build image.
+ * puppeteer-core deliberately ships no browser, so an executable must be found at
+ * runtime. Three sources, in order:
+ *
+ *  1. CHROME_PATH / PUPPETEER_EXECUTABLE_PATH - an explicit override.
+ *  2. A locally installed browser (Windows, macOS, Linux paths, then PATH).
+ *  3. @sparticuz/chromium, which ships a Brotli-compressed headless Chromium and
+ *     extracts it to /tmp on first use. This is the only source that exists inside
+ *     a Netlify Function, whose container has no Chrome and no shared writable
+ *     filesystem. On AWS Lambda its required flags (--single-process,
+ *     --disable-dev-shm-usage, ...) must be passed through verbatim.
+ *
+ * Returns a fully resolved launch descriptor rather than a bare path so the
+ * serverless argument set cannot be silently dropped.
  */
-export function getChromePath(): string {
+export async function resolveChrome(): Promise<ChromeLaunch> {
   const fromEnvironment = [process.env.CHROME_PATH, process.env.PUPPETEER_EXECUTABLE_PATH]
     .map((value) => (value || '').trim())
     .filter(Boolean);
@@ -58,15 +81,24 @@ export function getChromePath(): string {
   ];
 
   for (const candidate of fromEnvironment.concat(platformDefaults)) {
-    if (existsSync(candidate)) return candidate;
+    if (existsSync(candidate)) return { executablePath: candidate, args: BASE_ARGS, serverless: false };
   }
 
   for (const name of ['google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser', 'chrome', 'msedge']) {
     const resolved = resolveFromPath(name);
-    if (resolved) return resolved;
+    if (resolved) return { executablePath: resolved, args: BASE_ARGS, serverless: false };
   }
 
-  return 'chrome';
+  if (isServerless()) {
+    // Imported lazily so the ~64 MB package is only loaded on serverless hosts.
+    const { default: chromium } = await import('@sparticuz/chromium');
+    const executablePath = await chromium.executablePath();
+    return { executablePath, args: [...BASE_ARGS, ...chromium.args], serverless: true };
+  }
+
+  // Last resort: let puppeteer resolve the bare name so the thrown error names
+  // the missing browser rather than surfacing as an opaque ENOENT.
+  return { executablePath: 'chrome', args: BASE_ARGS, serverless: false };
 }
 
 /**
@@ -82,13 +114,14 @@ export async function generateCertificatePDF(memberId: string): Promise<Uint8Arr
   if (!result.record.isApproved) throw new CertificatePdfError('Membership not active', 400);
 
   const html = buildCertificateDocument(result.view);
+  const chrome = await resolveChrome();
   let browser: Awaited<ReturnType<typeof puppeteer.launch>> | undefined;
 
   try {
     browser = await puppeteer.launch({
       headless: true,
-      executablePath: getChromePath(),
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--font-render-hinting=none'],
+      executablePath: chrome.executablePath,
+      args: chrome.args,
     });
 
     const page = await browser.newPage();

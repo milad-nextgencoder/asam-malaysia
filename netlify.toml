@@ -2,5 +2,12 @@
 command = "npx next build"
 publish = ".next"
 
+[build.environment]
+# @sparticuz/chromium requires Node >= 22.17. Pinning this keeps the build and
+# the function runtime on the same major version.
+NODE_VERSION = "22"
+# Chromium needs a large /tmp; the serverless extraction target is $TMPDIR.
+AWS_LAMBDA_FUNCTION_MEMORY_SIZE = "1769"
+
 [[plugins]]
 package = "@netlify/plugin-nextjs"
