@@ -26,7 +26,7 @@ export default function UniversitiesPage() {
         description="A searchable directory of Malaysian universities where Afghan students are studying. Find your university, check chapter status, and connect with your university representative."
       />
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {loadFailed && <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">The university directory could not be loaded. Please refresh in a moment.</p>}
           {/* Search & Filter */}
@@ -88,7 +88,7 @@ export default function UniversitiesPage() {
       </section>
 
       {/* University Profile Template */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="University Profile"

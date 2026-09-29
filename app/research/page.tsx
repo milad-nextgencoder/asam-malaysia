@@ -27,7 +27,7 @@ export default async function ResearchPage() {
       />
 
       {/* Research Center */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="research"
@@ -49,7 +49,7 @@ export default async function ResearchPage() {
       </section>
 
       {/* Data Visualization */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="research"
@@ -75,7 +75,7 @@ export default async function ResearchPage() {
       </section>
 
       {/* Publications */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="research"
@@ -90,7 +90,7 @@ export default async function ResearchPage() {
       </section>
 
       {/* Student Voices */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="research"

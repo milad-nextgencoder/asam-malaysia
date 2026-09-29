@@ -31,7 +31,7 @@ export default function GovernancePage() {
       />
 
       {/* Hierarchy */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="governance"
@@ -68,7 +68,7 @@ export default function GovernancePage() {
       </section>
 
       {/* Governance Principles */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="governance"
@@ -86,7 +86,7 @@ export default function GovernancePage() {
       </section>
 
       {/* Decision-Making Framework */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="governance"
@@ -108,7 +108,7 @@ export default function GovernancePage() {
       </section>
 
       {/* Internal Coordination */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="governance"

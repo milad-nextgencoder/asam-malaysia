@@ -27,7 +27,7 @@ export default async function AlumniPage() {
       />
 
       {/* Lifecycle */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="alumni"
@@ -44,7 +44,7 @@ export default async function AlumniPage() {
       </section>
 
       {/* Meet the Alumni */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="alumni"
@@ -62,7 +62,7 @@ export default async function AlumniPage() {
       </section>
 
       {/* Alumni Programs */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="alumni"
@@ -84,7 +84,7 @@ export default async function AlumniPage() {
       </section>
 
       {/* Volunteer as Mentor */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto p-8 lg:p-12 rounded-3xl border border-border bg-card shadow-premium text-center">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl gradient-navy mx-auto mb-6">
@@ -106,7 +106,7 @@ export default async function AlumniPage() {
       </section>
 
       {/* Alumni Registration */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-3xl gradient-navy p-8 lg:p-16 text-center">
             <div className="absolute inset-0 bg-grid opacity-10" />

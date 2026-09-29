@@ -30,7 +30,7 @@ export default function NewsPage() {
         description="Latest updates, announcements, stories, and opportunities from the Afghan student community in Malaysia."
       />
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {loadFailed && <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">The latest stories could not be loaded. Please refresh in a moment.</p>}
           {/* Published stories retain the existing editorial card layout. */}

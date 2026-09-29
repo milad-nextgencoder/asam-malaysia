@@ -21,7 +21,7 @@ export default async function TransparencyPage() {
       />
 
       {/* Transparency Pillars */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -41,7 +41,7 @@ export default async function TransparencyPage() {
       </section>
 
       {/* Documents */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -68,7 +68,7 @@ export default async function TransparencyPage() {
       </section>
 
       {/* Privacy Policy */}
-      <section id="privacy" className="py-20">
+      <section id="privacy" className="py-16">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -89,7 +89,7 @@ export default async function TransparencyPage() {
       </section>
 
       {/* Code of Conduct */}
-      <section id="conduct" className="py-20 bg-secondary/30">
+      <section id="conduct" className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"

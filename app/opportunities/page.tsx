@@ -32,7 +32,7 @@ export default function OpportunitiesPage() {
         description="A central hub for scholarships, internships, jobs, competitions, conferences, fellowships, training, and volunteering opportunities."
       />
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Search & Filter */}
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -129,7 +129,7 @@ export default function OpportunitiesPage() {
       </section>
 
       {/* Categories Overview */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Categories"

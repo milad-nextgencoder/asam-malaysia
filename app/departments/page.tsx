@@ -26,7 +26,7 @@ export default async function DepartmentsPage() {
         description="Each ASAM department focuses on a specific area of student life, working together to create a comprehensive support system for Afghan students in Malaysia."
       />
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="space-y-8">
             {renderedDepartments.map((dept, i) => (

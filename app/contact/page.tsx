@@ -55,7 +55,7 @@ export default function ContactPage() {
       />
 
       {/* Contact Types */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {contactTypes.map((item, i) => (
@@ -79,7 +79,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="p-8 lg:p-10 rounded-3xl border border-border bg-card shadow-premium-lg">
             {submitted ? (
@@ -182,7 +182,7 @@ export default function ContactPage() {
       </section>
 
       {/* Social Media */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="font-display text-2xl font-bold mb-3">Follow ASAM</h2>

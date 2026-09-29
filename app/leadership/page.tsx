@@ -30,7 +30,7 @@ export default async function LeadershipPage() {
       />
 
       {/* President & Deputy President Spotlights */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {filled.map((member, i) => (
@@ -90,7 +90,7 @@ export default async function LeadershipPage() {
       </section>
 
       {/* Vacant Positions */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Open Positions"
@@ -119,7 +119,7 @@ export default async function LeadershipPage() {
       </section>
 
       {/* Organizational Structure */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Organizational Structure"
@@ -154,7 +154,7 @@ export default async function LeadershipPage() {
       </section>
 
       {/* Executive Directors & Department Leadership */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Department Leadership"
@@ -171,7 +171,7 @@ export default async function LeadershipPage() {
       </section>
 
       {/* University Representatives */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="University Representatives"

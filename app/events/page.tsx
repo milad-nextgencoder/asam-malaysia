@@ -99,7 +99,7 @@ export default function EventsPage() {
       )}
 
       {/* Events List */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="All Events"
@@ -206,7 +206,7 @@ export default function EventsPage() {
       </section>
 
       {/* Past Events */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Past Events"

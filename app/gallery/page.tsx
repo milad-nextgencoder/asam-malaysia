@@ -46,7 +46,7 @@ export default function GalleryPage() {
         description="Photos, videos, and albums from ASAM events, programs, and community activities."
       />
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Filters */}
           <div className="flex flex-wrap gap-2 mb-8">
@@ -121,7 +121,7 @@ export default function GalleryPage() {
       )}
 
       {/* Video Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Videos"
@@ -146,7 +146,7 @@ export default function GalleryPage() {
       </section>
 
       {/* Albums */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Albums"

@@ -19,7 +19,7 @@ export default function CulturePage() {
       />
 
       {/* Heritage */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -61,7 +61,7 @@ export default function CulturePage() {
       </section>
 
       {/* Language */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="culture"
@@ -81,7 +81,7 @@ export default function CulturePage() {
       </section>
 
       {/* Afghan-Malaysian Connection */}
-      <section className="py-20 bg-navy text-white relative overflow-hidden">
+      <section className="py-16 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
@@ -110,7 +110,7 @@ export default function CulturePage() {
       </section>
 
       {/* Cultural Events */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="culture"
@@ -123,7 +123,7 @@ export default function CulturePage() {
       </section>
 
       {/* Student Stories */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="culture"

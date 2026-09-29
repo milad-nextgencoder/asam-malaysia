@@ -38,7 +38,7 @@ export default async function AboutPage() {
       />
 
       {/* Who We Are */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             <div className="lg:col-span-7">
@@ -75,7 +75,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="p-8 lg:p-12 rounded-3xl border border-border bg-card shadow-premium">
@@ -101,7 +101,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Core Values */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="about"
@@ -128,7 +128,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Why ASAM Exists */}
-      <section className="py-20 bg-navy text-white relative overflow-hidden">
+      <section className="py-16 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
@@ -152,7 +152,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="about"
@@ -167,7 +167,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Roadmap */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="about"
@@ -197,7 +197,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Long-Term Vision */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 mb-4">

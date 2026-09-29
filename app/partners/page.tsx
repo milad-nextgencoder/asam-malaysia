@@ -21,7 +21,7 @@ export default async function PartnersPage() {
       />
 
       {/* Partner Categories */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Partner Types"
@@ -54,7 +54,7 @@ export default async function PartnersPage() {
       </section>
 
       {/* Partner Logos */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Our Partners"
@@ -66,7 +66,7 @@ export default async function PartnersPage() {
       </section>
 
       {/* Become a Partner */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>

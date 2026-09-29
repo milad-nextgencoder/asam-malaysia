@@ -27,7 +27,7 @@ export default async function CareerPage() {
       />
 
       {/* Career Network */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="career"
@@ -49,7 +49,7 @@ export default async function CareerPage() {
       </section>
 
       {/* Internship Opportunities */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="career"
@@ -103,7 +103,7 @@ export default async function CareerPage() {
       </section>
 
       {/* Entrepreneurship */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -142,7 +142,7 @@ export default async function CareerPage() {
       </section>
 
       {/* CV & Interview Support */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="career"
@@ -162,7 +162,7 @@ export default async function CareerPage() {
       </section>
 
       {/* Founder Stories */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="career"

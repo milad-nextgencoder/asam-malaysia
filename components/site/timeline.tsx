@@ -41,7 +41,7 @@ export function Timeline({ items, className }: TimelineProps) {
                   Phase {String(i + 1).padStart(2, '0')}
                 </span>
               </div>
-              <h3 className="font-display text-xl lg:text-2xl font-bold mb-2">{item.phase}</h3>
+              <h3 className="font-display text-lg lg:text-xl font-bold mb-2">{item.phase}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
             </div>
 

@@ -40,7 +40,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* New Student Guide */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"
@@ -62,7 +62,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* Orientation */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"
@@ -98,7 +98,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* Living in Malaysia */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"
@@ -122,7 +122,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* Peer Support */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"
@@ -141,7 +141,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"

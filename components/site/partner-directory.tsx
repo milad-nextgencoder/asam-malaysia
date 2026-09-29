@@ -31,14 +31,14 @@ export function PartnerDirectory({ partners }: { partners: Partner[] }) {
 
   return (
     <>
-      <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {partners.map((partner, index) => (
           <button
             key={partner.id}
             type="button"
             onClick={() => setSelected(partner)}
             aria-label={`View details for ${partner.organization}`}
-            className="group animate-fade-up rounded-2xl border border-border bg-card p-5 text-center shadow-premium transition hover:-translate-y-1 hover:shadow-premium-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            className="group animate-fade-up rounded-xl border border-border bg-card p-4 text-center shadow-premium transition hover:-translate-y-1 hover:shadow-premium-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             style={{ animationDelay: `${index * 0.05}s` }}
           >
             {partner.logo_url ? (

@@ -29,7 +29,7 @@ export default function SportsPage() {
       />
 
       {/* Sports Programs */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="sports"
@@ -44,7 +44,7 @@ export default function SportsPage() {
       </section>
 
       {/* Tournaments */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="sports"
@@ -57,7 +57,7 @@ export default function SportsPage() {
       </section>
 
       {/* Community Activities */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="sports"
@@ -77,7 +77,7 @@ export default function SportsPage() {
       </section>
 
       {/* Results */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="sports"

@@ -26,7 +26,7 @@ export default function ChaptersPage() {
         description="ASAM is building state, city, and university chapters across Malaysia. Chapter information will appear here as new chapters are established."
       />
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="State Chapters"
@@ -120,7 +120,7 @@ export default function ChaptersPage() {
       </section>
 
       {/* City & University Chapters */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="City & University Chapters"

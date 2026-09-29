@@ -37,11 +37,11 @@ export function SectionHeader({
           <span className="h-px w-8 bg-gold" />
         </div>
       )}
-      <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-balance">
+      <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-balance">
         {title}
       </h2>
       {description && (
-        <p className="mt-4 text-base lg:text-lg text-muted-foreground leading-relaxed text-pretty">
+        <p className="mt-3.5 text-sm lg:text-base text-muted-foreground leading-relaxed text-pretty">
           {description}
         </p>
       )}

@@ -136,7 +136,7 @@ export default function Home() {
         ))}
         <div className="absolute inset-0 bg-gradient-to-r from-background/55 via-background/20 to-background/5" />
 
-        <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-32">
           <div className="max-w-4xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-gold/5 mb-8 animate-fade-down">
               <Sparkles className="h-4 w-4 text-gold" />
@@ -144,13 +144,13 @@ export default function Home() {
                 {sectionValue('hero', 'subtitle', 'Afghan Students Association of Malaysia')}
               </span>
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight tracking-tight animate-fade-up">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-[2.125rem] font-bold text-foreground leading-tight tracking-tight animate-fade-up">
               {sectionValue('hero', 'title', 'ONE COMMUNITY. MANY UNIVERSITIES. ONE FUTURE.').split(/\n|(?<=\.)\s+/).filter(Boolean).map((line, index) => <span key={`${line}-${index}`} className={cn('block', index === 1 && 'text-gold-dark')}>{line}</span>)}
             </h1>
-            <p className="mt-6 text-base lg:text-lg text-muted-foreground leading-relaxed max-w-2xl animate-fade-up stagger-1">
+            <p className="mt-5 text-base lg:text-lg text-muted-foreground leading-relaxed max-w-xl animate-fade-up stagger-1">
               {sectionValue('hero', 'description', 'Connecting Afghan students across Malaysia through education, leadership, opportunity, culture, and community.')}
             </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-up stagger-2">
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 animate-fade-up stagger-2">
               <Link
                 href={sectionHref('hero', 'button_url', '/membership')}
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gold text-navy font-bold text-base shadow-gold hover:scale-[1.03] transition-all duration-300"
@@ -176,7 +176,7 @@ export default function Home() {
       </section>
 
       {/* INTRODUCTION */}
-      <section style={sectionStyle('introduction')} className="py-20 lg:py-28">
+      <section style={sectionStyle('introduction')} className="py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
@@ -184,10 +184,10 @@ export default function Home() {
                 <span className="h-px w-8 bg-gold" />
                 <span className="text-xs font-bold uppercase tracking-widest text-gold-dark">{sectionValue('introduction', 'subtitle', 'Introduction')}</span>
               </div>
-              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-balance">
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-5 text-balance">
                 {sectionValue('introduction', 'title', 'A national platform for Afghan students in Malaysia')}
               </h2>
-              <div className="space-y-4 text-base lg:text-lg text-muted-foreground leading-relaxed">
+              <div className="space-y-4 text-sm lg:text-base text-muted-foreground leading-relaxed">
                 {sectionValue('introduction', 'description', 'ASAM is being built to serve as a national platform connecting Afghan students studying at universities across Malaysia. From Kuala Lumpur to Penang, from Johor to Sabah, we are creating a unified community that supports, empowers, and represents its members.').split(/\n\s*\n/).map((paragraph, index) => <p key={index}>{paragraph}</p>)}
               </div>
               <Link
@@ -225,7 +225,7 @@ export default function Home() {
       </section>
 
       {/* VISION & MISSION */}
-      <section style={sectionStyle('vision')} className="py-20 lg:py-28 bg-secondary/30">
+      <section style={sectionStyle('vision')} className="py-16 lg:py-20 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="p-8 lg:p-12 rounded-3xl border border-border bg-card shadow-premium">
@@ -247,7 +247,7 @@ export default function Home() {
       </section>
 
       {/* WHAT ASAM DOES */}
-      <section style={sectionStyle('what_asam_does')} className="py-20 lg:py-28">
+      <section style={sectionStyle('what_asam_does')} className="py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('what_asam_does', 'subtitle', 'What We Do')}
@@ -292,7 +292,7 @@ export default function Home() {
       </section>
 
       {/* LEADERSHIP */}
-      <section style={sectionStyle('leadership')} className="py-20 lg:py-28 bg-navy text-white relative overflow-hidden">
+      <section style={sectionStyle('leadership')} className="py-16 lg:py-20 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-gold/5 blur-3xl" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -350,7 +350,7 @@ export default function Home() {
       </section>
 
       {/* DEPARTMENTS OVERVIEW */}
-      <section style={sectionStyle('departments_overview')} className="py-20 lg:py-28">
+      <section style={sectionStyle('departments_overview')} className="py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('departments_overview', 'subtitle', 'Departments')}
@@ -377,7 +377,7 @@ export default function Home() {
       </section>
 
       {/* STUDENT NETWORK */}
-      <section style={sectionStyle('student_network')} className="py-20 lg:py-28 bg-secondary/30">
+      <section style={sectionStyle('student_network')} className="py-16 lg:py-20 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -427,7 +427,7 @@ export default function Home() {
       </section>
 
       {/* CHAPTERS */}
-      <section style={sectionStyle('chapters')} className="py-20 lg:py-28">
+      <section style={sectionStyle('chapters')} className="py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('chapters', 'subtitle', 'Chapters')}
@@ -471,7 +471,7 @@ export default function Home() {
       </section>
 
       {/* UPCOMING EVENTS */}
-      <section style={sectionStyle('events')} className="py-20 lg:py-28 bg-secondary/30">
+      <section style={sectionStyle('events')} className="py-16 lg:py-20 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('events', 'subtitle', 'Events')}
@@ -528,7 +528,7 @@ export default function Home() {
       </section>
 
       {/* OPPORTUNITIES */}
-      <section style={sectionStyle('opportunities')} className="py-20 lg:py-28">
+      <section style={sectionStyle('opportunities')} className="py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -583,7 +583,7 @@ export default function Home() {
       </section>
 
       {/* ACADEMIC SUPPORT */}
-      <section style={sectionStyle('academic_support')} className="py-20 lg:py-28 bg-secondary/30">
+      <section style={sectionStyle('academic_support')} className="py-16 lg:py-20 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('academic_support', 'subtitle', 'Academic Support')}
@@ -622,7 +622,7 @@ export default function Home() {
       </section>
 
       {/* CAREER & ENTREPRENEURSHIP */}
-      <section style={sectionStyle('career_entrepreneurship')} className="py-20 lg:py-28">
+      <section style={sectionStyle('career_entrepreneurship')} className="py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
@@ -671,7 +671,7 @@ export default function Home() {
       </section>
 
       {/* CULTURAL COMMUNITY */}
-      <section style={sectionStyle('cultural_community')} className="py-20 lg:py-28 bg-navy text-white relative overflow-hidden">
+      <section style={sectionStyle('cultural_community')} className="py-16 lg:py-20 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-gold/5 blur-3xl" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -727,7 +727,7 @@ export default function Home() {
       </section>
 
       {/* ALUMNI NETWORK */}
-      <section style={sectionStyle('alumni_network')} className="py-20 lg:py-28">
+      <section style={sectionStyle('alumni_network')} className="py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('alumni_network', 'subtitle', 'Alumni Network')}
@@ -762,7 +762,7 @@ export default function Home() {
       </section>
 
       {/* LATEST NEWS */}
-      <section style={sectionStyle('latest_news')} className="py-20 lg:py-28 bg-secondary/30">
+      <section style={sectionStyle('latest_news')} className="py-16 lg:py-20 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('latest_news', 'subtitle', 'News & Stories')}
@@ -783,7 +783,7 @@ export default function Home() {
       </section>
 
       {/* FEATURED PROGRAMS */}
-      <section style={sectionStyle('featured_programs')} className="py-20 lg:py-28">
+      <section style={sectionStyle('featured_programs')} className="py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('featured_programs', 'subtitle', 'Flagship Initiatives')}
@@ -817,7 +817,7 @@ export default function Home() {
       </section>
 
       {/* PARTNERS */}
-      <section style={sectionStyle('partners')} className="py-20 lg:py-28 bg-secondary/30">
+      <section style={sectionStyle('partners')} className="py-16 lg:py-20 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('partners', 'subtitle', 'Partners')}

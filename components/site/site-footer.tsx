@@ -32,11 +32,11 @@ export async function SiteFooter() {
 
   const socials = settings?.social_links && typeof settings.social_links === 'object' ? Object.entries(settings.social_links as Record<string,string>).filter(([,url])=>typeof url==='string'&&/^https:\/\//i.test(url)) : [];
   return (
-    <footer className="relative mt-20 border-t border-border bg-card">
+    <footer className="relative mt-16 border-t border-border bg-card">
       <div className="absolute inset-0 bg-grid opacity-30" />
-      <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+      <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 lg:py-16">
         {/* Top Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Brand */}
           <div className="lg:col-span-4 space-y-6">
             <Link href="/" className="flex items-center">
@@ -85,7 +85,7 @@ export async function SiteFooter() {
         </div>
 
         {/* Newsletter */}
-        <div className="mt-12 pt-12 border-t border-border">
+        <div className="mt-10 pt-10 border-t border-border">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="font-display text-xl font-bold mb-2">Stay Connected</h3>
@@ -111,7 +111,7 @@ export async function SiteFooter() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-border">
+        <div className="mt-10 pt-6 border-t border-border">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-xs text-muted-foreground">
               &copy; {new Date().getFullYear()} {settings?.organization_name || 'Afghan Students Association of Malaysia'} (ASAM). All rights reserved.

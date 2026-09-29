@@ -114,7 +114,7 @@ export default function JoinAsamPage() {
         </div>
       </PageHero>
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Ways to help"
@@ -138,7 +138,7 @@ export default function JoinAsamPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="How to get involved"
@@ -159,7 +159,7 @@ export default function JoinAsamPage() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Membership"

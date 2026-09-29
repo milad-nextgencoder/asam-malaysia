@@ -35,7 +35,7 @@ export default async function AcademicPage() {
       />
 
       {/* Resource Cards */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="academic"
@@ -54,7 +54,7 @@ export default async function AcademicPage() {
       </section>
 
       {/* Scholarships Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -93,7 +93,7 @@ export default async function AcademicPage() {
       </section>
 
       {/* Mentorship */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="academic"
@@ -112,7 +112,7 @@ export default async function AcademicPage() {
       </section>
 
       {/* Research */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="academic"
@@ -130,7 +130,7 @@ export default async function AcademicPage() {
       </section>
 
       {/* University Resources */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="academic"
