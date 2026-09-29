@@ -73,18 +73,47 @@ export async function createQrDataUrl(text: string): Promise<string> {
  * worse than omitting it, and the layout is designed to look complete without it.
  */
 export function getCertificateLogoDataUrl(): string {
-  const candidates = [join('images', 'asam-logo-cert.png'), 'logo.png'];
+  // Resolved relative to whichever base directory actually exists at runtime.
+  // process.cwd() is the repository root under `next dev` / `next start`, but
+  // inside a Netlify function it is the bundled function root, where `public/`
+  // does not exist. A single cwd()-relative read therefore silently produced a
+  // logo-less PDF in production while the website still showed the emblem.
+  // The certificate logo is listed in netlify.toml `included_files` so it is
+  // present in the function bundle; the extra roots cover the layouts the
+  // bundler may use.
+  const relativePath = join('images', 'asam-logo-cert.png');
+  const baseDirectories = [
+    process.cwd(),
+    process.env.NETLIFY_LAMBDA_TASK_ROOT || '',
+    process.env.LAMBDA_TASK_ROOT || '',
+    join(process.cwd(), '..'),
+    join(process.cwd(), '..', '..'),
+  ].filter(Boolean);
 
-  for (const relativePath of candidates) {
-    try {
-      const logoBuffer = readFileSync(join(process.cwd(), 'public', relativePath));
-      if (logoBuffer.length > 0) {
-        return `data:image/png;base64,${logoBuffer.toString('base64')}`;
+  const seen = new Set();
+
+  for (const base of baseDirectories) {
+    for (const candidate of [relativePath, join('public', relativePath), join('logo.png')]) {
+      const fullPath = join(base, candidate);
+      if (seen.has(fullPath)) continue;
+      seen.add(fullPath);
+
+      try {
+        const logoBuffer = readFileSync(fullPath);
+        if (logoBuffer.length > 0) {
+          return `data:image/png;base64,${logoBuffer.toString('base64')}`;
+        }
+      } catch {
+        // Try the next candidate.
       }
-    } catch {
-      // Try the next candidate.
     }
   }
+
+  // Surfaced once per cold start rather than swallowed, so a missing logo shows
+  // up in function logs instead of only as a visual difference.
+  console.warn(
+    `[certificate] Logo not found; rendering the PDF without an emblem. Searched: ${Array.from(seen).join(', ')}`
+  );
 
   return '';
 }
@@ -195,4 +224,3 @@ export async function getCertificateView(
   const qrSrc = await createQrDataUrl(verifyUrl);
   return { record, view: buildCertificateView(record, { ...options, qrSrc }) };
 }
-

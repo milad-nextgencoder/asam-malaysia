@@ -35,6 +35,16 @@ function resolveFromPath(binaryName: string): string | null {
 export type ChromeLaunch = {
   executablePath: string;
   args: string[];
+  /**
+   * Headless mode passed to puppeteer.launch().
+   *
+   * '@sparticuz/chromium' ships the headless *shell* binary and its `args`
+   * include `--headless='shell'`. Passing headless: true at the same time makes
+   * Puppeteer append its own --headless flag, and two conflicting headless flags
+   * resolve to whichever Chromium parses last. 'shell' is the value that matches
+   * the bundled binary.
+   */
+  headless: boolean | 'shell';
   /** True when the browser came from @sparticuz/chromium (serverless build). */
   serverless: boolean;
 };
@@ -81,24 +91,34 @@ export async function resolveChrome(): Promise<ChromeLaunch> {
   ];
 
   for (const candidate of fromEnvironment.concat(platformDefaults)) {
-    if (existsSync(candidate)) return { executablePath: candidate, args: BASE_ARGS, serverless: false };
+    if (existsSync(candidate)) {
+      return { executablePath: candidate, args: BASE_ARGS, headless: true, serverless: false };
+    }
   }
 
   for (const name of ['google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser', 'chrome', 'msedge']) {
     const resolved = resolveFromPath(name);
-    if (resolved) return { executablePath: resolved, args: BASE_ARGS, serverless: false };
+    if (resolved) return { executablePath: resolved, args: BASE_ARGS, headless: true, serverless: false };
   }
 
   if (isServerless()) {
     // Imported lazily so the ~64 MB package is only loaded on serverless hosts.
     const { default: chromium } = await import('@sparticuz/chromium');
     const executablePath = await chromium.executablePath();
-    return { executablePath, args: [...BASE_ARGS, ...chromium.args], serverless: true };
+    // The sparticuz flags are required verbatim on Lambda (--single-process,
+    // --no-zygote, --disable-dev-shm-usage via --headless='shell', ...), so they
+    // are merged with the base set rather than replacing it.
+    return {
+      executablePath,
+      args: [...BASE_ARGS, ...chromium.args],
+      headless: 'shell',
+      serverless: true,
+    };
   }
 
   // Last resort: let puppeteer resolve the bare name so the thrown error names
   // the missing browser rather than surfacing as an opaque ENOENT.
-  return { executablePath: 'chrome', args: BASE_ARGS, serverless: false };
+  return { executablePath: 'chrome', args: BASE_ARGS, headless: true, serverless: false };
 }
 
 /**
@@ -119,7 +139,7 @@ export async function generateCertificatePDF(memberId: string): Promise<Uint8Arr
 
   try {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: chrome.headless,
       executablePath: chrome.executablePath,
       args: chrome.args,
     });

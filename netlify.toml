@@ -1,13 +1,31 @@
 [build]
-command = "npx next build"
+# Lint runs in the build. next.config.js sets eslint.ignoreDuringBuilds, so
+# without this a build with lint errors would still report success.
+command = "npm run lint && npx next build"
 publish = ".next"
 
 [build.environment]
-# @sparticuz/chromium requires Node >= 22.17. Pinning this keeps the build and
-# the function runtime on the same major version.
+# @sparticuz/chromium 153 requires Node >= 22.17. Pinning this keeps the build
+# and the function runtime on the same major version. The .nvmrc and the
+# "engines" field in package.json mirror this.
 NODE_VERSION = "22"
-# Chromium needs a large /tmp; the serverless extraction target is $TMPDIR.
-AWS_LAMBDA_FUNCTION_MEMORY_SIZE = "1769"
 
 [[plugins]]
 package = "@netlify/plugin-nextjs"
+
+# The certificate PDF route launches Chromium.
+#
+# It is excluded from the shared esbuild bundler so that @sparticuz/chromium is
+# loaded from node_modules at runtime rather than being inlined into the bundle
+# (see next.config.js). The package ships its browser as Brotli-compressed
+# blobs in node_modules/@sparticuz/chromium/bin, which the file trace does not
+# pick up automatically, so they are included explicitly. Without this the
+# function starts, finds no chromium payload, and returns HTTP 503.
+[functions."/api/certificate/*/pdf"]
+node_bundler = "esbuild"
+external_node_modules = ["@sparticuz/chromium", "puppeteer-core"]
+included_files = [
+  "node_modules/@sparticuz/chromium/bin/**",
+  "node_modules/@sparticuz/chromium/build/**",
+  "public/images/asam-logo-cert.png",
+]
