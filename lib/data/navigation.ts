@@ -126,6 +126,7 @@ export const footerNav = {
     { label: 'Partners', href: '/partners' },
     { label: 'Contact', href: '/contact' },
     { label: 'FAQ', href: '/faq' },
+    { label: 'Web Developer', href: '/web-developer' },
   ],
   Legal: [
     { label: 'Privacy Policy', href: '/transparency#privacy' },
