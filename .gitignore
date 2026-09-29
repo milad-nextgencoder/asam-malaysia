@@ -29,6 +29,11 @@ yarn-error.log*
 .env.local
 .env*.local
 
+# local scratch / logs (must never be committed)
+dev.log
+tmp-*.mjs
+*.log
+
 # vercel
 .vercel
 
