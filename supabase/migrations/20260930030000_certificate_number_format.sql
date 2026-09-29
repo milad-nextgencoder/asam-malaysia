@@ -37,9 +37,15 @@ BEGIN
     RETURN NULL;
   END IF;
 
-  v_match := ARRAY[
-    SUBSTRING(BTRIM(p_member_id) FROM '^(ASAM)-(\d{4})-(\d{6})$')
-  ];
+  -- MUST be regexp_match(), not SUBSTRING(... FROM <regex>).
+  --
+  -- SUBSTRING(<string> FROM <regex>) returns only the FIRST parenthesized
+  -- subexpression, as scalar text. Wrapping it in ARRAY[...] therefore yields a
+  -- one-element array whose [2] and [3] are always NULL, so the guard below
+  -- never passed and every id fell through to the malformed fallback, producing
+  -- 'ASAM-CERT-ASAM-2026-000001'. regexp_match() is the function that actually
+  -- returns ALL capture groups as a text[].
+  v_match := regexp_match(BTRIM(p_member_id), '^(ASAM)-(\d{4})-(\d{6})$');
 
   IF v_match[2] IS NOT NULL AND v_match[3] IS NOT NULL THEN
     RETURN 'ASAM-CERT-' || v_match[2] || '-' || v_match[3];
@@ -60,6 +66,7 @@ DO $block$
 DECLARE
   v_before integer := 0;
   v_after integer := 0;
+  v_bad integer := 0;
 BEGIN
   SELECT COUNT(*) INTO v_before
   FROM public.membership_applications
@@ -80,13 +87,42 @@ BEGIN
     AND member_id IS NOT NULL
     AND certificate_number IS NULL;
 
+  -- Independent assertions.
+  --
+  -- The previous check compared certificate_number_for() against ITSELF, so a
+  -- wrong implementation satisfied it and the migration committed corrupted data
+  -- with no error. These checks are deliberately independent of the function.
+  IF public.certificate_number_for('ASAM-2026-000001') IS DISTINCT FROM 'ASAM-CERT-2026-000001' THEN
+    RAISE EXCEPTION
+      'certificate_number_for() is broken: expected ASAM-CERT-2026-000001, got %',
+      public.certificate_number_for('ASAM-2026-000001');
+  END IF;
+
+  IF public.certificate_number_for('ASAM-2026-000123') IS DISTINCT FROM 'ASAM-CERT-2026-000123' THEN
+    RAISE EXCEPTION
+      'certificate_number_for() is broken: expected ASAM-CERT-2026-000123, got %',
+      public.certificate_number_for('ASAM-2026-000123');
+  END IF;
+
+  IF public.certificate_number_for(NULL) IS NOT NULL THEN
+    RAISE EXCEPTION 'certificate_number_for(NULL) must return NULL';
+  END IF;
+
+  -- Every stored value must now match the documented format for a well-formed
+  -- member id, and must never contain the doubled 'ASAM-CERT-ASAM-' shape.
   SELECT COUNT(*) INTO v_after
   FROM public.membership_applications
-  WHERE certificate_number IS DISTINCT FROM public.certificate_number_for(member_id)
-    OR (status = 'approved' AND member_id IS NOT NULL AND certificate_number IS NULL);
+  WHERE member_id ~ '^ASAM-\d{4}-\d{6}$'
+    AND certificate_number IS DISTINCT FROM public.certificate_number_for(member_id);
 
-  IF v_after > 0 THEN
-    RAISE EXCEPTION 'certificate_number normalisation incomplete: % row(s) still differ. No commit.', v_after;
+  SELECT COUNT(*) INTO v_bad
+  FROM public.membership_applications
+  WHERE certificate_number LIKE '%-ASAM-%';
+
+  IF v_after > 0 OR v_bad > 0 THEN
+    RAISE EXCEPTION
+      'certificate_number normalisation incomplete: % row(s) still differ, % malformed. No commit.',
+      v_after, v_bad;
   END IF;
 END
 $block$;
