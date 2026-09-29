@@ -1,0 +1,396 @@
+
+> nextjs@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+  ▲ Next.js 13.5.1
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+  - Experiments (use at your own risk):
+     · serverActions
+     · serverComponentsExternalPackages
+
+ ✓ Ready in 7.7s
+ ✓ Compiled /middleware in 1198ms (115 modules)
+ ○ compiling /certificate/[member-id]/page ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (120kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (281kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ✓ Compiled /certificate/[member-id]/page in 21.4s (730 modules)
+ ✓ Compiled in 955ms (327 modules)
+ ✓ Compiled /verify/member/[member-id]/page in 2.8s (724 modules)
+
+ ⚠ metadata.metadataBase is not set for resolving social open graph or twitter images, using "http://localhost:3001". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ✓ Compiled in 902ms (328 modules)
+ ✓ Compiled in 429ms (328 modules)
+ ✓ Compiled in 814ms (328 modules)
+ ✓ Compiled in 420ms (328 modules)
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ X ./lib/member/certificate-html.ts
+Error: 
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4mD:\bolt\lib\member\certificate-html.ts[0m:258:1]
+ [2m258[0m | }
+ [2m259[0m | 
+ [2m260[0m | 
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/member/certificate-html.ts
+./components/member/membership-certificate.tsx
+ ✓ Compiled in 284ms (313 modules)
+ ✓ Compiled in 642ms (327 modules)
+ ✓ Compiled in 291ms (313 modules)
+ ✓ Compiled in 499ms (327 modules)
+ ✓ Compiled in 350ms (327 modules)
+ ✓ Compiled in 479ms (327 modules)
+ ✓ Compiled in 509ms (327 modules)
