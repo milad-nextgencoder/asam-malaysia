@@ -33,7 +33,7 @@ export default function WebDeveloperPage() {
         description={`The ASAM website was designed and developed by ${developer.name}.`}
       />
 
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-border bg-card p-6 lg:p-8 shadow-premium">
             {/* Photo */}

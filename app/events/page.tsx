@@ -48,7 +48,7 @@ export default function EventsPage() {
       )}
       {/* Featured Event */}
       {featured && (
-        <section className="py-12">
+        <section className="py-10">
           <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-premium-lg">
               <div className="absolute top-0 left-0 right-0 h-1 gradient-gold" />
@@ -59,8 +59,8 @@ export default function EventsPage() {
                     <span className="text-xs font-bold uppercase tracking-wider text-gold-dark">Featured ASAM Event</span>
                   </div>
                   <h2 className="font-display text-xl lg:text-2xl font-bold mb-4">{featured.title}</h2>
-                  <p className="text-base text-muted-foreground leading-relaxed mb-6">{featured.description}</p>
-                  <div className="grid grid-cols-2 gap-4 mb-6">
+                  <p className="text-[0.9375rem] text-muted-foreground leading-relaxed mb-5">{featured.description}</p>
+                  <div className="grid grid-cols-2 gap-4 mb-5">
                     <div className="flex items-center gap-2 text-sm">
                       <Calendar className="h-4 w-4 text-gold" />
                       <span className="text-muted-foreground">
@@ -99,7 +99,7 @@ export default function EventsPage() {
       )}
 
       {/* Events List */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="All Events"
@@ -107,13 +107,13 @@ export default function EventsPage() {
             description="Filter by category and status to find events that interest you."
           />
 
-          <div className="relative mx-auto mt-7 max-w-lg">
+          <div className="relative mx-auto mt-6 max-w-lg">
             <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
             <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search events..." className="w-full rounded-xl border border-border bg-card py-3 pl-12 pr-4 text-sm outline-none focus:border-gold/40 focus:ring-2 focus:ring-gold/40" />
           </div>
 
           {/* Filters */}
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-2">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
             <button
               onClick={() => setFilter('all')}
               className={cn(
@@ -158,7 +158,7 @@ export default function EventsPage() {
 
           {/* Event Cards */}
           {filtered.length > 0 ? (
-            <div className="mt-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((event, i) => (
                 <div
                   key={event.id}
@@ -198,7 +198,7 @@ export default function EventsPage() {
               ))}
             </div>
           ) : (
-            <div className="mt-7">
+            <div className="mt-6">
               <EmptyState title="No Events Found" message="No events match your current filters. Try adjusting your search criteria." />
             </div>
           )}
@@ -206,14 +206,14 @@ export default function EventsPage() {
       </section>
 
       {/* Past Events */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Past Events"
             title="Events we've held"
             description="A record of past ASAM events will appear here as events are held."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             <EmptyState
               title="No Past Events Yet"
               message="ASAM is a new organization. Past events will be documented here as they are held."

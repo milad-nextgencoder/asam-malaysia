@@ -30,9 +30,9 @@ export default function NewsPage() {
         description="Latest updates, announcements, stories, and opportunities from the Afghan student community in Malaysia."
       />
 
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {loadFailed && <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">The latest stories could not be loaded. Please refresh in a moment.</p>}
+          {loadFailed && <p role="status" className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">The latest stories could not be loaded. Please refresh in a moment.</p>}
           {/* Published stories retain the existing editorial card layout. */}
           {filtered[0] && <div className="mb-12">
             <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-premium-lg">
@@ -51,7 +51,7 @@ export default function NewsPage() {
                   <h2 className="font-display text-xl lg:text-2xl font-bold mt-4 mb-4">
                     {filtered[0].title}
                   </h2>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-5">
                     {filtered[0].excerpt || filtered[0].content || ''}
                   </p>
                   <div className="flex items-center gap-4 text-xs text-muted-foreground">

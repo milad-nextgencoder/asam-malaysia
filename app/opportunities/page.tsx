@@ -32,10 +32,10 @@ export default function OpportunitiesPage() {
         description="A central hub for scholarships, internships, jobs, competitions, conferences, fellowships, training, and volunteering opportunities."
       />
 
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Search & Filter */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row gap-4 mb-5">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <input
@@ -65,7 +65,7 @@ export default function OpportunitiesPage() {
 
           {/* Opportunity Cards */}
           {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {filtered.map((opp, i) => (
                 <div
                   key={opp.id}
@@ -129,14 +129,14 @@ export default function OpportunitiesPage() {
       </section>
 
       {/* Categories Overview */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Categories"
             title="Types of opportunities"
             description="ASAM curates opportunities across multiple categories."
           />
-          <div className="mt-7 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
             {opportunityCategories.map((cat, i) => (
               <div
                 key={cat}

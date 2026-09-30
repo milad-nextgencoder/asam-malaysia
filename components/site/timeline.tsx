@@ -17,7 +17,7 @@ export function Timeline({ items, className }: TimelineProps) {
           <div
             key={item.phase}
             className={cn(
-              'relative flex items-start gap-6',
+              'relative flex items-start gap-5',
               'lg:grid lg:grid-cols-2 lg:gap-12',
               i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
             )}

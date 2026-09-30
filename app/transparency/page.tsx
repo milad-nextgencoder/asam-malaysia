@@ -21,7 +21,7 @@ export default async function TransparencyPage() {
       />
 
       {/* Transparency Pillars */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -29,7 +29,7 @@ export default async function TransparencyPage() {
             title="What transparency means to us"
             description="ASAM is built on the principle that members deserve to know how their organization operates."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <ManagedPageItemCards pageKey="transparency" collectionKey="pillars" fallback={[
               { title: 'Open Governance', description: 'Clear organizational structure, roles, and decision-making processes.', icon: 'Eye' },
               { title: 'Public Policies', description: 'Constitution, code of conduct, and policies available to all members.', icon: 'FileText' },
@@ -41,7 +41,7 @@ export default async function TransparencyPage() {
       </section>
 
       {/* Documents */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -49,7 +49,7 @@ export default async function TransparencyPage() {
             title="Official documents"
             description="ASAM's official documents will be published here once they are finalized and approved."
           />
-          {documentsError ? <p role="status" className="mt-7 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">Official documents are temporarily unavailable.</p> : documents?.length ? <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {documentsError ? <p role="status" className="mt-6 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">Official documents are temporarily unavailable.</p> : documents?.length ? <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {documents.map((item, i) => (
               <div
                 key={item.id}
@@ -63,12 +63,12 @@ export default async function TransparencyPage() {
                 {typeof item.file_url==='string'&&/^https:\/\//i.test(item.file_url)&&<a href={item.file_url} target="_blank" rel="noreferrer" className="text-sm font-semibold text-gold-dark underline">View / download</a>}
               </div>
             ))}
-          </div> : <div className="mt-7 rounded-xl border border-dashed border-border p-12 text-center text-sm text-muted-foreground">No official documents have been published yet.</div>}
+          </div> : <div className="mt-6 rounded-xl border border-dashed border-border p-12 text-center text-sm text-muted-foreground">No official documents have been published yet.</div>}
         </div>
       </section>
 
       {/* Privacy Policy */}
-      <section id="privacy" className="py-12">
+      <section id="privacy" className="py-10">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -76,7 +76,7 @@ export default async function TransparencyPage() {
             title="How we handle your data"
             description="ASAM is committed to protecting member privacy and handling data responsibly."
           />
-          <div className="mt-7 p-5 rounded-xl border border-border bg-card shadow-premium space-y-4">
+          <div className="mt-6 p-5 rounded-xl border border-border bg-card shadow-premium space-y-4">
             <ManagedPageItemCards pageKey="transparency" collectionKey="privacy" variant="sections" fallback={[
               { title: 'Data Collection', description: 'ASAM collects member information necessary for membership management, including name, university enrollment, contact details, and membership preferences. We do not collect sensitive personal information such as passport numbers or financial details through the website.' },
               { title: 'Data Usage', description: 'Member data is used for membership verification, communication, event registration, and community building. We do not sell or share member data with third parties.' },
@@ -89,7 +89,7 @@ export default async function TransparencyPage() {
       </section>
 
       {/* Code of Conduct */}
-      <section id="conduct" className="py-12 bg-secondary/30">
+      <section id="conduct" className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="transparency"
@@ -97,7 +97,7 @@ export default async function TransparencyPage() {
             title="Our community standards"
             description="The standards of behavior expected from all ASAM members and leaders."
           />
-          <div className="mt-7 p-5 rounded-xl border border-border bg-card shadow-premium">
+          <div className="mt-6 p-5 rounded-xl border border-border bg-card shadow-premium">
             <div className="space-y-3">
               <ManagedPageItemCards pageKey="transparency" collectionKey="conduct" variant="list" fallback={[
                 'Treat all members with respect, dignity, and fairness',

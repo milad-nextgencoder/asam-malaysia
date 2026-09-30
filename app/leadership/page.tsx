@@ -30,9 +30,9 @@ export default async function LeadershipPage() {
       />
 
       {/* President & Deputy President Spotlights */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {filled.map((member, i) => (
               <div
                 key={member.id}
@@ -41,7 +41,7 @@ export default async function LeadershipPage() {
               >
                 <div className="absolute top-0 left-0 right-0 h-1 gradient-gold opacity-80" />
                 <div className="p-6 lg:p-10">
-                  <div className="flex items-start gap-6">
+                  <div className="flex items-start gap-5">
                     <div className="relative flex-shrink-0">
                       <div className="relative h-24 w-24 overflow-hidden rounded-2xl gradient-navy flex items-center justify-center shadow-premium">
                         {member.photo_url ? <img src={member.photo_url} alt={member.name} className="absolute inset-0 h-full w-full object-cover" /> : <span className="font-display text-2xl font-bold text-gold">{member.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}</span>}
@@ -90,14 +90,14 @@ export default async function LeadershipPage() {
       </section>
 
       {/* Vacant Positions */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Open Positions"
             title="Leadership roles to be filled"
             description="These positions are currently vacant. Recruitment will open as ASAM grows and establishes its full leadership team."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {vacant.map((member, i) => (
               <div
                 key={member.id}
@@ -119,14 +119,14 @@ export default async function LeadershipPage() {
       </section>
 
       {/* Organizational Structure */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Organizational Structure"
             title="The ASAM leadership hierarchy"
             description="From the President to volunteers, every role in ASAM has a clear place and purpose in the organizational structure."
           />
-          <div className="mt-7 max-w-3xl mx-auto">
+          <div className="mt-6 max-w-3xl mx-auto">
             <div className="space-y-2">
               {orgHierarchy.map((item, i) => (
                 <div
@@ -154,14 +154,14 @@ export default async function LeadershipPage() {
       </section>
 
       {/* Executive Directors & Department Leadership */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Department Leadership"
             title="Executive directors & department heads"
             description="Each of ASAM's twelve departments will be led by an executive director. Department leadership will be announced as positions are filled."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             <EmptyState
               title="Department Leadership To Be Announced"
               message="ASAM is currently building its department leadership team. Department directors and heads will be announced as they are appointed. If you are interested in a leadership role, visit the Join / Volunteer page."
@@ -171,14 +171,14 @@ export default async function LeadershipPage() {
       </section>
 
       {/* University Representatives */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="University Representatives"
             title="Representatives across Malaysia"
             description="University representatives serve as the primary point of contact for ASAM at each university. Representatives will be listed here as they are appointed."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             <EmptyState
               title="No Representatives Yet"
               message="ASAM is building its network of university representatives. If you would like to represent ASAM at your university, visit the Join / Volunteer page to apply."

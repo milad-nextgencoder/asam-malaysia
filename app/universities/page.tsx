@@ -26,9 +26,9 @@ export default function UniversitiesPage() {
         description="A searchable directory of Malaysian universities where Afghan students are studying. Find your university, check chapter status, and connect with your university representative."
       />
 
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {loadFailed && <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">The university directory could not be loaded. Please refresh in a moment.</p>}
+          {loadFailed && <p role="status" className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">The university directory could not be loaded. Please refresh in a moment.</p>}
           {/* Search & Filter */}
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <div className="relative flex-1">
@@ -54,7 +54,7 @@ export default function UniversitiesPage() {
           </div>
 
           {/* University Directory */}
-          {filteredUniversities.length ? <div className="mt-7 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">{filteredUniversities.map((university) => <article key={university.id} className="rounded-xl border border-border bg-card p-5 shadow-premium"><div className="flex items-start gap-4">{university.logo_url ? <img src={university.logo_url} alt="" className="h-14 w-14 rounded-xl object-contain"/> : <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-navy/5"><GraduationCap className="h-7 w-7 text-navy"/></div>}<div className="min-w-0"><h2 className="font-display text-lg font-bold">{university.name}</h2><p className="mt-1 text-xs text-muted-foreground">{[university.city, university.state].filter(Boolean).join(', ')}</p></div></div>{university.description && <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{university.description}</p>}<div className="mt-4 flex flex-wrap gap-2">{university.chapter_status && <span className="rounded-full bg-gold/10 px-3 py-1 text-xs font-semibold text-gold-dark">Chapter {university.chapter_status.replace('_',' ')}</span>}{university.representative && <span className="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">Representative: {university.representative}</span>}</div>{university.website && <a className="mt-4 inline-flex text-sm font-semibold text-gold-dark hover:underline" href={university.website} target="_blank" rel="noreferrer">University website</a>}</article>)}</div> : <div className="mt-7">
+          {filteredUniversities.length ? <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">{filteredUniversities.map((university) => <article key={university.id} className="rounded-xl border border-border bg-card p-5 shadow-premium"><div className="flex items-start gap-4">{university.logo_url ? <img src={university.logo_url} alt="" className="h-14 w-14 rounded-xl object-contain"/> : <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-navy/5"><GraduationCap className="h-7 w-7 text-navy"/></div>}<div className="min-w-0"><h2 className="font-display text-lg font-bold">{university.name}</h2><p className="mt-1 text-xs text-muted-foreground">{[university.city, university.state].filter(Boolean).join(', ')}</p></div></div>{university.description && <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{university.description}</p>}<div className="mt-4 flex flex-wrap gap-2">{university.chapter_status && <span className="rounded-full bg-gold/10 px-3 py-1 text-xs font-semibold text-gold-dark">Chapter {university.chapter_status.replace('_',' ')}</span>}{university.representative && <span className="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">Representative: {university.representative}</span>}</div>{university.website && <a className="mt-4 inline-flex text-sm font-semibold text-gold-dark hover:underline" href={university.website} target="_blank" rel="noreferrer">University website</a>}</article>)}</div> : <div className="mt-6">
             <EmptyState
               title={search || stateFilter !== 'all' ? 'No Universities Found' : 'University Directory Coming Soon'}
               message={search || stateFilter !== 'all' ? 'No published university records match these filters.' : 'ASAM is building a comprehensive directory of Malaysian universities with Afghan student enrollment. University profiles, chapter status, and representative information will appear here as the network is established. If you would like to represent ASAM at your university, visit the Join / Volunteer page.'}
@@ -62,7 +62,7 @@ export default function UniversitiesPage() {
           </div>}
 
           {/* State Quick Links */}
-          <div className="mt-7">
+          <div className="mt-6">
             <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
               Browse by State
             </h3>
@@ -88,14 +88,14 @@ export default function UniversitiesPage() {
       </section>
 
       {/* University Profile Template */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="University Profile"
             title="What a university profile includes"
             description="When university profiles are published, each one will contain the following information."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               { icon: GraduationCap, title: 'University Information', desc: 'Name, location, programs, and overview' },
               { icon: MapPin, title: 'Location', desc: 'State, city, and campus address' },

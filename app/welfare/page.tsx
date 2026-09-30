@@ -40,7 +40,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* New Student Guide */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"
@@ -48,7 +48,7 @@ export default async function WelfarePage() {
             title="Welcome to Malaysia"
             description="A guide for new Afghan students arriving in Malaysia — everything you need to know to get started."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="welfare" collectionKey="new_student_guide" fallback={[
               { title: 'Arrival', description: 'What to do when you first arrive in Malaysia — airport, transport, accommodation.', icon: 'Home' },
               { title: 'University Enrollment', description: 'Guide to university registration, student ID, and course enrollment.', icon: 'BookOpen' },
@@ -62,7 +62,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* Orientation */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"
@@ -70,8 +70,8 @@ export default async function WelfarePage() {
             title="ASAM New Student Orientation"
             description="A virtual welcome session for new Afghan students arriving in Malaysia."
           />
-          <div className="mt-7 max-w-3xl mx-auto p-5 rounded-xl border border-border bg-card shadow-premium">
-            <div className="flex items-center gap-4 mb-6">
+          <div className="mt-6 max-w-3xl mx-auto p-5 rounded-xl border border-border bg-card shadow-premium">
+            <div className="flex items-center gap-4 mb-5">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-navy">
                 <Users className="h-7 w-7 text-gold" />
               </div>
@@ -80,10 +80,10 @@ export default async function WelfarePage() {
                 <p className="text-sm text-muted-foreground">{orientation?.subtitle || 'A virtual session for new students'}</p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               {orientation?.body || 'Join our virtual orientation session to learn about university life, living in Malaysia, student resources, and how to connect with the ASAM community. This session is designed for new Afghan students and covers everything you need to know to get started.'}
             </p>
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-2 gap-4 mb-5">
               <div className="p-3 rounded-xl bg-secondary/40">
                 <div className="text-xs font-semibold text-muted-foreground">Format</div>
                 <div className="text-sm font-medium">Online (Virtual)</div>
@@ -98,7 +98,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* Living in Malaysia */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"
@@ -106,7 +106,7 @@ export default async function WelfarePage() {
             title="Practical information for daily life"
             description="Essential information about living in Malaysia as an international student."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <ManagedPageItemCards pageKey="welfare" collectionKey="daily_life" fallback={[
               { title: 'Accommodation', description: 'Types of student housing, what to expect, and how to find accommodation.' },
               { title: 'Transportation', description: 'Public transport, student cards, and getting around Malaysian cities.' },
@@ -122,7 +122,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* Peer Support */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"
@@ -130,7 +130,7 @@ export default async function WelfarePage() {
             title="You are not alone"
             description="ASAM's peer support network connects you with fellow students who understand what you're going through."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="welfare" collectionKey="peer_support" fallback={[
               { title: 'Peer Mentors', description: 'Connect with experienced students who can answer your questions and provide guidance.', icon: 'Heart' },
               { title: 'Community Groups', description: 'Join WhatsApp, Telegram, or other community groups organized by university or city.', icon: 'Heart' },
@@ -141,7 +141,7 @@ export default async function WelfarePage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="welfare"

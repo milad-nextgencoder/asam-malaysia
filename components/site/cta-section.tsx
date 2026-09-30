@@ -25,9 +25,9 @@ export function CTASection({
   style,
 }: CTASectionProps) {
   return (
-    <section className={cn('py-12 lg:py-16', className)} style={style}>
+    <section className={cn('py-10 lg:py-14', className)} style={style}>
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-2xl gradient-navy p-8 lg:p-10 text-center">
+        <div className="relative overflow-hidden rounded-2xl gradient-navy p-7 lg:p-9 text-center">
           <div className="absolute inset-0 bg-grid opacity-10" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-gold/10 blur-3xl" />
           <div className="relative">
@@ -37,7 +37,7 @@ export function CTASection({
             <p className="mt-3 text-sm text-white/70 max-w-xl mx-auto leading-relaxed">
               {description}
             </p>
-            <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href={primaryHref}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold text-navy font-semibold shadow-gold hover:scale-[1.02] transition-all duration-300"

@@ -35,7 +35,7 @@ export default async function AcademicPage() {
       />
 
       {/* Resource Cards */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="academic"
@@ -43,7 +43,7 @@ export default async function AcademicPage() {
             title="Academic resources at your fingertips"
             description="Explore the academic support services available to ASAM members."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="academic" collectionKey="academic_resources" fallback={academicResources.map((item) => ({
               title: item.title,
               description: item.desc,
@@ -54,9 +54,9 @@ export default async function AcademicPage() {
       </section>
 
       {/* Scholarships Section */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center">
             <div>
               <div className="inline-flex items-center gap-2 mb-4">
                 <span className="h-px w-8 bg-gold" />
@@ -65,7 +65,7 @@ export default async function AcademicPage() {
               <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold mb-4 text-balance">
                 {scholarshipIntro?.title || 'Discover scholarship opportunities'}
               </h2>
-              <p className="text-base lg:text-lg text-muted-foreground leading-relaxed mb-6">
+              <p className="text-[0.9375rem] text-muted-foreground leading-relaxed mb-5">
                 {scholarshipIntro?.body || scholarshipIntro?.description || 'ASAM is building a scholarship information network to help Afghan students discover and apply for scholarships available in Malaysia. While ASAM does not directly offer scholarships, we connect our members with opportunities from universities, government programs, and private organizations.'}
               </p>
               <div className="flex flex-wrap gap-3">
@@ -93,7 +93,7 @@ export default async function AcademicPage() {
       </section>
 
       {/* Mentorship */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="academic"
@@ -101,7 +101,7 @@ export default async function AcademicPage() {
             title="Academic mentorship program"
             description="Connect with experienced students and alumni who can guide you through your academic journey."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="academic" collectionKey="mentorship" fallback={[
               { title: 'Peer Mentors', description: 'Connect with senior students in your field of study who can share their experience and advice.', icon: 'GraduationCap' },
               { title: 'Alumni Mentors', description: 'Learn from graduates who have successfully navigated the Malaysian university system.', icon: 'GraduationCap' },
@@ -112,7 +112,7 @@ export default async function AcademicPage() {
       </section>
 
       {/* Research */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="academic"
@@ -120,7 +120,7 @@ export default async function AcademicPage() {
             title="Research collaboration"
             description="Find research partners, collaborate on projects, and contribute to ASAM's research initiatives."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             <EmptyState
               title="Research Network Coming Soon"
               message="ASAM is building a research collaboration platform where students can find research partners, share resources, and contribute to community research projects. This feature will be available soon."
@@ -130,7 +130,7 @@ export default async function AcademicPage() {
       </section>
 
       {/* University Resources */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="academic"
@@ -138,7 +138,7 @@ export default async function AcademicPage() {
             title="Resources for your university"
             description="ASAM is building a directory of university-specific resources for Afghan students."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             <EmptyState
               title="University Resources Coming Soon"
               message="University-specific academic resources, including library guides, writing centers, and academic support services, will be listed here as the network is established."

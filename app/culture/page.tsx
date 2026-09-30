@@ -19,9 +19,9 @@ export default function CulturePage() {
       />
 
       {/* Heritage */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center">
             <div>
               <div className="inline-flex items-center gap-2 mb-4">
                 <span className="h-px w-8 bg-gold" />
@@ -30,7 +30,7 @@ export default function CulturePage() {
               <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold mb-4 text-balance">
                 A rich cultural legacy
               </h2>
-              <p className="text-base lg:text-lg text-muted-foreground leading-relaxed mb-6">
+              <p className="text-[0.9375rem] text-muted-foreground leading-relaxed mb-5">
                 Afghanistan has a cultural heritage spanning thousands of years — from the ancient
                 Silk Road to the poetry of Rumi, from intricate carpet weaving to the soaring arches
                 of Blue Mosque. ASAM celebrates this heritage and ensures it remains alive and vibrant
@@ -61,7 +61,7 @@ export default function CulturePage() {
       </section>
 
       {/* Language */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="culture"
@@ -69,7 +69,7 @@ export default function CulturePage() {
             title="Preserving Dari and Pashto"
             description="Our languages are the heart of our culture. ASAM supports the preservation and celebration of Dari and Pashto within our community."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <ManagedPageItemCards pageKey="culture" collectionKey="language" fallback={[
               { title: 'Dari', description: 'The Persian dialect spoken by many Afghans, rich in poetry and literature.', icon: 'Languages' },
               { title: 'Pashto', description: 'The language of the Pashtun people, with a deep oral tradition and poetry.', icon: 'Languages' },
@@ -81,7 +81,7 @@ export default function CulturePage() {
       </section>
 
       {/* Afghan-Malaysian Connection */}
-      <section className="py-12 bg-navy text-white relative overflow-hidden">
+      <section className="py-10 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
@@ -92,7 +92,7 @@ export default function CulturePage() {
             <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold text-white mb-4 text-balance">
               Building bridges between cultures
             </h2>
-            <p className="text-base lg:text-lg text-white/60 leading-relaxed mb-6">
+            <p className="text-[0.9375rem] text-white/60 leading-relaxed mb-5">
               Afghanistan and Malaysia share values of hospitality, community, and faith. ASAM builds
               bridges between Afghan and Malaysian culture — creating opportunities for intercultural
               exchange, mutual understanding, and lasting friendships.
@@ -110,7 +110,7 @@ export default function CulturePage() {
       </section>
 
       {/* Cultural Events */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="culture"
@@ -118,12 +118,12 @@ export default function CulturePage() {
             title="Celebrating together"
             description="ASAM cultural events bring the community together to celebrate Afghan heritage."
           />
-          <div className="mt-7"><PublicEventList category="Cultural" /></div>
+          <div className="mt-6"><PublicEventList category="Cultural" /></div>
         </div>
       </section>
 
       {/* Student Stories */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="culture"
@@ -131,7 +131,7 @@ export default function CulturePage() {
             title="From Kabul to Kuala Lumpur"
             description="Real stories from Afghan students about their journey, their culture, and their life in Malaysia."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             <EmptyState
               title="Stories Coming Soon"
               message="ASAM will feature authentic stories from Afghan students about their experiences, their culture, and their life in Malaysia. If you have a story to share, contact us."

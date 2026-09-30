@@ -29,7 +29,7 @@ export default function SportsPage() {
       />
 
       {/* Sports Programs */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="sports"
@@ -37,14 +37,14 @@ export default function SportsPage() {
             title="Find your sport"
             description="ASAM supports a range of sports and recreational activities for all fitness levels."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="sports" collectionKey="programs" fallback={sports.map((sport) => ({ title: sport.name, description: sport.desc, icon: sport.name === 'Outdoor Activities' ? 'Heart' : 'Trophy' }))} cardClassName="group p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300" iconClassName="h-6 w-6 text-navy mb-4" />
           </div>
         </div>
       </section>
 
       {/* Tournaments */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="sports"
@@ -52,12 +52,12 @@ export default function SportsPage() {
             title="Upcoming competitions"
             description="Inter-university sports tournaments and recreational competitions."
           />
-          <div className="mt-7"><PublicEventList category="Sports" /></div>
+          <div className="mt-6"><PublicEventList category="Sports" /></div>
         </div>
       </section>
 
       {/* Community Activities */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="sports"
@@ -65,7 +65,7 @@ export default function SportsPage() {
             title="More than just sports"
             description="Recreational activities that bring the community together."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <ManagedPageItemCards pageKey="sports" collectionKey="community_activities" fallback={[
               { title: 'Fitness', description: 'Group fitness sessions and challenges', icon: 'Activity' },
               { title: 'Recreation', description: 'Social and recreational activities', icon: 'Heart' },
@@ -77,7 +77,7 @@ export default function SportsPage() {
       </section>
 
       {/* Results */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="sports"
@@ -85,7 +85,7 @@ export default function SportsPage() {
             title="Tournament results"
             description="Results from past ASAM sports tournaments and competitions."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             <EmptyState
               title="No Results Yet"
               message="Tournament results will be documented here once competitions are held."

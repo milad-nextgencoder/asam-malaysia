@@ -55,9 +55,9 @@ export default function ContactPage() {
       />
 
       {/* Contact Types */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {contactTypes.map((item, i) => (
               <div
                 key={item.title}
@@ -79,16 +79,16 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <div className="p-5 lg:p-6 rounded-xl border border-border bg-card shadow-premium-lg">
+          <div className="p-5 lg:p-5 rounded-xl border border-border bg-card shadow-premium-lg">
             {submitted ? (
               <div className="text-center py-12">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 mx-auto mb-4">
                   <CheckCircle className="h-8 w-8 text-green-600" />
                 </div>
                 <h2 className="font-display text-xl font-bold mb-2.5">Message Sent</h2>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                <p className="text-sm text-muted-foreground leading-relaxed mb-5">
                   Thank you for reaching out to ASAM. We will get back to you as soon as possible.
                 </p>
                 <button
@@ -101,7 +101,7 @@ export default function ContactPage() {
             ) : (
               <>
                 <h2 className="font-display text-xl font-bold mb-1.5">Send us a message</h2>
-                <p className="text-sm text-muted-foreground mb-6">Fill out the form below and we&apos;ll respond as soon as possible.</p>
+                <p className="text-sm text-muted-foreground mb-5">Fill out the form below and we&apos;ll respond as soon as possible.</p>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {formError && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{formError}</p>}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -182,11 +182,11 @@ export default function ContactPage() {
       </section>
 
       {/* Social Media */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="font-display text-xl font-bold mb-2.5">Follow ASAM</h2>
-            <p className="text-sm text-muted-foreground mb-6">Stay connected through our social media channels.</p>
+            <p className="text-sm text-muted-foreground mb-5">Stay connected through our social media channels.</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               {Object.entries(publicSettings.social_links || {}).filter(([,url]) => /^https:\/\//i.test(url)).map(([social,url]) => (
                 <a

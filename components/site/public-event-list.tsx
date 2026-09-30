@@ -14,7 +14,7 @@ export async function PublicEventList({ category }: { category: string }) {
   if (error) return <p role="status" className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">Published events are temporarily unavailable.</p>;
   if (!data?.length) return <EmptyState title={`No published ${category.toLowerCase()} events yet`} message="Events published through the ASAM Admin Panel will appear here." />;
 
-  return <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  return <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
     {data.map((event) => <article key={event.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-premium">
       {event.featured_image_url && <img src={event.featured_image_url} alt="" loading="lazy" className="h-40 w-full object-cover" />}
       <div className="p-5">

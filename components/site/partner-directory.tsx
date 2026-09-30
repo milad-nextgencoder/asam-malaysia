@@ -101,7 +101,7 @@ export function PartnerDirectory({ partners }: { partners: Partner[] }) {
                   href={selected.website}
                   target={/^https?:\/\//i.test(selected.website) ? '_blank' : undefined}
                   rel={/^https?:\/\//i.test(selected.website) ? 'noreferrer' : undefined}
-                  className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[#142238] px-4 py-3 text-sm font-semibold text-white hover:bg-[#243750]"
+                  className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#142238] px-4 py-3 text-sm font-semibold text-white hover:bg-[#243750]"
                 >
                   Visit website <ArrowUpRight className="h-4 w-4" />
                 </a>

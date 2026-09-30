@@ -38,9 +38,9 @@ export default async function AboutPage() {
       />
 
       {/* Who We Are */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
             <div className="lg:col-span-7">
               <div className="inline-flex items-center gap-2 mb-4">
                 <span className="h-px w-8 bg-gold" />
@@ -49,7 +49,7 @@ export default async function AboutPage() {
               <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold mb-4 text-balance">
                 {whoWeAre?.title || 'A community-driven national student platform'}
               </h2>
-              <div className="space-y-4 text-base lg:text-lg text-muted-foreground leading-relaxed">
+              <div className="space-y-4 text-[0.9375rem] text-muted-foreground leading-relaxed">
                 {(whoWeAre?.body ? whoWeAre.body.split(/\n\s*\n/) : [
                   `The Afghan Students Association of Malaysia (ASAM) is a national platform being built by Afghan students, for Afghan students. We are creating a unified community that spans universities, cities, and states — connecting students who might otherwise never meet, and building a support system that extends far beyond any single campus.`,
                   `We are working toward becoming a comprehensive national student association. While we are not yet the official representative body for every Afghan student in Malaysia, we are building the foundation, infrastructure, and community that will make that vision a reality.`,
@@ -61,7 +61,7 @@ export default async function AboutPage() {
             </div>
             <div className="lg:col-span-5">
               <div className="p-5 rounded-xl border border-border bg-card shadow-premium">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-navy mb-6">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-navy mb-5">
                   <Target className="h-7 w-7 text-gold" />
                 </div>
                 <h3 className="font-display text-xl font-bold mb-3">{purpose?.title || 'Our Purpose'}</h3>
@@ -75,11 +75,11 @@ export default async function AboutPage() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="p-5 lg:p-6 rounded-xl border border-border bg-card shadow-premium">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-navy mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div className="p-5 lg:p-5 rounded-xl border border-border bg-card shadow-premium">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-navy mb-5">
                 <Eye className="h-7 w-7 text-gold" />
               </div>
               <h3 className="font-display text-xl font-bold mb-3.5">{vision?.title || 'Our Vision'}</h3>
@@ -87,8 +87,8 @@ export default async function AboutPage() {
                 {vision?.body || 'To build a connected, empowered, and thriving Afghan student community across Malaysia — one where every student has access to support, opportunity, and a sense of belonging, regardless of which university they attend.'}
               </p>
             </div>
-            <div className="p-5 lg:p-6 rounded-xl border border-border bg-card shadow-premium">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-gold mb-6">
+            <div className="p-5 lg:p-5 rounded-xl border border-border bg-card shadow-premium">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-gold mb-5">
                 <Compass className="h-7 w-7 text-navy" />
               </div>
               <h3 className="font-display text-xl font-bold mb-3.5">{mission?.title || 'Our Mission'}</h3>
@@ -101,7 +101,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Core Values */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="about"
@@ -109,7 +109,7 @@ export default async function AboutPage() {
             title="What we stand for"
             description="The principles that guide everything we do."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {values.map((value, i) => (
               <div
                 key={value.title}
@@ -128,7 +128,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Why ASAM Exists */}
-      <section className="py-12 bg-navy text-white relative overflow-hidden">
+      <section className="py-10 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
@@ -139,7 +139,7 @@ export default async function AboutPage() {
             <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold text-white mb-4 text-balance">
               {whyAsam?.title || 'Because community is not optional — it is essential'}
             </h2>
-            <div className="space-y-4 text-base lg:text-lg text-white/60 leading-relaxed">
+            <div className="space-y-4 text-[0.9375rem] text-white/60 leading-relaxed">
               {(whyAsam?.body ? whyAsam.body.split(/\n\s*\n/) : [
                 'Afghan students in Malaysia come from diverse backgrounds, study at different universities, and live in different cities. But they share common experiences, challenges, and aspirations. ASAM exists to ensure that these shared experiences become the foundation for a strong, supportive community.',
                 'We believe that when students are connected, they are stronger. When they have access to resources, they succeed. When they have a platform, they are heard. And when they have a community, they thrive.',
@@ -152,7 +152,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="about"
@@ -167,7 +167,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Roadmap */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="about"
@@ -175,7 +175,7 @@ export default async function AboutPage() {
             title="Eight phases to national scale"
             description="Our strategic plan for building ASAM from foundation to a self-sustaining alumni ecosystem."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {roadmap.map((phase, i) => (
               <div
                 key={phase.phase}
@@ -197,7 +197,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Long-Term Vision */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 mb-4">
@@ -208,7 +208,7 @@ export default async function AboutPage() {
             <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold mb-4 text-balance">
               {longTermVision?.title || 'A self-sustaining community for generations'}
             </h2>
-            <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
+            <p className="text-[0.9375rem] text-muted-foreground leading-relaxed">
               {longTermVision?.body || `Our long-term vision is to build an organization that outlives its founders — one that
               continues to serve Afghan students in Malaysia for decades to come. A community where
               today's students become tomorrow's alumni, mentors, and leaders, passing the torch to

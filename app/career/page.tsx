@@ -27,7 +27,7 @@ export default async function CareerPage() {
       />
 
       {/* Career Network */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="career"
@@ -35,7 +35,7 @@ export default async function CareerPage() {
             title="Your career development hub"
             description="Resources, programs, and connections to help you build a successful career."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="career" collectionKey="career_services" fallback={[
               { title: 'Career Development', description: 'Career planning, guidance, and resources to help you navigate your professional path.', icon: 'Briefcase' },
               { title: 'Internship Network', description: 'Information about internship opportunities and how to find them.', icon: 'Network' },
@@ -49,7 +49,7 @@ export default async function CareerPage() {
       </section>
 
       {/* Internship Opportunities */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="career"
@@ -57,13 +57,13 @@ export default async function CareerPage() {
             title="Internship opportunities"
             description="ASAM is building an internship network to connect students with professional experience opportunities."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             {opportunitiesError ? (
               <p role="status" className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
                 Career opportunities are temporarily unavailable. Please check back soon.
               </p>
             ) : opportunities?.length ? (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                 {opportunities.map((item) => {
                   const applicationUrl = item.application_url;
                   const safeApplicationUrl = typeof applicationUrl === 'string'
@@ -103,9 +103,9 @@ export default async function CareerPage() {
       </section>
 
       {/* Entrepreneurship */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center">
             <div>
               <div className="inline-flex items-center gap-2 mb-4">
                 <span className="h-px w-8 bg-gold" />
@@ -114,7 +114,7 @@ export default async function CareerPage() {
               <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold mb-4 text-balance">
                 Support for student entrepreneurs
               </h2>
-              <p className="text-base lg:text-lg text-muted-foreground leading-relaxed mb-6">
+              <p className="text-[0.9375rem] text-muted-foreground leading-relaxed mb-5">
                 If you have an entrepreneurial spirit, ASAM supports your journey. From idea to
                 execution, we provide resources, mentorship, and a community of like-minded
                 individuals to help you build your venture.
@@ -142,7 +142,7 @@ export default async function CareerPage() {
       </section>
 
       {/* CV & Interview Support */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="career"
@@ -150,7 +150,7 @@ export default async function CareerPage() {
             title="Stand out from the crowd"
             description="Practical workshops and resources to help you craft a compelling CV and ace your interviews."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <ManagedPageItemCards pageKey="career" collectionKey="cv_support" fallback={[
               { title: 'CV Writing', description: 'Learn how to structure and write an effective CV for the Malaysian and international job markets.' },
               { title: 'Cover Letters', description: 'Craft compelling cover letters that get noticed by employers.' },
@@ -162,7 +162,7 @@ export default async function CareerPage() {
       </section>
 
       {/* Founder Stories */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="career"
@@ -170,7 +170,7 @@ export default async function CareerPage() {
             title="Stories from Afghan entrepreneurs"
             description="Real stories from Afghan students and alumni who have started businesses and ventures."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             <EmptyState
               title="Founder Stories Coming Soon"
               message="ASAM will feature stories from Afghan student entrepreneurs and alumni founders. If you have a story to share, contact us."

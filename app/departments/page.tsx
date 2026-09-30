@@ -26,17 +26,17 @@ export default async function DepartmentsPage() {
         description="Each ASAM department focuses on a specific area of student life, working together to create a comprehensive support system for Afghan students in Malaysia."
       />
 
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="space-y-8">
             {renderedDepartments.map((dept, i) => (
               <div
                 key={dept.id}
                 id={dept.id}
-                className="group p-5 lg:p-6 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg transition-all duration-300 scroll-mt-24 animate-fade-up"
+                className="group p-5 lg:p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg transition-all duration-300 scroll-mt-24 animate-fade-up"
                 style={{ animationDelay: `${i * 0.05}s` }}
               >
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
                 <div className="lg:col-span-4">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl gradient-navy shadow-premium">

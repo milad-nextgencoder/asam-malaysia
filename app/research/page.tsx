@@ -27,7 +27,7 @@ export default async function ResearchPage() {
       />
 
       {/* Research Center */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="research"
@@ -35,7 +35,7 @@ export default async function ResearchPage() {
             title="Understanding our community through data"
             description="ASAM is building a research program to study the needs, challenges, and aspirations of Afghan students in Malaysia."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="research" collectionKey="research_cards" fallback={[
               { title: 'Student Research', description: 'Supporting student-led research projects about the Afghan student experience in Malaysia.', icon: 'FlaskConical' },
               { title: 'Surveys', description: 'Regular community surveys to understand member needs and gather feedback.', icon: 'BarChart3' },
@@ -49,7 +49,7 @@ export default async function ResearchPage() {
       </section>
 
       {/* Data Visualization */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="research"
@@ -57,7 +57,7 @@ export default async function ResearchPage() {
             title="Visualizing our community"
             description="Data visualizations and insights about the Afghan student community in Malaysia will be published here."
           />
-          <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <ManagedPageItemCards pageKey="research" collectionKey="statistics" fallback={[
               { title: 'Total Members', metric: 'Not published', description: 'Verified members' },
               { title: 'Universities', metric: 'Not published', description: 'With ASAM presence' },
@@ -65,7 +65,7 @@ export default async function ResearchPage() {
               { title: 'Events Held', metric: 'Not published', description: 'Total events' },
             ]} cardClassName="p-5 rounded-xl border border-border bg-card shadow-premium" />
           </div>
-          <div className="mt-7">
+          <div className="mt-6">
             <EmptyState
               title="Data Visualizations Coming Soon"
               message="ASAM is building a data and analytics platform. Charts, graphs, and interactive visualizations about the community will appear here once data is collected."
@@ -75,7 +75,7 @@ export default async function ResearchPage() {
       </section>
 
       {/* Publications */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="research"
@@ -83,14 +83,14 @@ export default async function ResearchPage() {
             title="Research publications"
             description="Reports, working papers, and policy briefs produced by ASAM."
           />
-          <div className="mt-7">
+          <div className="mt-6">
             {reportsError ? <p role="status" className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">Research publications are temporarily unavailable.</p> : reports?.length ? <div className="grid gap-5 md:grid-cols-2">{reports.map((report) => <article key={report.id} className="rounded-xl border border-border bg-card p-5 shadow-premium"><p className="text-xs font-bold uppercase tracking-wider text-gold-dark">{report.category || 'Publication'}</p><h3 className="mt-2 font-display text-lg font-bold">{report.title}</h3>{report.description && <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">{report.description}</p>}{report.file_url && <a href={report.file_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold text-gold-dark underline">View document</a>}</article>)}</div> : <EmptyState title="No published research documents yet" message="Reports and publications published through the Documents CMS will appear here." />}
           </div>
         </div>
       </section>
 
       {/* Student Voices */}
-      <section className="py-12 bg-secondary/30">
+      <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="research"
@@ -98,10 +98,10 @@ export default async function ResearchPage() {
             title="Policy discussions & student input"
             description="A platform for Afghan students to share their perspectives on policies and issues that affect them."
           />
-          <div className="mt-7 max-w-3xl mx-auto p-5 rounded-xl border border-border bg-card shadow-premium">
+          <div className="mt-6 max-w-3xl mx-auto p-5 rounded-xl border border-border bg-card shadow-premium">
             <MessageSquare className="h-10 w-10 text-gold mb-4" />
             <h3 className="font-display text-xl font-bold mb-3">Share Your Voice</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               ASAM is building a platform where students can contribute to policy discussions, share
               their experiences, and help shape the future of the Afghan student community in Malaysia.
               Your voice matters and we want to hear it.

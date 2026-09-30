@@ -138,7 +138,8 @@ export default function MembershipPage() {
       </section>
 
       {/* Join CTA */}
-      <div id="join"><CTASection pageKey="membership" sectionKey="join_asam_today" title="Join ASAM today" description="Your membership is the foundation of our community. Join ASAM and help build a national platform for Afghan students in Malaysia." primaryLabel="Register Now" primaryHref="/contact" /></div>
+      <div id="join"><CTASection pageKey="membership" sectionKey="join_asam_today" title="Join ASAM today" description="Your membership is the foundation of our community. Join ASAM and help build a national platform for Afghan students in Malaysia." primaryLabel="Register Now" primaryHref="/join-asam" /></div>
     </>
   );
 }
+
