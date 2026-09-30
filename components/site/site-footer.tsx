@@ -70,12 +70,27 @@ export async function SiteFooter() {
                 <ul className="space-y-2.5">
                   {links.map((link) => (
                     <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-sm text-muted-foreground hover:text-gold-dark transition-colors"
-                      >
-                        {link.label}
-                      </Link>
+                      {link.highlight ? (
+                        <Link
+                          href={link.href}
+                          className="group inline-flex items-center gap-1.5 rounded-md border border-gold/30 bg-gold/10 px-2 py-1 text-sm font-semibold text-gold-dark transition-colors hover:border-gold/50 hover:bg-gold/20"
+                        >
+                          {link.label}
+                          <span
+                            className="text-xs text-gold-dark/70 transition-transform duration-200 group-hover:translate-x-0.5"
+                            aria-hidden="true"
+                          >
+                            &rsaquo;
+                          </span>
+                        </Link>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className="text-sm text-muted-foreground hover:text-gold-dark transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

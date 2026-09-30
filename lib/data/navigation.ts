@@ -96,7 +96,7 @@ export const navItems: NavItem[] = [
   },
 ];
 
-export const footerNav = {
+export const footerNav: Record<string, { label: string; href: string; highlight?: boolean }[]> = {
   Organization: [
     { label: 'About ASAM', href: '/about' },
     { label: 'Leadership', href: '/leadership' },
@@ -131,6 +131,6 @@ export const footerNav = {
     { label: 'Privacy Policy', href: '/transparency#privacy' },
     { label: 'Code of Conduct', href: '/transparency#conduct' },
     { label: 'Terms', href: '/transparency#terms' },
-    { label: 'Web Developer', href: '/web-developer' },
+    { label: 'Web Developer', href: '/web-developer', highlight: true },
   ],
 };
