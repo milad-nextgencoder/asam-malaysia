@@ -61,3 +61,43 @@ export function getCertificateVerifyUrl(memberId: string, siteUrl?: string | nul
   const base = normaliseSiteUrl(siteUrl) || getServerSiteUrl();
   return base + '/certificate/' + encodeURIComponent(memberId);
 }
+
+/**
+ * Resolves the origin that Supabase auth emails and OAuth redirects must point at.
+ *
+ * The auth actions previously used `NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'`.
+ * NEXT_PUBLIC_SITE_URL is not set in production, so every confirmation link and
+ * Google redirect was built from `http://localhost:3000`. Supabase only honours a
+ * redirect that is in the project's allow-list, so it silently fell back to the
+ * Site URL and dropped the member on the public homepage instead of /member.
+ *
+ * Resolution order:
+ *   1. NEXT_PUBLIC_SITE_URL  - explicit configuration, wins in every environment.
+ *   2. requestOrigin         - the host the user actually reached (Vercel preview
+ *                              deployments, localhost dev, custom domains).
+ *   3. VERCEL_URL            - the deployment's own domain when no origin was passed.
+ *   4. http://localhost:3000 - development only, never in production.
+ *   5. the production origin - the last resort so production is never localhost.
+ */
+export function getAuthOrigin(requestOrigin?: string | null): string {
+  const configured = getConfiguredSiteUrl();
+  if (configured) return configured;
+
+  const fromRequest = toSafeOrigin(requestOrigin);
+  if (fromRequest) return fromRequest;
+
+  const fromVercel = toSafeOrigin(
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null
+  );
+  if (fromVercel) return fromVercel;
+
+  if (process.env.NODE_ENV !== 'production') return 'http://localhost:3000';
+
+  return CERTIFICATE_PRODUCTION_URL;
+}
+
+/** Absolute URL for an auth callback, always rooted at {@link getAuthOrigin}. */
+export function getAuthCallbackUrl(path: string, requestOrigin?: string | null): string {
+  const suffix = path.startsWith('/') ? path : `/${path}`;
+  return getAuthOrigin(requestOrigin) + suffix;
+}

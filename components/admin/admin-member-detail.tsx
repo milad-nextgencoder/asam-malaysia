@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft, CheckCircle, XCircle, User, Mail, Phone, GraduationCap, MapPin, Clock, CreditCard, Send, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { approveMemberAction, rejectMemberAction, startReviewAction } from '@/app/member/actions/membership';
+import { ADMIN_FEEDBACK } from '@/lib/admin/feedback';
 import type { MembershipApplication } from '@/lib/member/types';
 
 interface MemberProfile {
@@ -73,7 +74,7 @@ export function AdminMemberDetail({
     setMessage('');
     const result = await startReviewAction(member.user_id);
     if (result.ok) {
-      setMessage('Application moved to review.');
+      setMessage(ADMIN_FEEDBACK.saved);
     } else {
       setMessage(result.message);
     }
@@ -85,7 +86,8 @@ export function AdminMemberDetail({
     setMessage('');
     const result = await approveMemberAction(member.user_id);
     if (result.ok) {
-      setMessage('Member approved successfully.');
+      // Approving is a publish-equivalent decision, so it uses the publish wording.
+      setMessage(ADMIN_FEEDBACK.published);
     } else {
       setMessage(result.message);
     }
@@ -101,7 +103,7 @@ export function AdminMemberDetail({
     setMessage('');
     const result = await rejectMemberAction(member.user_id, rejectReason.trim());
     if (result.ok) {
-      setMessage('Member rejected.');
+      setMessage(ADMIN_FEEDBACK.saved);
       setShowReject(false);
       setRejectReason('');
     } else {

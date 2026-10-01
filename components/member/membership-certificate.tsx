@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Download, Printer } from 'lucide-react';
+import { Download, Printer, LoaderCircle } from 'lucide-react';
 import {
   CERTIFICATE_CSS,
   CERTIFICATE_HEIGHT_PX,
@@ -42,6 +42,73 @@ interface MembershipCertificateProps {
 export function MembershipCertificate({ html, memberId }: MembershipCertificateProps) {
   const frameRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
+
+  /**
+   * Downloads through the same production API the plain link used to point at.
+   *
+   * A bare <a download> hands whatever the endpoint returns straight to the file
+   * system, so a JSON error body was saved as a file named .pdf that no viewer
+   * could open. Fetching first lets a failed response be reported as a readable
+   * message, and confirms the body really is a PDF before it is offered to the
+   * device. The endpoint and the renderer are unchanged; only error handling moved
+   * to the client.
+   */
+  async function handleDownload() {
+    if (downloading) return;
+    setDownloading(true);
+    setDownloadError('');
+
+    try {
+      const response = await fetch(
+        `/api/certificate/${encodeURIComponent(memberId)}/pdf`,
+        { cache: 'no-store' }
+      );
+
+      if (!response.ok) {
+        // The route answers failures with JSON { error } and a matching status.
+        const body = await response.json().catch(() => null);
+        setDownloadError(
+          (body && typeof body.error === 'string' && body.error) ||
+            'The certificate could not be downloaded. Please try again shortly.'
+        );
+        return;
+      }
+
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.toLowerCase().includes('application/pdf')) {
+        setDownloadError(
+          'The server did not return a PDF. Please try again shortly.'
+        );
+        return;
+      }
+
+      const blob = await response.blob();
+      if (blob.size === 0) {
+        setDownloadError(
+          'The downloaded certificate was empty. Please try again shortly.'
+        );
+        return;
+      }
+
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = `ASAM-Certificate-${memberId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      // Revoked on the next tick so Safari has time to start the download.
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+    } catch {
+      setDownloadError(
+        'The certificate could not be downloaded. Check your connection and try again.'
+      );
+    } finally {
+      setDownloading(false);
+    }
+  }
 
   useEffect(() => {
     const element = frameRef.current;
@@ -77,23 +144,38 @@ export function MembershipCertificate({ html, memberId }: MembershipCertificateP
             Your verified ASAM membership certificate with QR verification code.
           </p>
         </div>
-        <div className="flex gap-3">
-          <a
-            href={`/api/certificate/${encodeURIComponent(memberId)}/pdf`}
-            className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-navy/90"
+        <div className="flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={handleDownload}
+            disabled={downloading}
+            aria-busy={downloading}
+            className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-navy/90 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <Download className="h-4 w-4" />
-            Download Certificate
-          </a>
+            {downloading ? (
+              <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <Download className="h-4 w-4" aria-hidden="true" />
+            )}
+            {downloading ? 'Preparing PDF...' : 'Download Certificate'}
+          </button>
           <button
             type="button"
             onClick={() => window.print()}
             className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50"
           >
-            <Printer className="h-4 w-4" />
+            <Printer className="h-4 w-4" aria-hidden="true" />
             Print
           </button>
         </div>
+        {downloadError && (
+          <p
+            role="alert"
+            className="mt-3 w-full rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          >
+            {downloadError}
+          </p>
+        )}
       </div>
 
       <div

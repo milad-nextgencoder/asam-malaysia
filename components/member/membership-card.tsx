@@ -83,7 +83,7 @@ export function MembershipCard({
               <div className="inline-block rounded-lg border border-gray-200 bg-white p-2">
                 <QRCodeSVG value={verificationUrl} size={80} level="M" />
               </div>
-              <p className="mt-1 text-[10px] text-gray-400">Scan to verify</p>
+              <p className="mt-1 text-[9px] text-gray-400">Scan to verify</p>
             </div>
           </div>
         </div>

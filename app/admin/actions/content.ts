@@ -530,7 +530,10 @@ export async function changeContentStatus(
       ok: true,
       auditSaved,
     };
-  } catch {
+  } catch (error) {
+    // Server errors are logged rather than silently swallowed, so a broken
+    // deployment is diagnosable from the logs. The admin still gets safe text.
+    console.error('content action failed:', error);
     return {
       ok: false,
       message: safeError(),
@@ -607,7 +610,10 @@ export async function deleteContent(
       ok: true,
       auditSaved,
     };
-  } catch {
+  } catch (error) {
+    // Server errors are logged rather than silently swallowed, so a broken
+    // deployment is diagnosable from the logs. The admin still gets safe text.
+    console.error('content action failed:', error);
     return {
       ok: false,
       message: safeError(),
@@ -740,7 +746,10 @@ export async function reorderContent(
       ok: true,
       auditSaved,
     };
-  } catch {
+  } catch (error) {
+    // Server errors are logged rather than silently swallowed, so a broken
+    // deployment is diagnosable from the logs. The admin still gets safe text.
+    console.error('content action failed:', error);
     return {
       ok: false,
       message: safeError(),
@@ -781,7 +790,8 @@ export async function recordContentImageUpload(
       ok: true,
       auditSaved,
     };
-  } catch {
+  } catch (error) {
+    console.error('content action failed:', error);
     return { ok: false };
   }
 }

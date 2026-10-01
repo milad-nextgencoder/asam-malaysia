@@ -65,7 +65,7 @@ function StatusRow({ label, operational }: { label: string; operational: boolean
   return (
     <div className="flex items-center justify-between gap-3 border-b border-border/70 py-3 last:border-0 last:pb-0">
       <span className="text-xs text-muted-foreground">{label}</span>
-      <span className={operational ? 'inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700' : 'inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-700'}>
+      <span className={operational ? 'inline-flex items-center gap-1.5 text-[9px] font-semibold text-emerald-700' : 'inline-flex items-center gap-1.5 text-[9px] font-semibold text-amber-700'}>
         <span className={operational ? 'h-1.5 w-1.5 rounded-full bg-emerald-600' : 'h-1.5 w-1.5 rounded-full bg-amber-500'} />
         {operational ? 'Operational' : 'Requires attention'}
       </span>
@@ -104,7 +104,7 @@ export function AdminDashboardOverview({
       <section className="overflow-hidden rounded-lg border border-[#233448] bg-[#142236] text-white shadow-premium">
         <div className="grid gap-6 px-5 py-6 sm:px-7 sm:py-8 lg:grid-cols-[1fr_auto] lg:items-end lg:px-9">
           <div>
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#d7bd7b]">
+            <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.16em] text-[#d7bd7b]">
               <span className="h-px w-6 bg-[#d7bd7b]" /> ASAM Administration
             </div>
             <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -115,7 +115,7 @@ export function AdminDashboardOverview({
             </p>
           </div>
           <div className="border-l-2 border-[#c8ad68] pl-4 lg:min-w-52">
-            <div className="text-[10px] font-semibold uppercase tracking-widest text-white/45">Signed in as</div>
+            <div className="text-[9px] font-semibold uppercase tracking-widest text-white/45">Signed in as</div>
             <div className="mt-1 truncate text-sm font-semibold text-white">{adminName}</div>
           </div>
         </div>
@@ -124,11 +124,11 @@ export function AdminDashboardOverview({
       <section aria-labelledby="dashboard-overview-title">
         <div className="mb-3 flex items-end justify-between gap-3">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">Website overview</p>
+            <p className="text-[9px] font-bold uppercase tracking-[0.14em] text-muted-foreground">Website overview</p>
             <h2 id="dashboard-overview-title" className="mt-1 text-sm font-semibold text-foreground">Public content at a glance</h2>
           </div>
           {countsFailed && (
-            <span className="hidden items-center gap-1.5 text-[11px] text-amber-700 sm:inline-flex">
+            <span className="hidden items-center gap-1.5 text-[9px] text-amber-700 sm:inline-flex">
               <CircleAlert className="h-3.5 w-3.5" /> Some counts could not be loaded
             </span>
           )}
@@ -151,10 +151,10 @@ export function AdminDashboardOverview({
                     </p>
                   </div>
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-[#ece7d9] bg-[#faf8f2] text-[#9a7c36]">
-                    <Icon className="h-[17px] w-[17px]" />
+                    <Icon className="h-[14px] w-[14px]" />
                   </div>
                 </div>
-                <div className="mt-3 border-t border-[#eef0f2] pt-2 text-[10px] text-muted-foreground">
+                <div className="mt-3 border-t border-[#eef0f2] pt-2 text-[9px] text-muted-foreground">
                   {count.failed ? 'Unavailable' : count.scope}
                 </div>
               </article>
@@ -168,7 +168,7 @@ export function AdminDashboardOverview({
           <div className="flex items-center justify-between border-b border-[#eceef0] px-4 py-4 sm:px-5">
             <div>
               <h2 id="recent-activity-title" className="text-sm font-semibold text-[#172436]">Recent Activity</h2>
-              <p className="mt-1 text-[11px] text-muted-foreground">Latest recorded admin actions</p>
+              <p className="mt-1 text-[9px] text-muted-foreground">Latest recorded admin actions</p>
             </div>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </div>
@@ -182,19 +182,19 @@ export function AdminDashboardOverview({
                 <FileText className="h-4 w-4" />
               </div>
               <p className="mt-3 text-xs font-semibold text-[#273549]">No recent activity.</p>
-              <p className="mt-1 text-[11px] text-muted-foreground">Admin actions will appear here when recorded.</p>
+              <p className="mt-1 text-[9px] text-muted-foreground">Admin actions will appear here when recorded.</p>
             </div>
           ) : (
             <div className="divide-y divide-[#eef0f2] px-4 sm:px-5">
-              <div className="hidden grid-cols-[minmax(110px,0.8fr)_minmax(120px,1fr)_minmax(100px,0.7fr)_auto] gap-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground md:grid">
+              <div className="hidden grid-cols-[minmax(110px,0.8fr)_minmax(120px,1fr)_minmax(100px,0.7fr)_auto] gap-3 py-2.5 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground md:grid">
                 <span>Action</span><span>Content</span><span>Administrator</span><span>Time (UTC)</span>
               </div>
               {recentActivity.map((item) => (
                 <div key={item.id} className="grid min-w-0 grid-cols-2 gap-x-3 gap-y-2 py-3 md:grid-cols-[minmax(110px,0.8fr)_minmax(120px,1fr)_minmax(100px,0.7fr)_auto] md:items-center">
                   <span className="min-w-0 truncate text-xs font-medium text-[#26364a]">{item.action}</span>
                   <span className="min-w-0 truncate text-xs text-muted-foreground" title={item.content}>{item.content}</span>
-                  <span className="col-span-1 text-[11px] text-muted-foreground md:col-span-1">{item.administrator}</span>
-                  <time className="col-span-1 text-right text-[10px] text-muted-foreground md:text-left" dateTime={item.createdAt}>
+                  <span className="col-span-1 text-[9px] text-muted-foreground md:col-span-1">{item.administrator}</span>
+                  <time className="col-span-1 text-right text-[9px] text-muted-foreground md:text-left" dateTime={item.createdAt}>
                     {formatActivityTime(item.createdAt)}
                   </time>
                 </div>
@@ -208,7 +208,7 @@ export function AdminDashboardOverview({
             <div className="flex items-center justify-between">
               <div>
                 <h2 id="system-status-title" className="text-sm font-semibold text-[#172436]">System Status</h2>
-                <p className="mt-1 text-[11px] text-muted-foreground">Verified for this session</p>
+                <p className="mt-1 text-[9px] text-muted-foreground">Verified for this session</p>
               </div>
               <ShieldCheck className="h-4 w-4 text-[#8a7440]" />
             </div>
@@ -223,7 +223,7 @@ export function AdminDashboardOverview({
             <div className="mb-2 flex items-center justify-between">
               <div>
                 <h2 id="quick-actions-title" className="text-sm font-semibold text-[#172436]">Quick Actions</h2>
-                <p className="mt-1 text-[11px] text-muted-foreground">Open a module placeholder</p>
+                <p className="mt-1 text-[9px] text-muted-foreground">Open a module placeholder</p>
               </div>
               <ArrowRight className="h-4 w-4 text-muted-foreground" />
             </div>

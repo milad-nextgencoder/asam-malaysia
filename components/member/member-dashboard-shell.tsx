@@ -54,6 +54,11 @@ export function MemberDashboardShell({ children, userName, userEmail, profileCom
       </header>
 
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+        {/*
+          The nav wraps to a second row on narrow screens instead of forcing a
+          horizontal scroll. min-w-[85px] x 6 overflowed a 320px viewport, so the
+          floor is lowered on the smallest screens and the row is allowed to wrap.
+        */}
         <nav className="mb-8 flex flex-wrap gap-1 rounded-xl border border-gray-200 bg-white p-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
@@ -62,8 +67,9 @@ export function MemberDashboardShell({ children, userName, userEmail, profileCom
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors min-w-[100px]',
+                  'flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors min-w-[71px] sm:min-w-[85px]',
                   isActive
                     ? 'bg-navy text-white'
                     : 'text-gray-600 hover:bg-gray-100'
@@ -71,6 +77,9 @@ export function MemberDashboardShell({ children, userName, userEmail, profileCom
               >
                 <Icon className="h-4 w-4" />
                 <span className="hidden sm:inline">{item.label}</span>
+                {/* The label is visually hidden on mobile but exposed to screen
+                    readers, so the tab is never an unlabelled icon. */}
+                <span className="sr-only sm:hidden">{item.label}</span>
               </Link>
             );
           })}

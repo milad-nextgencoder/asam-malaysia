@@ -12,13 +12,22 @@ const config: Config = {
       // Refined display scale, pass 2. The workhorse sizes (2xl/3xl/4xl) are
       // intentionally left alone so body-adjacent text stays comfortable;
       // only the oversized top of the range is pulled back.
+      //
+      // The clamp() minimum is what these sizes collapse to on a 320-430px
+      // phone, and the maximum is the previous fixed value reached at the
+      // xl breakpoint (1280px). Previously every one of these was a single fixed
+      // pixel value, so a 3xl heading rendered at 1.625rem on a 320px screen and
+      // wrapped into a stack of oversized lines - the "site looks enormous on
+      // mobile" report. Each size now grows with the viewport, so small screens
+      // get proportionally smaller text while the desktop rendering at xl and
+      // above is byte-for-byte identical to before.
       fontSize: {
-        '2xl': ['1.375rem', { lineHeight: '1.75rem' }],
-        '3xl': ['1.625rem', { lineHeight: '2rem' }],
-        '4xl': ['1.875rem', { lineHeight: '2.25rem' }],
-        '5xl': ['2.125rem', { lineHeight: '2.375rem' }],
-        '6xl': ['2.5rem', { lineHeight: '2.75rem' }],
-        '7xl': ['3rem', { lineHeight: '3.25rem' }],
+        '2xl': ['clamp(1.25rem, 1.2083rem + 0.2083vw, 1.375rem)', { lineHeight: '1.75rem' }],
+        '3xl': ['clamp(1.375rem, 1.2917rem + 0.4167vw, 1.625rem)', { lineHeight: '2rem' }],
+        '4xl': ['clamp(1.5rem, 1.375rem + 0.625vw, 1.875rem)', { lineHeight: '2.25rem' }],
+        '5xl': ['clamp(1.625rem, 1.4583rem + 0.8333vw, 2.125rem)', { lineHeight: '2.375rem' }],
+        '6xl': ['clamp(1.75rem, 1.5rem + 1.25vw, 2.5rem)', { lineHeight: '2.75rem' }],
+        '7xl': ['clamp(1.875rem, 1.5rem + 1.875vw, 3rem)', { lineHeight: '3.25rem' }],
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],

@@ -66,6 +66,13 @@ export function AdminApplicationsList({ applications }: { applications: Applicat
 
   const pendingCount = (statusCounts.submitted ?? 0) + (statusCounts.under_review ?? 0);
 
+  /**
+   * Membership applications table.
+   *
+   * On narrow screens the table scrolls horizontally inside its
+   * `overflow-x-auto` wrapper, keeping every column and the Review action
+   * reachable without making the whole page scroll sideways.
+   */
   return (
     <div className="space-y-6">
       <div>
@@ -108,7 +115,7 @@ export function AdminApplicationsList({ applications }: { applications: Applicat
       ) : (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+            <table className="w-full min-w-[612px] text-left text-sm">
               <thead className="border-b border-gray-200 bg-gray-50">
                 <tr>
                   <th className="px-4 py-3 font-semibold text-gray-700">Applicant</th>

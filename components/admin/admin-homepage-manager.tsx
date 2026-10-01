@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { ArrowDown, ArrowUp, Eye, EyeOff, ImagePlus, LoaderCircle, Pencil, RotateCcw, Save, Send, X } from 'lucide-react';
 import { recordHomepageImageUpload, reorderHomepageSections, saveHomepageSection, setHomepageVisibility } from '@/app/admin/actions/homepage';
+import { ADMIN_FEEDBACK } from '@/lib/admin/feedback';
+import { useAdminFeedback } from '@/lib/admin/use-admin-feedback';
 import { createClient } from '@/lib/supabase/client';
 import { homepageSectionGroups, type HomepageSection } from '@/lib/homepage/types';
 
@@ -65,9 +67,12 @@ function statusStyle(status: string) {
 export function AdminHomepageManager({ initialSections, loadFailed = false }: ManagerProps) {
   const [sections, setSections] = useState(initialSections);
   const [editingKey, setEditingKey] = useState<string | null>(null);
-  const [notice, setNotice] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [working, setWorking] = useState(false);
+  // Shared feedback gives these actions the same "Saving..." / "Saved
+  // successfully" / "Published successfully" / "Could not save changes" treatment
+  // as the content manager, plus a re-entry guard and a toast that stays visible
+  // when the inline banner is scrolled out of view.
+  const { run: runWithFeedback, notice, error: errorMessage, pending: working } =
+    useAdminFeedback();
   const sortedGroups = useMemo(() => [...homepageSectionGroups].sort((a, b) => {
     const aOrder = Math.min(...a.keys.map((key) => sections.find((item) => item.section_key === key)?.display_order ?? 9999));
     const bOrder = Math.min(...b.keys.map((key) => sections.find((item) => item.section_key === key)?.display_order ?? 9999));
@@ -82,11 +87,6 @@ export function AdminHomepageManager({ initialSections, loadFailed = false }: Ma
   const hidden = homepageSectionGroups.filter((group) => group.keys.some((key) => sections.find((section) => section.section_key === key)?.visible === false)).length;
   const lastUpdated = sections.reduce<string | null>((latest, item) => !latest || item.updated_at > latest ? item.updated_at : latest, null);
 
-  function showFailure(message?: string) {
-    setNotice('');
-    setErrorMessage(message || 'The request failed. Please try again.');
-  }
-
   function applySection(updated: Partial<HomepageSection> & { section_key: string }) {
     setSections((current) => current.map((item) => item.section_key === updated.section_key ? { ...item, ...updated } : item));
   }
@@ -94,17 +94,11 @@ export function AdminHomepageManager({ initialSections, loadFailed = false }: Ma
   function visibility(group: (typeof homepageSectionGroups)[number], next: boolean) {
     const changed = group.keys.filter((key) => sections.some((item) => item.section_key === key));
     if (!changed.length) return;
-    setWorking(true);
-    void (async () => {
-      try {
-      setNotice(''); setErrorMessage('');
-      const result = await setHomepageVisibility(changed, next);
-      if (!result.ok) return showFailure(result.message);
-      setSections((current) => current.map((item) => changed.includes(item.section_key) ? { ...item, visible: next, updated_at: new Date().toISOString() } : item));
-      setNotice(result.auditSaved ? (next ? 'Section shown.' : 'Section hidden.') : 'Visibility saved. The current database policy did not allow an audit record for this admin role.');
-      } catch { showFailure(); }
-      finally { setWorking(false); }
-    })();
+    void runWithFeedback(() => setHomepageVisibility(changed, next), {
+      success: next ? ADMIN_FEEDBACK.saved : ADMIN_FEEDBACK.saved,
+      onSuccess: () =>
+        setSections((current) => current.map((item) => changed.includes(item.section_key) ? { ...item, visible: next, updated_at: new Date().toISOString() } : item)),
+    });
   }
 
   function moveGroup(index: number, direction: -1 | 1) {
@@ -112,38 +106,33 @@ export function AdminHomepageManager({ initialSections, loadFailed = false }: Ma
     if (target < 0 || target >= sortedGroups.length) return;
     const order = sortedGroups.map((item) => item.key);
     [order[index], order[target]] = [order[target], order[index]];
-    setWorking(true);
-    void (async () => {
-      try {
-      setNotice(''); setErrorMessage('');
-      const result = await reorderHomepageSections(order);
-      if (!result.ok) return showFailure(result.message);
-      setSections((current) => current.map((item) => {
-        const group = homepageSectionGroups.find((candidate) => candidate.keys.includes(item.section_key));
-        const groupIndex = group ? order.indexOf(group.key) : -1;
-        const memberIndex = group ? group.keys.indexOf(item.section_key) : 0;
-        const displayOrder = groupIndex < 0 ? item.display_order : 1 + order.slice(0, groupIndex).reduce((sum, key) => sum + (homepageSectionGroups.find((candidate) => candidate.key === key)?.keys.length ?? 0), 0) + memberIndex;
-        return groupIndex < 0 ? item : { ...item, display_order: displayOrder, updated_at: new Date().toISOString() };
-      }));
-      setNotice(result.auditSaved ? 'Homepage sections reordered.' : 'Order saved. The current database policy did not allow an audit record for this admin role.');
-      } catch { showFailure(); }
-      finally { setWorking(false); }
-    })();
+    void runWithFeedback(() => reorderHomepageSections(order), {
+      success: ADMIN_FEEDBACK.saved,
+      onSuccess: () =>
+        setSections((current) =>
+          current.map((item) => {
+            const group = homepageSectionGroups.find((candidate) => candidate.keys.includes(item.section_key));
+            const groupIndex = group ? order.indexOf(group.key) : -1;
+            const memberIndex = group ? group.keys.indexOf(item.section_key) : 0;
+            const displayOrder = groupIndex < 0 ? item.display_order : 1 + order.slice(0, groupIndex).reduce((sum, key) => sum + (homepageSectionGroups.find((candidate) => candidate.key === key)?.keys.length ?? 0), 0) + memberIndex;
+            return groupIndex < 0 ? item : { ...item, display_order: displayOrder, updated_at: new Date().toISOString() };
+          })
+        ),
+    });
   }
 
   function save(sectionKey: string, value: EditorValue, status: HomepageSection['status']) {
-    setWorking(true);
-    void (async () => {
-      try {
-      setNotice(''); setErrorMessage('');
-      const result = await saveHomepageSection({ section_key: sectionKey, ...value, status });
-      if (!result.ok) return showFailure(result.message);
-      applySection(result.section as HomepageSection);
-      setNotice(result.auditSaved ? (status === 'published' ? 'Published.' : status === 'archived' ? 'Archived.' : 'Saved as draft.') : 'Saved. The current database policy did not allow an audit record for this admin role.');
-      if (status !== 'draft') setEditingKey(null);
-      } catch { showFailure(); }
-      finally { setWorking(false); }
-    })();
+    void runWithFeedback(
+      () => saveHomepageSection({ section_key: sectionKey, ...value, status }),
+      {
+        success: status === 'published' ? ADMIN_FEEDBACK.published : ADMIN_FEEDBACK.saved,
+        onSuccess: (result) => {
+          const section = (result as { section?: HomepageSection } | undefined)?.section;
+          if (section) applySection(section as HomepageSection);
+          if (status !== 'draft') setEditingKey(null);
+        },
+      }
+    );
   }
 
   if (loadFailed) {
@@ -160,7 +149,7 @@ export function AdminHomepageManager({ initialSections, loadFailed = false }: Ma
             <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">Control the content and visual presentation of the ASAM public homepage.</p>
           </div>
           <div className="rounded-xl border border-[#e8e3d8] bg-[#faf9f6] px-4 py-3 text-sm">
-            <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Last Updated</div>
+            <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-slate-500">Last Updated</div>
             <div className="mt-1 font-semibold text-[#101b2b]">{formatDate(lastUpdated)}</div>
           </div>
         </div>
@@ -198,8 +187,8 @@ export function AdminHomepageManager({ initialSections, loadFailed = false }: Ma
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <h2 className="font-display text-lg font-bold text-[#101b2b]">{group.title}</h2>
-                        {statuses.map((status) => <span key={status} className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ring-1 ring-inset ${statusStyle(status)}`}>{status}</span>)}
-                        <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${visible ? 'bg-blue-50 text-blue-800' : 'bg-slate-100 text-slate-600'}`}>{visible ? 'Visible' : 'Hidden'}</span>
+                        {statuses.map((status) => <span key={status} className={`rounded-full px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide ring-1 ring-inset ${statusStyle(status)}`}>{status}</span>)}
+                        <span className={`rounded-full px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide ${visible ? 'bg-blue-50 text-blue-800' : 'bg-slate-100 text-slate-600'}`}>{visible ? 'Visible' : 'Hidden'}</span>
                       </div>
                       <p className="mt-1 text-sm text-slate-600">{group.description}</p>
                       <div className="mt-2 text-xs text-slate-500">Order {Math.min(...rows.map((row) => row.display_order))} · Updated {formatDate(groupUpdated)}</div>
@@ -212,9 +201,9 @@ export function AdminHomepageManager({ initialSections, loadFailed = false }: Ma
                   </div>
                 </div>
                 {rows.length > 1 && editingKey && group.keys.includes(editingKey) && sections.find((item) => item.section_key === editingKey) && (
-                  <SectionEditor key={editingKey} section={sections.find((item) => item.section_key === editingKey)!} working={working} onCancel={() => setEditingKey(null)} onSave={save} onFailure={showFailure} />
+                  <SectionEditor key={editingKey} section={sections.find((item) => item.section_key === editingKey)!} working={working} onCancel={() => setEditingKey(null)} onSave={save} />
                 )}
-                {rows.length === 1 && editingKey === rows[0].section_key && <SectionEditor section={rows[0]} working={working} onCancel={() => setEditingKey(null)} onSave={save} onFailure={showFailure} />}
+                {rows.length === 1 && editingKey === rows[0].section_key && <SectionEditor section={rows[0]} working={working} onCancel={() => setEditingKey(null)} onSave={save} />}
               </article>
             );
           })}
@@ -226,15 +215,14 @@ export function AdminHomepageManager({ initialSections, loadFailed = false }: Ma
 
 function Summary({ label, value, tone }: { label: string; value: number; tone: 'green' | 'gold' | 'slate' }) {
   const tones = { green: 'border-emerald-100 bg-emerald-50 text-emerald-900', gold: 'border-amber-100 bg-amber-50 text-amber-900', slate: 'border-slate-200 bg-slate-50 text-slate-800' };
-  return <div className={`rounded-xl border px-4 py-3 ${tones[tone]}`}><div className="text-[10px] font-bold uppercase tracking-[0.14em] opacity-70">{label}</div><div className="mt-1 text-2xl font-bold">{value}</div></div>;
+  return <div className={`rounded-xl border px-4 py-3 ${tones[tone]}`}><div className="text-[9px] font-bold uppercase tracking-[0.14em] opacity-70">{label}</div><div className="mt-1 text-2xl font-bold">{value}</div></div>;
 }
 
-function SectionEditor({ section, working, onCancel, onSave, onFailure }: {
+function SectionEditor({ section, working, onCancel, onSave }: {
   section: HomepageSection;
   working: boolean;
   onCancel: () => void;
   onSave: (key: string, value: EditorValue, status: HomepageSection['status']) => void;
-  onFailure: (message?: string) => void;
 }) {
   const [value, setValue] = useState(() => toEditorValue(section));
   const [uploading, setUploading] = useState(false);
@@ -279,7 +267,7 @@ function SectionEditor({ section, working, onCancel, onSave, onFailure }: {
           {fields.filter((field) => field.name !== 'image_url' || section.section_key === 'hero').map((field) => <label key={field.name} className={field.kind === 'textarea' ? 'sm:col-span-2' : ''}>
             <span className="mb-1.5 block text-xs font-semibold text-slate-700">{field.label}</span>
             {field.kind === 'textarea' ? <textarea rows={4} value={String(value[field.name])} onChange={(event) => update(field.name, event.target.value as never)} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[#a27a36] focus:ring-2 focus:ring-[#c2a66c]/20" /> : <input type={field.kind === 'number' ? 'number' : 'text'} min={field.kind === 'number' ? 1 : undefined} value={String(value[field.name])} onChange={(event) => update(field.name, (field.kind === 'number' ? Number(event.target.value) : event.target.value) as never)} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[#a27a36] focus:ring-2 focus:ring-[#c2a66c]/20" />}
-            {field.helper && <span className="mt-1 block text-[11px] leading-5 text-slate-500">{field.helper}</span>}
+            {field.helper && <span className="mt-1 block text-[9px] leading-5 text-slate-500">{field.helper}</span>}
           </label>)}
           <label className="flex items-center gap-3 rounded-lg border border-slate-200 p-3 text-sm sm:col-span-2"><input type="checkbox" checked={value.visible} onChange={(event) => update('visible', event.target.checked)} className="h-4 w-4 accent-[#a27a36]" /><span><span className="block font-semibold text-slate-800">Visible</span><span className="text-xs text-slate-500">Hidden sections are not rendered publicly.</span></span></label>
           <div className="sm:col-span-2">
@@ -291,12 +279,12 @@ function SectionEditor({ section, working, onCancel, onSave, onFailure }: {
             <button type="button" disabled={working || uploading} onClick={() => onSave(section.section_key, value, 'published')} className="inline-flex items-center gap-2 rounded-lg bg-[#101b2b] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1a2c43] disabled:opacity-50"><Send className="h-4 w-4" />Publish</button>
             {section.status === 'published' && <button type="button" disabled={working || uploading} onClick={() => { if (window.confirm('Unpublish this section? It will no longer appear on the public homepage.')) onSave(section.section_key, value, 'draft'); }} className="rounded-lg border border-amber-300 px-4 py-2.5 text-sm font-semibold text-amber-900 hover:bg-amber-50 disabled:opacity-50">Unpublish</button>}
             {section.status !== 'archived' && <button type="button" disabled={working || uploading} onClick={() => { if (window.confirm('Archive this section? It will be removed from the active homepage.')) onSave(section.section_key, value, 'archived'); }} className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50">Archive</button>}
-            {working && <span className="inline-flex items-center gap-2 px-2 text-xs text-slate-500"><LoaderCircle className="h-4 w-4 animate-spin" />Saving…</span>}
+            {working && <span className="inline-flex items-center gap-2 px-2 text-xs text-slate-500"><LoaderCircle className="h-4 w-4 animate-spin" />{ADMIN_FEEDBACK.saving}</span>}
             <button type="button" onClick={onCancel} className="ml-auto inline-flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100"><RotateCcw className="h-4 w-4" />Cancel</button>
           </div>
         </div>
         <aside className="rounded-xl border border-[#e5e1d7] bg-[#faf9f6] p-4">
-          <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#9a7437]">Private Preview</div>
+          <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#9a7437]">Private Preview</div>
           {(uploadPreview || value.image_url) && <div className="relative mt-3 h-36 overflow-hidden rounded-lg bg-slate-100">{uploadPreview ? <Image src={uploadPreview} alt="Selected image preview" fill sizes="320px" unoptimized className="object-cover" /> : <Image src={value.image_url} alt="Current section image" fill sizes="320px" unoptimized className="object-cover" onError={(event) => { event.currentTarget.style.display = 'none'; }} />}</div>}
           <div className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">{value.subtitle || 'ASAM'}</div>
           <div className="mt-2 font-display text-xl font-bold leading-tight text-[#101b2b]">{value.title || 'Untitled section'}</div>

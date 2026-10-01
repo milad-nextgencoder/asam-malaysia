@@ -67,9 +67,63 @@
   * {
     @apply border-border;
   }
+  html {
+    /*
+     * Global density scale (15% smaller UI).
+     *
+     * Every Tailwind size utility - text, padding, gaps, card and box
+     * dimensions, menu sizing - is expressed in rem, so this single value
+     * scales the whole design system proportionally instead of editing
+     * hundreds of components.
+     *
+     * Deliberately a percentage rather than a fixed `13.6px`: percentages
+     * resolve against the reader's own browser font-size preference, so a
+     * visitor who has increased their default text size keeps that
+     * relative setting. Hard-coding pixels would override it.
+     */
+    font-size: 85%;
+    /*
+     * Mobile overflow guard.
+     *
+     * A single oversized descendant (a wide table, a long unbroken member ID, a
+     * fixed-width element) was enough to make the whole page scroll sideways on a
+     * 320px screen. `clip` contains the overflow without creating a scroll
+     * container, so `position: sticky` on the site header keeps working -
+     * `hidden` on html would have broken that.
+     */
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    /* The body cannot scroll sideways even if a descendant escapes the guard. */
+    overflow-x: clip;
+  }
+  /*
+   * Media never overflows its container. `max-width: 100%` is applied instead of
+   * relying on every img rule, so remote CMS images cannot widen the layout.
+   */
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+  /* Long identifiers (member IDs, UUIDs, URLs) must wrap rather than push. */
+  p,
+  li,
+  td,
+  th,
+  dd,
+  dt,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
   }
 }
 

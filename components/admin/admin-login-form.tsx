@@ -105,7 +105,7 @@ export function AdminLoginForm({ initialError, initialNotice }: AdminLoginFormPr
           </div>
           <div>
             <div className="font-display text-2xl font-bold">ASAM</div>
-            <div className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <div className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
               Afghan Students Association of Malaysia
             </div>
           </div>

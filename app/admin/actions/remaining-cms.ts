@@ -27,7 +27,7 @@ export async function setMessageStatus(id: string, status: string) {
     const auditSaved = await audit(supabase, actor, `contact_messages.${status}`, 'contact_message', id);
     revalidatePath('/admin/messages');
     return { ok: true, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }
 
 export async function deleteMessage(id: string) {
@@ -39,7 +39,7 @@ export async function deleteMessage(id: string) {
     const auditSaved = await audit(supabase, actor, 'contact_messages.delete', 'contact_message', id);
     revalidatePath('/admin/messages');
     return { ok: true, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }
 
 export async function saveSiteSettings(input: Record<string, unknown>) {
@@ -75,7 +75,7 @@ export async function saveSiteSettings(input: Record<string, unknown>) {
     }
     revalidatePath('/', 'layout'); revalidatePath('/admin/settings');
     return { ok: true, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }
 
 export async function saveGalleryAlbum(input: { id?: string; name: string; description: string; category: string; display_order: number; status: string; cover_image_url?: string | null }) {
@@ -88,7 +88,7 @@ export async function saveGalleryAlbum(input: { id?: string; name: string; descr
     const auditSaved = await audit(supabase, actor, input.id ? 'gallery_album.edit' : 'gallery_album.create', 'gallery_album', result.data.id, { status: input.status });
     revalidatePath('/admin/gallery'); revalidatePath('/gallery');
     return { ok: true, id: result.data.id, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }
 
 export async function saveGalleryItem(input: { id?: string; album_id?: string; image_url?: string; title?: string; caption?: string; display_order?: number; status?: string }) {
@@ -103,7 +103,7 @@ export async function saveGalleryItem(input: { id?: string; album_id?: string; i
     if (previous?.image_url && previous.image_url !== input.image_url) auditSaved = await audit(supabase, actor, 'gallery_item.replace', 'gallery_item', result.data.id, { album_id: input.album_id }) && auditSaved;
     revalidatePath('/admin/gallery'); revalidatePath('/gallery'); revalidatePath(`/gallery/${input.album_id}`);
     return { ok: true, id: result.data.id, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }
 
 export async function setGalleryStatus(table: 'gallery_albums' | 'gallery_items', id: string, status: string) {
@@ -115,7 +115,7 @@ export async function setGalleryStatus(table: 'gallery_albums' | 'gallery_items'
     const auditSaved = await audit(supabase, actor, `${table}.${status}`, table === 'gallery_items' ? 'gallery_item' : 'gallery_album', id);
     revalidatePath('/admin/gallery'); revalidatePath('/gallery');
     return { ok: true, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }
 
 export async function deleteGalleryRecord(table: 'gallery_albums' | 'gallery_items', id: string) {
@@ -127,7 +127,7 @@ export async function deleteGalleryRecord(table: 'gallery_albums' | 'gallery_ite
     const auditSaved = await audit(supabase, actor, `${table}.delete`, table === 'gallery_items' ? 'gallery_item' : 'gallery_album', id);
     revalidatePath('/admin/gallery'); revalidatePath('/gallery');
     return { ok: true, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }
 
 export async function setAlbumCover(albumId: string, imageUrl: string | null) {
@@ -142,7 +142,7 @@ export async function setAlbumCover(albumId: string, imageUrl: string | null) {
     const auditSaved = await audit(supabase, actor, 'gallery_album.cover', 'gallery_album', albumId);
     revalidatePath('/admin/gallery'); revalidatePath('/gallery');
     return { ok: true, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }
 
 export async function reorderGallery(table: 'gallery_albums' | 'gallery_items', ids: string[]) {
@@ -156,7 +156,7 @@ export async function reorderGallery(table: 'gallery_albums' | 'gallery_items', 
     const auditSaved = await audit(supabase, actor, `${table}.reorder`, table === 'gallery_items' ? 'gallery_item' : 'gallery_album', null, { count: ids.length });
     revalidatePath('/admin/gallery'); revalidatePath('/gallery');
     return { ok: true, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }
 
 export async function changeAdminRole(userId: string, role: 'SUPER_ADMIN' | 'EDITOR' | 'REMOVE') {
@@ -175,5 +175,5 @@ export async function changeAdminRole(userId: string, role: 'SUPER_ADMIN' | 'EDI
     const auditSaved = await audit(supabase, actor, `admin_role.${role.toLowerCase()}`, 'admin_role', userId, { role });
     revalidatePath('/admin/users');
     return { ok: true, auditSaved };
-  } catch { return { ok: false, message: failure }; }
+  } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }
 }

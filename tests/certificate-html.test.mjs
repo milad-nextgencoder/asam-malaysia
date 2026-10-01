@@ -21,7 +21,8 @@ import {
   escapeHtml,
   formatCertificateDate,
 } from '../lib/member/certificate-html.ts';
-import { getCertificateVerifyUrl, getConfiguredSiteUrl, getServerSiteUrl } from '../lib/member/site-url.ts';
+import { getCertificateVerifyUrl, getConfiguredSiteUrl, getServerSiteUrl, getAuthOrigin, getAuthCallbackUrl } from '../lib/member/site-url.ts';
+import { isServerlessRuntime } from '../lib/member/serverless-runtime.ts';
 
 const VIEW = {
   memberId: 'ASAM-2026-000123',
@@ -202,4 +203,109 @@ test('the page is A4 landscape at 96 dpi', () => {
   assert.equal(CERTIFICATE_WIDTH_PX, 1123);
   assert.equal(CERTIFICATE_HEIGHT_PX, 794);
   assert.ok(Math.abs(CERTIFICATE_ASPECT_RATIO - 297 / 210) < 0.005);
+});
+
+
+/* ------------------------------------------------------------------ *
+ * Issue 3 - member authentication callback
+ * ------------------------------------------------------------------ */
+
+test('the auth callback origin is never localhost in production', () => {
+  const originalUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const originalVercel = process.env.VERCEL_URL;
+  const originalEnv = process.env.NODE_ENV;
+
+  delete process.env.NEXT_PUBLIC_SITE_URL;
+  delete process.env.VERCEL_URL;
+
+  // Production with no configuration must fall back to the production origin.
+  // Previously the auth actions used `NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'`,
+  // so Supabase received a localhost redirect that is not in the allow-list and
+  // silently fell back to the public homepage.
+  process.env.NODE_ENV = 'production';
+  assert.equal(getAuthOrigin(), 'https://asam.org.my');
+  assert.equal(
+    getAuthCallbackUrl('/auth/member-callback'),
+    'https://asam.org.my/auth/member-callback'
+  );
+  assert.doesNotMatch(
+    getAuthCallbackUrl('/auth/member-callback'),
+    /localhost/,
+    'production must never build a localhost auth redirect'
+  );
+
+  // A request origin (Vercel preview, custom domain) is honoured in production.
+  assert.equal(
+    getAuthOrigin('https://asam-git-main.vercel.app'),
+    'https://asam-git-main.vercel.app'
+  );
+
+  // The reset-password destination is preserved through the helper.
+  assert.equal(
+    getAuthCallbackUrl('/auth/member-callback?next=/member/reset-password'),
+    'https://asam.org.my/auth/member-callback?next=/member/reset-password'
+  );
+
+  // VERCEL_URL is used when no request origin is passed through.
+  process.env.VERCEL_URL = 'asam-git-main.vercel.app';
+  assert.equal(getAuthOrigin(), 'https://asam-git-main.vercel.app');
+
+  // Localhost is only reachable in development.
+  process.env.NODE_ENV = 'development';
+  delete process.env.VERCEL_URL;
+  assert.equal(getAuthOrigin(), 'http://localhost:3000');
+
+  // Explicit configuration always wins.
+  process.env.NODE_ENV = 'production';
+  process.env.NEXT_PUBLIC_SITE_URL = 'https://staging.asam.org.my';
+  assert.equal(getAuthOrigin(), 'https://staging.asam.org.my');
+  assert.equal(
+    getAuthCallbackUrl('/auth/member-callback'),
+    'https://staging.asam.org.my/auth/member-callback'
+  );
+
+  if (originalUrl === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
+  else process.env.NEXT_PUBLIC_SITE_URL = originalUrl;
+  if (originalVercel === undefined) delete process.env.VERCEL_URL;
+  else process.env.VERCEL_URL = originalVercel;
+  process.env.NODE_ENV = originalEnv;
+});
+
+test('a malformed request origin cannot poison the auth redirect', () => {
+  const originalUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const originalVercel = process.env.VERCEL_URL;
+  const originalEnv = process.env.NODE_ENV;
+
+  delete process.env.NEXT_PUBLIC_SITE_URL;
+  delete process.env.VERCEL_URL;
+  process.env.NODE_ENV = 'production';
+
+  for (const bad of ['not a url', 'javascript:alert(1)', 'ftp://x.test', '']) {
+    assert.equal(getAuthOrigin(bad), 'https://asam.org.my', 'rejected: ' + bad);
+  }
+
+  if (originalUrl === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
+  else process.env.NEXT_PUBLIC_SITE_URL = originalUrl;
+  if (originalVercel === undefined) delete process.env.VERCEL_URL;
+  else process.env.VERCEL_URL = originalVercel;
+  process.env.NODE_ENV = originalEnv;
+});
+
+/* ------------------------------------------------------------------ *
+ * Issue 4 - certificate PDF response contract
+ * ------------------------------------------------------------------ */
+
+test('Vercel is detected as a serverless runtime', () => {
+  // The regression: VERCEL was not in the isServerless() check, so on Vercel the
+  // @sparticuz/chromium browser was never loaded and the endpoint answered with a
+  // JSON error body instead of a PDF.
+  assert.equal(isServerlessRuntime({ VERCEL: '1' }), true, 'VERCEL=1');
+  assert.equal(isServerlessRuntime({ VERCEL_ENV: 'production' }), true, 'VERCEL_ENV');
+  assert.equal(isServerlessRuntime({ VERCEL_ENV: 'preview' }), true, 'preview');
+  assert.equal(isServerlessRuntime({ NETLIFY: 'true' }), true, 'Netlify');
+  assert.equal(isServerlessRuntime({ AWS_LAMBDA_FUNCTION_NAME: 'fn' }), true, 'Lambda');
+  assert.equal(isServerlessRuntime({ AWS_EXECUTION_ENV: 'AWS' }), true, 'Lambda env');
+  // A plain local machine is not serverless, so a system Chrome is preferred.
+  assert.equal(isServerlessRuntime({}), false, 'local dev');
+  assert.equal(isServerlessRuntime({ VERCEL: '0' }), false, 'VERCEL explicitly 0');
 });

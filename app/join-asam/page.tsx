@@ -17,7 +17,7 @@ export default function JoinAsamPage() {
       <section className="relative overflow-hidden border-b border-border/50">
         <div className="absolute inset-0 bg-gradient-to-br from-navy/[0.07] via-transparent to-gold/[0.08]" />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+        <div className="relative mx-auto max-w-6xl px-4 py-12 sm:py-16 lg:py-20 sm:px-6 lg:px-8 lg:py-28">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-navy text-white shadow-premium">
               <ShieldCheck className="h-8 w-8" />

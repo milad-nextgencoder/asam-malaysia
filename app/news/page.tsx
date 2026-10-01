@@ -38,8 +38,8 @@ export default function NewsPage() {
             <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-premium-lg">
               <div className="absolute top-0 left-0 right-0 h-1 gradient-gold" />
               <div className="grid grid-cols-1 lg:grid-cols-2">
-                <div className="bg-navy p-12 flex items-center justify-center text-center min-h-[300px]">
-                  {filtered[0].featured_image_url ? <img src={filtered[0].featured_image_url} alt="" className="max-h-[300px] w-full object-cover"/> : <div>
+                <div className="bg-navy p-12 flex items-center justify-center text-center min-h-[255px]">
+                  {filtered[0].featured_image_url ? <img src={filtered[0].featured_image_url} alt="" className="max-h-[255px] w-full object-cover"/> : <div>
                     <Newspaper className="h-16 w-16 text-gold mx-auto mb-4" />
                     <p className="text-white/40 text-sm">Featured Article — Coming Soon</p>
                   </div>}

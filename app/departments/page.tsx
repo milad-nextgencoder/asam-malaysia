@@ -86,7 +86,7 @@ export default async function DepartmentsPage() {
                       {(dept.subSections as { title: string; description: string }[]).map((s: { title: string; description: string }) => (
                         <div key={s.title} className="text-xs">
                           <div className="font-semibold">{s.title}</div>
-                          <div className="text-muted-foreground text-[11px]">{s.description}</div>
+                          <div className="text-muted-foreground text-[9px]">{s.description}</div>
                         </div>
                       ))}
                     </div>

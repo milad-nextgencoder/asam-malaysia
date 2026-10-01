@@ -59,6 +59,13 @@ export function AdminMemberList({ members }: { members: MemberRecord[] }) {
     return counts;
   }, [members]);
 
+  /**
+   * Members table.
+   *
+   * On narrow screens the table keeps every column and its View action and
+   * scrolls horizontally inside the `overflow-x-auto` wrapper, so the page
+   * itself never scrolls sideways. No action is hidden or removed on mobile.
+   */
   return (
     <div className="space-y-6">
       <div>
@@ -100,7 +107,7 @@ export function AdminMemberList({ members }: { members: MemberRecord[] }) {
       ) : (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+            <table className="w-full min-w-[612px] text-left text-sm">
               <thead className="border-b border-gray-200 bg-gray-50">
                 <tr>
                   <th className="px-4 py-3 font-semibold text-gray-700">Name</th>

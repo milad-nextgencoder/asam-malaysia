@@ -4,9 +4,18 @@ import { ensureMemberProfile, getPublishedUniversities } from '@/lib/member/prof
 import { getMembershipApplication } from '@/lib/member/membership';
 import { MemberDashboardShell } from '@/components/member/member-dashboard-shell';
 import { MemberDashboard } from '@/components/member/member-dashboard';
+import { AuthenticatedWelcome } from '@/components/member/authenticated-welcome';
 import { redirect } from 'next/navigation';
 
-export default async function MemberDashboardPage() {
+interface MemberDashboardPageProps {
+  searchParams?: { authenticated?: string | string[] };
+}
+
+function firstValue(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function MemberDashboardPage({ searchParams }: MemberDashboardPageProps) {
   const { userId } = await requireMember();
   const supabase = createClient();
 
@@ -31,6 +40,11 @@ export default async function MemberDashboardPage() {
 
   const emailVerified = user.email_confirmed_at != null;
 
+  // Set by /auth/member-callback after a successful email confirmation or Google
+  // sign-in, so the member sees a clear confirmation instead of silently landing
+  // on the portal with no explanation.
+  const justAuthenticated = firstValue(searchParams?.authenticated) === '1';
+
   const universityName = profile.university_id
     ? universities.find((u) => u.id === profile.university_id)?.name ?? null
     : null;
@@ -41,15 +55,24 @@ export default async function MemberDashboardPage() {
       userEmail={user.email || ''}
       profileCompleted={profile.profile_completed}
     >
-      <MemberDashboard
-        userName={displayName}
-        userEmail={user.email || ''}
-        emailVerified={emailVerified}
-        profileCompleted={profile.profile_completed}
-        profilePhotoUrl={profile.profile_photo_url}
-        application={application}
-        universityName={universityName}
-      />
+      <div className="space-y-6">
+        {justAuthenticated && (
+          <AuthenticatedWelcome
+            emailVerified={emailVerified}
+            profileCompleted={profile.profile_completed}
+            hasApplication={Boolean(application)}
+          />
+        )}
+        <MemberDashboard
+          userName={displayName}
+          userEmail={user.email || ''}
+          emailVerified={emailVerified}
+          profileCompleted={profile.profile_completed}
+          profilePhotoUrl={profile.profile_photo_url}
+          application={application}
+          universityName={universityName}
+        />
+      </div>
     </MemberDashboardShell>
   );
 }

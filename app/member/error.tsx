@@ -16,7 +16,7 @@ export default function MemberError({
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-50 text-red-700">
           <AlertTriangle className="h-5 w-5" />
         </div>
-        <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.15em] text-red-700">
+        <p className="mt-5 text-[9px] font-bold uppercase tracking-[0.15em] text-red-700">
           Member portal error
         </p>
         <h2 className="mt-2 font-display text-xl font-semibold text-gray-900">

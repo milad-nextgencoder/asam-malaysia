@@ -77,7 +77,7 @@ export function PartnerDirectory({ partners }: { partners: Partner[] }) {
                 </span>
               )}
               <div className="min-w-0 flex-1 pt-1">
-                {selected.partner_type && <p className="text-[10px] font-bold uppercase tracking-[.16em] text-gold-dark">{selected.partner_type}</p>}
+                {selected.partner_type && <p className="text-[9px] font-bold uppercase tracking-[.16em] text-gold-dark">{selected.partner_type}</p>}
                 <h2 id="partner-dialog-title" className="mt-1 break-words font-display text-xl font-semibold leading-snug text-[#172436] sm:text-2xl">{selected.organization}</h2>
               </div>
               <button type="button" onClick={() => setSelected(null)} aria-label="Close partner details" className="rounded-lg p-2 text-[#596273] hover:bg-[#f1efe9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">

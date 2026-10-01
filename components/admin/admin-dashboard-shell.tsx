@@ -104,11 +104,11 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
       <aside
         className={cn(
           'fixed inset-y-0 left-0 z-50 flex flex-col border-r border-white/10 bg-[#101b2b] text-white shadow-premium-lg transition-[width,transform] duration-200',
-          compact ? 'w-[76px]' : 'w-[272px]',
+          compact ? 'w-[65px]' : 'w-[231px]',
           mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
-        <div className={cn('flex h-[76px] shrink-0 items-center border-b border-white/10', compact ? 'justify-center px-3' : 'gap-3 px-5')}>
+        <div className={cn('flex h-[65px] shrink-0 items-center border-b border-white/10', compact ? 'justify-center px-3' : 'gap-3 px-5')}>
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-white/25 bg-white">
             <Image src="/logo.png" alt="ASAM logo" fill sizes="40px" className="object-cover" priority />
           </div>
@@ -143,7 +143,7 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
           {adminNavigation.filter((group) => admin.role === 'SUPER_ADMIN' || !['System'].includes(group.label)).map((group) => (
             <div key={group.label}>
               {!compact && (
-                <h2 className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.14em] text-white/40">
+                <h2 className="mb-2 px-3 text-[9px] font-bold uppercase tracking-[0.14em] text-white/40">
                   {group.label}
                 </h2>
               )}
@@ -160,14 +160,14 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
                       aria-current={active ? 'page' : undefined}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        'group flex min-h-10 items-center rounded-md text-[13px] font-medium transition-colors',
+                        'group flex min-h-10 items-center rounded-md text-[11px] font-medium transition-colors',
                         compact ? 'justify-center px-2' : 'gap-3 px-3',
                         active
                           ? 'bg-white/10 text-white shadow-sm ring-1 ring-inset ring-white/10'
                           : 'text-white/65 hover:bg-white/[0.06] hover:text-white'
                       )}
                     >
-                      <Icon className={cn('h-[17px] w-[17px] shrink-0', active && 'text-[#d6b66c]')} />
+                      <Icon className={cn('h-[14px] w-[14px] shrink-0', active && 'text-[#d6b66c]')} />
                       {!compact && <span className="truncate">{item.label}</span>}
                       {active && !compact && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[#d6b66c]" />}
                     </Link>
@@ -182,7 +182,7 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
           {compact ? (
             <span className="text-[9px] font-semibold uppercase tracking-widest text-white/40" title="Afghan Students Association of Malaysia">ASAM</span>
           ) : (
-            <div className="text-[10px] leading-relaxed text-white/45">
+            <div className="text-[9px] leading-relaxed text-white/45">
               <div className="font-semibold uppercase tracking-wider text-white/60">Afghan Students Association</div>
               <div>of Malaysia</div>
             </div>
@@ -191,7 +191,7 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
       </aside>
 
       <div className={cn('min-h-screen transition-[padding] duration-200', compact ? 'lg:pl-[76px]' : 'lg:pl-[272px]')}>
-        <header className="sticky top-0 z-30 flex min-h-[76px] items-center justify-between gap-4 border-b border-[#e5e7eb] bg-white/95 px-4 shadow-sm backdrop-blur-md sm:px-6 lg:px-8">
+        <header className="sticky top-0 z-30 flex min-h-[65px] items-center justify-between gap-4 border-b border-[#e5e7eb] bg-white/95 px-4 shadow-sm backdrop-blur-md sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
             <button
               type="button"
@@ -202,7 +202,7 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
               <Menu className="h-4 w-4" />
             </button>
             <div className="min-w-0">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">ASAM Admin</div>
+              <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">ASAM Admin</div>
               <h1 className="truncate text-sm font-semibold text-navy sm:text-base">{pageTitle}</h1>
             </div>
           </div>
@@ -228,7 +228,7 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
               title="Notifications are not configured yet"
               className="relative flex h-9 w-9 cursor-not-allowed items-center justify-center rounded-md text-muted-foreground opacity-60"
             >
-              <Bell className="h-[18px] w-[18px]" />
+              <Bell className="h-[15px] w-[15px]" />
             </button>
             <div className="relative">
               <button
@@ -241,9 +241,9 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
                 <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#d8c694] bg-[#f4efdf] text-xs font-bold text-navy">
                   {initials}
                 </span>
-                <span className="hidden max-w-[140px] sm:block">
+                <span className="hidden max-w-[119px] sm:block">
                   <span className="block truncate text-xs font-semibold text-foreground">{admin.name}</span>
-                  <span className="block truncate text-[10px] uppercase tracking-wide text-muted-foreground">{admin.role.replaceAll('_', ' ')}</span>
+                  <span className="block truncate text-[9px] uppercase tracking-wide text-muted-foreground">{admin.role.replaceAll('_', ' ')}</span>
                 </span>
                 <ChevronDown className="hidden h-3.5 w-3.5 text-muted-foreground sm:block" />
               </button>
@@ -251,7 +251,7 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
                 <div className="absolute right-0 top-full z-50 mt-2 w-60 rounded-lg border border-border bg-white p-2 shadow-premium-lg" role="menu">
                   <div className="border-b border-border px-3 py-2">
                     <div className="truncate text-xs font-semibold">{admin.name}</div>
-                    <div className="truncate text-[11px] text-muted-foreground">{admin.email}</div>
+                    <div className="truncate text-[9px] text-muted-foreground">{admin.email}</div>
                   </div>
                   {admin.role === 'SUPER_ADMIN' && <Link
                     href="/admin/users"
@@ -287,7 +287,7 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-[1600px] p-4 sm:p-6 lg:p-8">
+        <main className="mx-auto w-full max-w-[1360px] p-4 sm:p-6 lg:p-8">
           {children}
         </main>
       </div>

@@ -36,7 +36,7 @@ export default function MembershipPage() {
       </PageHero>
 
       {/* Why Join */}
-      <section className="py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="membership"
@@ -57,7 +57,7 @@ export default function MembershipPage() {
       </section>
 
       {/* Membership Types */}
-      <section id="benefits" className="py-20 bg-secondary/30">
+      <section id="benefits" className="py-12 sm:py-16 lg:py-20 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="membership"
@@ -78,7 +78,7 @@ export default function MembershipPage() {
       </section>
 
       {/* How Membership Works */}
-      <section className="py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="membership"
@@ -98,7 +98,7 @@ export default function MembershipPage() {
       </section>
 
       {/* Member Responsibilities & Code of Conduct */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-12 sm:py-16 lg:py-20 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="p-8 rounded-3xl border border-border bg-card shadow-premium">
@@ -126,7 +126,7 @@ export default function MembershipPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             pageKey="membership"

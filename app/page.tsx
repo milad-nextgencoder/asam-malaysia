@@ -134,7 +134,19 @@ export default function Home() {
             )}
           />
         ))}
+        {/*
+          Desktop uses the horizontal gradient below, which suits the narrow
+          text column on the left. On phones the hero copy spans the full width
+          and sat directly over the photograph, making "ONE COMMUNITY. MANY
+          UNIVERSITIES." unreadable against faces and clothing. This extra scrim
+          is mobile-only (`lg:hidden`) and is a no-op on desktop, so the existing
+          desktop appearance is untouched.
+        */}
         <div className="absolute inset-0 bg-gradient-to-r from-background/55 via-background/20 to-background/5" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-background/70 backdrop-blur-[2px] lg:hidden"
+        />
 
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
           <div className="max-w-3xl">
@@ -415,7 +427,7 @@ export default function Home() {
                   >
                     <MapPin className="h-4 w-4 text-gold mb-1" />
                     <div className="text-xs font-semibold leading-tight">{chapter.state}</div>
-                    <div className="text-[10px] text-muted-foreground mt-0.5">
+                    <div className="text-[9px] text-muted-foreground mt-0.5">
                       {chapter.status === 'coming_soon' ? 'Coming Soon' : 'Active'}
                     </div>
                   </div>
@@ -445,7 +457,7 @@ export default function Home() {
                 <div className="flex items-center justify-between mb-3">
                   <MapPin className="h-5 w-5 text-gold" />
                   <span className={cn(
-                    'text-[10px] font-semibold px-2 py-1 rounded-full',
+                    'text-[9px] font-semibold px-2 py-1 rounded-full',
                     chapter.status === 'coming_soon'
                       ? 'bg-gold/10 text-gold-dark'
                       : 'bg-secondary text-muted-foreground'

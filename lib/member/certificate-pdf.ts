@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer-core';
 import { existsSync } from 'fs';
 import { buildCertificateDocument, CERTIFICATE_WIDTH_PX, CERTIFICATE_HEIGHT_PX } from '@/lib/member/certificate-html';
 import { getCertificateView, getCertificateLogoDataUrl } from '@/lib/member/certificate';
+import { isServerlessRuntime } from '@/lib/member/serverless-runtime';
 
 const PDF_WIDTH_MM = 297;
 const PDF_HEIGHT_MM = 210;
@@ -51,9 +52,15 @@ export type ChromeLaunch = {
 
 const BASE_ARGS = ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--font-render-hinting=none'];
 
-/** True on AWS Lambda / Netlify Functions, where no system browser exists. */
+/**
+ * True on AWS Lambda, Netlify Functions and Vercel, where no system browser
+ * exists and the bundled @sparticuz/chromium is the only renderer available.
+ *
+ * VERCEL detection lives in lib/member/serverless-runtime.ts and is covered by the
+ * test suite; it was the reason production certificate downloads returned JSON.
+ */
 function isServerless(): boolean {
-  return Boolean(process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.AWS_EXECUTION_ENV || process.env.NETLIFY);
+  return isServerlessRuntime();
 }
 
 /**
@@ -122,6 +129,26 @@ export async function resolveChrome(): Promise<ChromeLaunch> {
 }
 
 /**
+ * Magic bytes every PDF file starts with: "%PDF-".
+ *
+ * Puppeteer is typed as returning a Buffer, so a malformed response would be a
+ * bug rather than an expected case. Validating it here means the API route can
+ * never answer HTTP 200 with a body that a browser would offer to the user as a
+ * .pdf file that is not actually a PDF - which is what made the mobile download
+ * produce an unusable file.
+ */
+function hasPdfSignature(bytes: Uint8Array): boolean {
+  return (
+    bytes.length >= 5 &&
+    bytes[0] === 0x25 && // %
+    bytes[1] === 0x50 && // P
+    bytes[2] === 0x44 && // D
+    bytes[3] === 0x46 && // F
+    bytes[4] === 0x2d    // -
+  );
+}
+
+/**
  * Renders the certificate to PDF bytes.
  *
  * Uses the exact same HTML/CSS artifact as the public website preview
@@ -161,7 +188,17 @@ export async function generateCertificatePDF(memberId: string): Promise<Uint8Arr
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
     });
 
-    return new Uint8Array(pdf);
+    const bytes = new Uint8Array(pdf);
+
+    // Guard before the route can label these bytes "application/pdf".
+    if (bytes.length === 0 || !hasPdfSignature(bytes)) {
+      throw new CertificatePdfError(
+        'PDF rendering produced an invalid document.',
+        503
+      );
+    }
+
+    return bytes;
   } catch (error) {
     if (error instanceof CertificatePdfError) throw error;
     console.error('Certificate PDF rendering failed:', error);

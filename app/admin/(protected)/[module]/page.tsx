@@ -104,7 +104,7 @@ export default async function AdminModulePage({ params }: AdminModulePageProps) 
         <div className="flex h-11 w-11 items-center justify-center rounded-md border border-[#ece7d9] bg-[#faf8f2] text-[#927535]">
           <Construction className="h-5 w-5" />
         </div>
-        <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.16em] text-[#9a7c36]">
+        <p className="mt-6 text-[9px] font-bold uppercase tracking-[0.16em] text-[#9a7c36]">
           Module not yet configured
         </p>
         <h2 className="mt-2 font-display text-2xl font-semibold text-[#172436]">{moduleInfo.label}</h2>
