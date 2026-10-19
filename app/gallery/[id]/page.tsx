@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PageHero } from '@/components/site/page-hero';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 import { GalleryLightbox } from '@/components/site/gallery-lightbox';
 
+export const revalidate = 60;
+
 export default async function GalleryAlbumPage({ params }: { params: { id: string } }) {
-  const db = createClient();
+  const db = createPublicClient();
   const { data: album } = await db.from('gallery_albums').select('id,name,description,category,status').eq('id', params.id).eq('status','published').maybeSingle();
   if (!album) notFound();
   const { data } = await db.from('gallery_items').select('id,image_url,title,caption,display_order').eq('album_id', album.id).eq('status','published').order('display_order').range(0,47);

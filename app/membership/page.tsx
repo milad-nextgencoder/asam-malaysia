@@ -9,6 +9,8 @@ export const metadata = {
   description: 'Join the Afghan Students Association of Malaysia. Explore membership types, benefits, and how to join.',
 };
 
+export const revalidate = 60;
+
 export default function MembershipPage() {
   return (
     <>

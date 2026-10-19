@@ -2,7 +2,7 @@ import { PageHero } from '@/components/site/page-hero';
 import { SectionHeader } from '@/components/site/section-header';
 import { CTASection } from '@/components/site/cta-section';
 import { departments, departmentIconByName } from '@/lib/data/departments';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata = {
@@ -10,8 +10,10 @@ export const metadata = {
   description: 'Explore all twelve ASAM departments, each focused on a specific area of student life.',
 };
 
+export const revalidate = 60;
+
 export default async function DepartmentsPage() {
-  const supabase = createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase.from('departments').select('id,name,number,description,mission,icon,image_url,leader,display_order').eq('status', 'published').order('display_order', { ascending: true });
   const renderedDepartments: any[] = !error && data ? data.map((row) => {
     const existing = departments.find((item) => item.number === row.number);

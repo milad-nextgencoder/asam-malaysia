@@ -10,6 +10,8 @@ export const metadata = {
   description: 'Support, orientation, resources, and guidance for Afghan students living and studying in Malaysia.',
 };
 
+export const revalidate = 60;
+
 export default async function WelfarePage() {
   const orientation = await getPublishedPageSection('welfare', 'asam_new_student_orientation');
   return (

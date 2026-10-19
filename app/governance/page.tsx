@@ -20,6 +20,8 @@ const governancePrinciples = [
   { icon: Check, title: 'Integrity', description: 'All actions and decisions are guided by the highest ethical standards.' },
 ];
 
+export const revalidate = 60;
+
 export default function GovernancePage() {
   return (
     <>

@@ -3,7 +3,7 @@ import { SectionHeader } from '@/components/site/section-header';
 import { CTASection } from '@/components/site/cta-section';
 import { EmptyState } from '@/components/site/empty-state';
 import { leadership, orgHierarchy } from '@/lib/data/leadership';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 import { cn } from '@/lib/utils';
 import { Quote, ArrowRight, ChevronDown } from 'lucide-react';
 
@@ -12,8 +12,10 @@ export const metadata = {
   description: 'Meet the founding leadership team of the Afghan Students Association of Malaysia.',
 };
 
+export const revalidate = 60;
+
 export default async function LeadershipPage() {
-  const supabase = createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase.from('leadership').select('id,name,position,bio,photo_url,department_id,social_links,display_order').eq('status', 'published').order('display_order', { ascending: true });
   const filled: any[] = error ? leadership.filter((member) => member.filled).map((member) => ({ ...member, position: member.title, photo_url: null as string | null })) : (data ?? []).map((row) => {
     const existing = leadership.find((member) => member.filled && member.name === row.name);

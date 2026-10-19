@@ -2,15 +2,17 @@ import { ManagedPageHero as PageHero, ManagedSectionHeader as SectionHeader, Man
 import { EmptyState } from '@/components/site/empty-state';
 import { ManagedPageItemCards } from '@/components/site/managed-page-items';
 import { ArrowRight } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 
 export const metadata = {
   title: 'Career & Entrepreneurship',
   description: 'Career development, internships, mentorship, entrepreneurship support, and professional networking for Afghan students in Malaysia.',
 };
 
+export const revalidate = 60;
+
 export default async function CareerPage() {
-  const { data: opportunities, error: opportunitiesError } = await createClient()
+  const { data: opportunities, error: opportunitiesError } = await createPublicClient()
     .from('opportunities')
     .select('id,title,organization,category,description,eligibility,location,deadline,application_url,image_url')
     .eq('status', 'published')

@@ -2,7 +2,7 @@ import { PageHero } from '@/components/site/page-hero';
 import { SectionHeader } from '@/components/site/section-header';
 import { CTASection } from '@/components/site/cta-section';
 import { Building2, Handshake, ArrowRight, Users, Globe2, Heart } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 import { PartnerDirectory } from '@/components/site/partner-directory';
 
 export const metadata = {
@@ -10,8 +10,10 @@ export const metadata = {
   description: 'Institutional partnerships with universities, organizations, NGOs, and companies.',
 };
 
+export const revalidate = 60;
+
 export default async function PartnersPage() {
-  const { data: partners, error } = await createClient().from('partners').select('id,organization,description,website,logo_url,partner_type').eq('status','published').order('display_order').range(0,99);
+  const { data: partners, error } = await createPublicClient().from('partners').select('id,organization,description,website,logo_url,partner_type').eq('status','published').order('display_order').range(0,99);
   return (
     <>
       <PageHero

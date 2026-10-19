@@ -11,6 +11,8 @@ export const metadata = {
 
 const lifecycle = ['Student', 'Graduate', 'Alumni', 'Mentor', 'Leader', 'Supporter'];
 
+export const revalidate = 60;
+
 export default async function AlumniPage() {
   const [mentorContent, alumniCta] = await Promise.all([
     getPublishedPageSection('alumni', 'volunteer_as_a_mentor'),

@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Celebrating and preserving Afghan culture, language, arts, and heritage within the Malaysian student community.',
 };
 
+export const revalidate = 60;
+
 export default function CulturePage() {
   return (
     <>

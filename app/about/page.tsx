@@ -9,6 +9,8 @@ export const metadata = {
   description: 'Who we are, why we exist, and where we are going. The story of the Afghan Students Association of Malaysia.',
 };
 
+export const revalidate = 60;
+
 export default async function AboutPage() {
   const [managedValues, managedTimeline, managedRoadmap, whoWeAre, purpose, vision, mission, whyAsam, longTermVision] = await Promise.all([
     getPublishedPageItems('about', 'core_values'),

@@ -3,7 +3,7 @@ import { EmptyState } from '@/components/site/empty-state';
 import { ManagedPageItemCards } from '@/components/site/managed-page-items';
 import { BookOpen, Users, FlaskConical, Languages, Calendar, Award } from 'lucide-react';
 import { getPublishedPageSection } from '@/lib/page-sections';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 
 export const metadata = {
   title: 'Academic Hub',
@@ -19,8 +19,10 @@ const academicResources = [
   { icon: Calendar, title: 'Academic Events', desc: 'Workshops, seminars, and academic-focused events.' },
 ];
 
+export const revalidate = 60;
+
 export default async function AcademicPage() {
-  const supabase = createClient();
+  const supabase = createPublicClient();
   const [{ data: scholarships, error: scholarshipsError }, scholarshipIntro] = await Promise.all([
     supabase.from('scholarships').select('id,title,provider,description,eligibility,deadline,amount,application_url').eq('status', 'published').order('deadline', { ascending: true, nullsFirst: false }).range(0, 2),
     getPublishedPageSection('academic', 'scholarship_information'),

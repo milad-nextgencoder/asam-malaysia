@@ -2,15 +2,17 @@ import { ManagedPageHero as PageHero, ManagedSectionHeader as SectionHeader, Man
 import { EmptyState } from '@/components/site/empty-state';
 import { ManagedPageItemCards } from '@/components/site/managed-page-items';
 import { MessageSquare } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 
 export const metadata = {
   title: 'Research & Policy',
   description: 'Research center, student surveys, publications, reports, data analysis, and policy discussions from ASAM.',
 };
 
+export const revalidate = 60;
+
 export default async function ResearchPage() {
-  const { data: reports, error: reportsError } = await createClient()
+  const { data: reports, error: reportsError } = await createPublicClient()
     .from('documents')
     .select('id,title,description,category,file_url,published_at')
     .eq('status', 'published')

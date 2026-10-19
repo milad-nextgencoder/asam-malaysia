@@ -18,6 +18,8 @@ const sports = [
   { name: 'Outdoor Activities', desc: 'Hiking, camping, and outdoor adventures.', icon: Heart },
 ];
 
+export const revalidate = 60;
+
 export default function SportsPage() {
   return (
     <>

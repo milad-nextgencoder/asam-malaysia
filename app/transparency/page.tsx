@@ -2,15 +2,17 @@ import { ManagedPageHero as PageHero, ManagedSectionHeader as SectionHeader, Man
 import { EmptyState } from '@/components/site/empty-state';
 import { ManagedPageItemCards } from '@/components/site/managed-page-items';
 import { FileText } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 
 export const metadata = {
   title: 'Transparency',
   description: 'Governance, policies, accountability, and transparency at ASAM.',
 };
 
+export const revalidate = 60;
+
 export default async function TransparencyPage() {
-  const { data: documents, error: documentsError } = await createClient().from('documents').select('id,title,description,category,file_url,published_at').eq('status','published').order('published_at',{ascending:false,nullsFirst:false}).range(0,99);
+  const { data: documents, error: documentsError } = await createPublicClient().from('documents').select('id,title,description,category,file_url,published_at').eq('status','published').order('published_at',{ascending:false,nullsFirst:false}).range(0,99);
   return (
     <>
       <PageHero
