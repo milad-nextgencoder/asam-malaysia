@@ -1,7 +1,8 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
+import { SITE_SETTINGS_TAG } from '@/lib/data/site-settings';
 import { requireAdmin, requireSuperAdmin } from '@/lib/supabase/admin';
 
 const failure = 'The request could not be completed. Check the form and your administrator access, then try again.';
@@ -73,6 +74,7 @@ export async function saveSiteSettings(input: Record<string, unknown>) {
     if ((values.logo_url && values.logo_url !== before?.logo_url) || (values.favicon_url && values.favicon_url !== before?.favicon_url)) {
       auditSaved = await audit(supabase, actor, 'site_settings.image_upload', 'site_settings', data.id) && auditSaved;
     }
+    revalidateTag(SITE_SETTINGS_TAG);
     revalidatePath('/', 'layout'); revalidatePath('/admin/settings');
     return { ok: true, auditSaved };
   } catch (error) { console.error('CMS action failed:', error); return { ok: false, message: failure }; }

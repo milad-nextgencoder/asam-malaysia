@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import { SiteHeader } from '@/components/site/site-header';
 import { SiteFooter } from '@/components/site/site-footer';
-import { createClient } from '@/lib/supabase/server';
+import { getSiteSettings, resolveLogoUrl } from '@/lib/data/site-settings';
 import { getServerSiteUrl } from '@/lib/member/site-url';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
@@ -56,7 +56,7 @@ const baseMetadata: Metadata = {
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const { data } = await createClient().from('site_settings').select('organization_name,tagline,favicon_url').eq('singleton', true).maybeSingle();
+    const data = await getSiteSettings();
     if (!data) return baseMetadata;
     const organization = data.organization_name || 'Afghan Students Association of Malaysia';
     const title = `${organization} (ASAM)`;
@@ -72,15 +72,22 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  let logoUrl: string | null = null;
+  try {
+    logoUrl = (await getSiteSettings())?.logo_url ?? null;
+  } catch {
+    // Fall back to the bundled logo when the CMS read fails.
+  }
+
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <body className="font-sans min-h-screen flex flex-col">
-        <SiteHeader />
+        <SiteHeader logoUrl={resolveLogoUrl(logoUrl)} />
         <main className="flex-1">{children}</main>
         <SiteFooter />
       </body>

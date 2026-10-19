@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 import { EmptyState } from '@/components/site/empty-state';
 
 export async function PublicEventList({ category }: { category: string }) {
-  const { data, error } = await createClient()
+  const { data, error } = await createPublicClient()
     .from('events')
     .select('id,title,description,date,time,location,featured_image_url')
     .eq('status', 'published')

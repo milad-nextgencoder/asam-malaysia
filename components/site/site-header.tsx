@@ -12,14 +12,12 @@ import { navItems } from '@/lib/data/navigation';
 
 import { cn } from '@/lib/utils';
 
-import { createClient } from '@/lib/supabase/client';
-
-export function SiteHeader() {
+/** Logo is resolved on the server (root layout) so the header needs no client data fetch. */
+export function SiteHeader({ logoUrl = '/logo.png' }: { logoUrl?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [logoUrl, setLogoUrl] = useState('/logo.png');
 
   const pathname = usePathname();
 
@@ -29,29 +27,6 @@ export function SiteHeader() {
     window.addEventListener('scroll', onScroll);
 
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  useEffect(() => {
-    let active = true;
-
-    void createClient()
-      .from('site_settings')
-      .select('logo_url')
-      .eq('singleton', true)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (
-          active &&
-          data?.logo_url &&
-          /^https?:\/\//i.test(data.logo_url)
-        ) {
-          setLogoUrl(data.logo_url);
-        }
-      });
-
-    return () => {
-      active = false;
-    };
   }, []);
 
   useEffect(() => {

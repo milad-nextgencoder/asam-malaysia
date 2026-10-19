@@ -1,5 +1,5 @@
 import { cache } from 'react';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 
 export type ManagedPageSection = {
   eyebrow?: string | null;
@@ -59,7 +59,7 @@ function normaliseSectionKey(value: string): string {
 export const getPublishedPageSection = cache(
   async (pageKey: string, sectionKey: string, titleHint?: string): Promise<ManagedPageSection | null> => {
     try {
-      const supabase = createClient();
+      const supabase = createPublicClient();
       const { data, error } = await supabase
         .from('page_sections')
         .select(SECTION_COLUMNS)
@@ -102,7 +102,7 @@ export const getPublishedPageSection = cache(
 
 export const getPublishedPageItems = cache(async (pageKey: string, collectionKey: string): Promise<ManagedPageItem[] | null> => {
   try {
-    const { data, error } = await createClient()
+    const { data, error } = await createPublicClient()
       .from('page_items')
       .select('id,page_key,collection_key,item_type,title,description,body,phase,metric,icon,image_url,link_text,link_url,button_text,button_url,display_order')
       .eq('page_key', pageKey)

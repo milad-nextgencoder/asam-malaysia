@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { footerNav } from '@/lib/data/navigation';
 import { NewsletterForm } from '@/components/site/newsletter-form';
-import { createClient } from '@/lib/supabase/server';
+import { getSiteSettings } from '@/lib/data/site-settings';
 
 const FOOTER_SETTINGS_TIMEOUT_MS = 10_000;
 
@@ -11,20 +11,14 @@ export async function SiteFooter() {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
   try {
-    const settingsQuery = createClient()
-      .from('site_settings')
-      .select('organization_name,tagline,contact_email,phone,social_links,logo_url,footer_text')
-      .eq('singleton', true)
-      .maybeSingle();
-
     const result = await Promise.race([
-      settingsQuery,
+      getSiteSettings(),
       new Promise<null>((resolve) => {
         timeoutId = setTimeout(() => resolve(null), FOOTER_SETTINGS_TIMEOUT_MS);
       }),
     ]);
 
-    settings = result?.data ?? null;
+    settings = result ?? null;
   } catch {
     // Keep the static footer available when the CMS query fails.
   } finally {
