@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import {
   ArrowRight,
   UserPlus,
@@ -9,6 +10,11 @@ import {
   Award,
   CheckCircle2,
 } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Member Portal Access',
+  description: 'Apply to join ASAM, sign in to the member portal, and track your membership.',
+};
 
 export default function JoinAsamPage() {
   return (
