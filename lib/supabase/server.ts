@@ -23,3 +23,28 @@ export function createClient() {
     },
   });
 }
+
+/**
+ * Cookieless server-side client for anonymous public content reads.
+ *
+ * createClient() above calls cookies(), which forces the route into dynamic
+ * rendering and defeats ISR. Public list pages (events, news, gallery,
+ * chapters) only read rows the anon role may read anyway (status =
+ * 'published' via RLS), so they use this client instead: no request cookies
+ * are touched, the query runs as an anonymous reader, and the page stays
+ * eligible for `export const revalidate = ...` caching.
+ */
+export function createPublicClient() {
+  const { url, publishableKey } = getSupabaseConfig();
+
+  return createServerClient(url, publishableKey, {
+    cookies: {
+      getAll() {
+        return [];
+      },
+      setAll() {
+        // No session to persist for anonymous public reads.
+      },
+    },
+  });
+}

@@ -114,6 +114,19 @@ export default function JoinAsamPage() {
         </div>
       </PageHero>
 
+      {/* /join is the volunteer track; /join-asam is the membership funnel.
+          The cross-link keeps the two entry points distinct without breaking
+          any existing URLs. */}
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <p className="mt-2 rounded-xl border border-gold/30 bg-gold/5 px-4 py-3 text-sm text-muted-foreground">
+          Looking for official ASAM membership instead?{' '}
+          <Link href="/join-asam" className="font-semibold text-gold-dark hover:underline">
+            Start your membership application
+          </Link>
+          .
+        </p>
+      </div>
+
       <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader

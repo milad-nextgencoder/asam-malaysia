@@ -1,42 +1,36 @@
-'use client';
-
-import { useEffect, useMemo, useState } from 'react';
 import { PageHero } from '@/components/site/page-hero';
 import { SectionHeader } from '@/components/site/section-header';
 import { CTASection } from '@/components/site/cta-section';
-import { EmptyState } from '@/components/site/empty-state';
-import { cn } from '@/lib/utils';
-import { Image as ImageIcon, Video, Calendar, Users, X } from 'lucide-react';
-import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
+import { GalleryBrowser } from '@/components/site/gallery-browser';
+import { createPublicClient } from '@/lib/supabase/server';
+import { Video } from 'lucide-react';
 
-const galleryCategories = ['All', 'Events', 'Students', 'Culture', 'Sports', 'Conferences', 'Leadership', 'Community', 'Academic', 'Other'];
+export const metadata = {
+  title: 'Gallery',
+  description:
+    'Photos, videos, and albums from ASAM events, programs, and community activities across Malaysia.',
+};
 
-export default function GalleryPage() {
-  const [filter, setFilter] = useState('All');
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [albums, setAlbums] = useState<any[]>([]);
-  const [items, setItems] = useState<any[]>([]);
-  const [loadError, setLoadError] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void (async () => {
-      const db = createClient();
-      let albumResult = await db.from('gallery_albums').select('id,name,description,category,cover_image_url,display_order,status').eq('status','published').order('display_order').range(0,99);
-      if (albumResult.error) albumResult = await db.from('gallery_albums').select('id,name,description,cover_image_url,display_order,status').eq('status','published').order('display_order').range(0,99) as any;
-      if (albumResult.error) { if (active) setLoadError(true); return; }
-      if (!active) return;
-      setAlbums(albumResult.data ?? []);
-      const ids = (albumResult.data ?? []).map((row:any)=>row.id);
-      if (!ids.length) return;
-      const result = await db.from('gallery_items').select('id,album_id,image_url,title,caption,display_order,status').in('album_id',ids).eq('status','published').order('display_order').range(0,47);
-      if (active && !result.error) setItems(result.data ?? []);
-      if (active && result.error) setLoadError(true);
-    })();
-    return () => { active = false; };
-  }, []);
-  const visibleItems = useMemo(() => items.filter((item) => filter === 'All' || albums.find((album) => album.id === item.album_id)?.category === filter), [items, albums, filter]);
-  const visibleAlbums = albums.filter((album) => filter === 'All' || album.category === filter);
+// Gallery is cached with 60s ISR; admin gallery actions also call
+// revalidatePath('/gallery') on every change, so updates appear promptly.
+export const revalidate = 60;
+
+async function getGalleryContent() {
+  const db = createPublicClient();
+  // The category column was added later (20260927010000); if a database has
+  // not applied it yet, retry without it so the page still renders.
+  let albumResult = await db.from('gallery_albums').select('id,name,description,category,cover_image_url,display_order,status').eq('status','published').order('display_order').range(0,99);
+  if (albumResult.error) albumResult = await db.from('gallery_albums').select('id,name,description,cover_image_url,display_order,status').eq('status','published').order('display_order').range(0,99) as any;
+  if (albumResult.error) return { albums: [] as any[], items: [] as any[], loadError: true };
+  const albums = albumResult.data ?? [];
+  const ids = albums.map((row: any) => row.id);
+  if (!ids.length) return { albums, items: [] as any[], loadError: false };
+  const result = await db.from('gallery_items').select('id,album_id,image_url,title,caption,display_order,status').in('album_id',ids).eq('status','published').order('display_order').range(0,47);
+  return { albums, items: result.error ? [] : result.data ?? [], loadError: Boolean(result.error) };
+}
+
+export default async function GalleryPage() {
+  const { albums, items, loadError } = await getGalleryContent();
 
   return (
     <>
@@ -46,79 +40,14 @@ export default function GalleryPage() {
         description="Photos, videos, and albums from ASAM events, programs, and community activities."
       />
 
-      <section className="py-10">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Filters */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            {galleryCategories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={cn(
-                  'px-4 py-2 rounded-full text-sm font-medium transition-all',
-                  filter === cat ? 'gradient-navy text-white shadow-premium' : 'border border-border bg-card text-muted-foreground hover:text-foreground'
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {loadError && <p role="status" className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">Gallery content is temporarily unavailable.</p>}
-          {/* Published album cards */}
-          <div className="mb-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {visibleAlbums.map((album) => (
-              <Link key={album.id} href={`/gallery/${album.id}`} className="group overflow-hidden rounded-xl border border-border bg-card shadow-premium transition-all hover:-translate-y-1 hover:border-gold/30 hover:shadow-premium-lg">
-                {album.cover_image_url ? <img src={album.cover_image_url} loading="lazy" alt={`${album.name} album cover`} className="aspect-[16/9] w-full object-cover"/> : <div className="flex aspect-[16/9] items-center justify-center bg-secondary/60"><ImageIcon className="h-10 w-10 text-muted-foreground/40"/></div>}
-                <div className="p-4"><div className="text-[9px] font-bold uppercase tracking-widest text-gold-dark">{album.category || 'ASAM Album'}</div><h3 className="mt-1 font-display text-lg font-semibold">{album.name}</h3><p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{album.description || 'View published photos from this album.'}</p></div>
-              </Link>
-            ))}
-          </div>
-          {/* Published image preview grid */}
-          {visibleItems.length > 0 && <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {visibleItems.map((item, i) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setSelectedImage(item.image_url)}
-                className="overflow-hidden rounded-xl border border-border bg-card shadow-premium hover:border-gold/30 transition-all duration-300 animate-fade-up text-left"
-                style={{ animationDelay: `${i * 0.04}s` }}
-              >
-                <img
-                  src={item.image_url}
-                  alt={item.title || item.caption || `Published ASAM gallery image ${i + 1}`}
-                  loading="lazy"
-                  className="aspect-square w-full object-cover cursor-pointer"
-                />
-              </button>
-            ))}
-          </div>}
-          {!visibleAlbums.length && !visibleItems.length && <EmptyState title="No published albums yet" message="ASAM photo albums will appear here after an administrator publishes them."/>}
-        </div>
-      </section>
-
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-5xl w-full rounded-2xl bg-background p-3 shadow-2xl">
-            <button
-              type="button"
-              onClick={() => setSelectedImage(null)}
-              className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white"
-              aria-label="Close image"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            <img
-              src={selectedImage}
-              alt="Expanded gallery item"
-              className="max-h-[80vh] w-full rounded-xl object-contain"
-            />
-          </div>
+      {loadError && (
+        <div className="container mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+          <p role="status" className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            Gallery content is temporarily unavailable.
+          </p>
         </div>
       )}
+      <GalleryBrowser albums={albums} items={items} />
 
       {/* Video Section */}
       <section className="py-10 bg-secondary/30">
@@ -142,18 +71,6 @@ export default function GalleryPage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Albums */}
-      <section className="py-10">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Albums"
-            title="Photo albums"
-            description="Browse albums from past ASAM events and activities."
-          />
-          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{visibleAlbums.map((album)=><Link key={album.id} href={`/gallery/${album.id}`} className="rounded-xl border bg-card p-5 hover:border-gold/40"><h3 className="font-display font-semibold">{album.name}</h3><p className="mt-1 text-xs text-muted-foreground">{album.category || 'Gallery'} · View album</p></Link>)}</div>
         </div>
       </section>
 

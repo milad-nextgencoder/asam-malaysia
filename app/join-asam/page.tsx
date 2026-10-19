@@ -90,6 +90,15 @@ export default function JoinAsamPage() {
               </Link>
             </div>
           </div>
+
+          {/* Volunteer roles live on /join; this page is the membership funnel. */}
+          <p className="mx-auto mt-8 max-w-4xl text-center text-sm text-muted-foreground">
+            Want to volunteer without applying for membership?{' '}
+            <Link href="/join" className="font-semibold text-gold-dark hover:underline">
+              See volunteer roles
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
