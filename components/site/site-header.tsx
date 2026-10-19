@@ -13,7 +13,7 @@ import { navItems } from '@/lib/data/navigation';
 import { cn } from '@/lib/utils';
 
 /** Logo is resolved on the server (root layout) so the header needs no client data fetch. */
-export function SiteHeader({ logoUrl = '/logo.png' }: { logoUrl?: string }) {
+export function SiteHeader({ logoUrl = '/logo-512.png' }: { logoUrl?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);

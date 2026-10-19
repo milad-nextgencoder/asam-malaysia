@@ -110,7 +110,7 @@ export function AdminDashboardShell({ admin, children }: AdminDashboardShellProp
       >
         <div className={cn('flex h-[65px] shrink-0 items-center border-b border-white/10', compact ? 'justify-center px-3' : 'gap-3 px-5')}>
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-white/25 bg-white">
-            <Image src="/logo.png" alt="ASAM logo" fill sizes="40px" className="object-cover" priority />
+            <Image src="/logo-512.png" alt="ASAM logo" fill sizes="40px" className="object-cover" priority />
           </div>
           {!compact && (
             <div className="min-w-0 flex-1">

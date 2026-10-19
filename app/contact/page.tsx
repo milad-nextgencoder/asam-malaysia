@@ -31,7 +31,7 @@ export default function ContactPage() {
     if (name.length > 160 || email.length > 254 || subject.length > 200 || message.length > 10000 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setFormError('Please check your name, email address, and message length.'); setSaving(false); return;
     }
-    const { error } = await createClient().from('contact_messages').insert({ name, email, subject: subject || null, message, status: 'new' });
+    const { error } = await createClient().from('contact_messages').insert({ name, email, subject: subject || null, message });
     if (error) setFormError('Your message could not be sent right now. Please try again later or email ASAM directly.');
     else setSubmitted(true);
     setSaving(false);

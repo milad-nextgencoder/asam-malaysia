@@ -101,7 +101,7 @@ export function AdminLoginForm({ initialError, initialNotice }: AdminLoginFormPr
       <div className="relative w-full max-w-md rounded-xl border border-border bg-card p-7 shadow-premium-lg sm:p-9">
         <div className="mb-8 flex items-center gap-4">
           <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-border bg-background">
-            <Image src="/logo.png" alt="ASAM logo" fill sizes="56px" className="object-cover" priority />
+            <Image src="/logo-512.png" alt="ASAM logo" fill sizes="56px" className="object-cover" priority />
           </div>
           <div>
             <div className="font-display text-2xl font-bold">ASAM</div>

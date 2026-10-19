@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { footerNav } from '@/lib/data/navigation';
 import { NewsletterForm } from '@/components/site/newsletter-form';
-import { getSiteSettings } from '@/lib/data/site-settings';
+import { getSiteSettings, resolveLogoUrl } from '@/lib/data/site-settings';
 
 const FOOTER_SETTINGS_TIMEOUT_MS = 10_000;
 
@@ -36,7 +36,7 @@ export async function SiteFooter() {
           <div className="lg:col-span-4 space-y-6">
             <Link href="/" className="flex items-center">
               <span className="relative block h-16 w-16 overflow-hidden rounded-full">
-                <img src={settings?.logo_url || '/logo.png'} alt="ASAM logo" className="absolute inset-0 h-full w-full object-cover" />
+                <img src={resolveLogoUrl(settings?.logo_url)} alt="ASAM logo" className="absolute inset-0 h-full w-full object-cover" />
               </span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">

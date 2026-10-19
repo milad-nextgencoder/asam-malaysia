@@ -11,7 +11,7 @@ export const SITE_SETTINGS_TAG = 'site-settings';
 const SITE_SETTINGS_COLUMNS =
   'organization_name,tagline,favicon_url,logo_url,contact_email,phone,social_links,footer_text';
 
-const DEFAULT_LOGO_URL = '/logo.png';
+const DEFAULT_LOGO_URL = '/logo-512.png';
 
 async function fetchSiteSettings() {
   // Cookieless anonymous read: keeps the root layout static-friendly.
