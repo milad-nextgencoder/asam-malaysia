@@ -7,6 +7,7 @@ import { ArrowRight, MapPin, Calendar, Briefcase, GraduationCap, Users, Globe2, 
 import { SectionHeader } from '@/components/site/section-header';
 import { CTASection } from '@/components/site/cta-section';
 import { EmptyState } from '@/components/site/empty-state';
+import { NewsletterForm } from '@/components/site/newsletter-form';
 import { cn } from '@/lib/utils';
 import { departments, departmentIconByName } from '@/lib/data/departments';
 import { leadership } from '@/lib/data/leadership';
@@ -156,23 +157,23 @@ export default function Home() {
                 {sectionValue('hero', 'subtitle', 'Afghan Students Association of Malaysia')}
               </span>
             </div>
-            <h1 className="font-display text-[1.625rem] sm:text-[1.875rem] lg:text-[2rem] font-bold text-foreground leading-tight tracking-tight animate-fade-up">
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-tight tracking-tight animate-fade-up">
               {sectionValue('hero', 'title', 'ONE COMMUNITY. MANY UNIVERSITIES. ONE FUTURE.').split(/\n|(?<=\.)\s+/).filter(Boolean).map((line, index) => <span key={`${line}-${index}`} className={cn('block', index === 1 && 'text-gold-dark')}>{line}</span>)}
             </h1>
-            <p className="mt-5 text-[0.9375rem] text-muted-foreground leading-relaxed max-w-xl animate-fade-up stagger-1">
+            <p className="mt-5 text-lg text-muted-foreground leading-relaxed max-w-xl animate-fade-up stagger-1">
               {sectionValue('hero', 'description', 'Connecting Afghan students across Malaysia through education, leadership, opportunity, culture, and community.')}
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 animate-fade-up stagger-2">
               <Link
                 href={sectionHref('hero', 'button_url', '/membership')}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gold text-navy font-bold text-base shadow-gold hover:scale-[1.03] transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gold text-navy font-bold text-base shadow-gold hover:scale-[1.03] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
               >
                 {sectionValue('hero', 'button_text', 'Become a Member')}
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
                 href={sectionHref('hero', 'secondary_button_url', '/about')}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-navy/20 text-navy font-semibold text-base hover:bg-navy/5 transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-navy/20 text-navy font-semibold text-base hover:bg-navy/5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
               >
                 {sectionValue('hero', 'secondary_button_text', 'Explore ASAM')}
               </Link>
@@ -188,7 +189,7 @@ export default function Home() {
       </section>
 
       {/* INTRODUCTION */}
-      <section style={sectionStyle('introduction')} className="py-10 lg:py-14">
+      <section style={sectionStyle('introduction')} className="py-16 lg:py-24">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-16 items-center">
             <div>
@@ -196,7 +197,7 @@ export default function Home() {
                 <span className="h-px w-8 bg-gold" />
                 <span className="text-xs font-bold uppercase tracking-widest text-gold-dark">{sectionValue('introduction', 'subtitle', 'Introduction')}</span>
               </div>
-              <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold tracking-tight mb-4 text-balance">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-balance">
                 {sectionValue('introduction', 'title', 'A national platform for Afghan students in Malaysia')}
               </h2>
               <div className="space-y-3.5 text-base text-muted-foreground leading-relaxed">
@@ -237,7 +238,7 @@ export default function Home() {
       </section>
 
       {/* VISION & MISSION */}
-      <section style={sectionStyle('vision')} className="py-10 lg:py-14 bg-secondary/30">
+      <section style={sectionStyle('vision')} className="py-12 lg:py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <div className="p-5 lg:p-5 rounded-xl border border-border bg-card shadow-premium">
@@ -259,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* WHAT ASAM DOES */}
-      <section style={sectionStyle('what_asam_does')} className="py-10 lg:py-14">
+      <section style={sectionStyle('what_asam_does')} className="py-16 lg:py-24">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('what_asam_does', 'subtitle', 'What We Do')}
@@ -304,7 +305,7 @@ export default function Home() {
       </section>
 
       {/* LEADERSHIP */}
-      <section style={sectionStyle('leadership')} className="py-10 lg:py-14 bg-navy text-white relative overflow-hidden">
+      <section style={sectionStyle('leadership')} className="py-16 lg:py-24 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-gold/5 blur-3xl" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -314,7 +315,7 @@ export default function Home() {
               <span className="text-xs font-bold uppercase tracking-widest text-gold">{sectionValue('leadership', 'subtitle', 'Leadership')}</span>
               <span className="h-px w-8 bg-gold" />
             </div>
-            <h2 className="font-display text-xl sm:text-2xl lg:text-[1.75rem] font-bold text-white text-balance">
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white text-balance">
               {sectionValue('leadership', 'title', 'Founded by students, for students')}
             </h2>
             <p className="mt-4 text-[0.9375rem] text-white/60 leading-relaxed">
@@ -362,34 +363,40 @@ export default function Home() {
       </section>
 
       {/* DEPARTMENTS OVERVIEW */}
-      <section style={sectionStyle('departments_overview')} className="py-10 lg:py-14">
+      <section style={sectionStyle('departments_overview')} className="py-12 lg:py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('departments_overview', 'subtitle', 'Departments')}
             title={sectionValue('departments_overview', 'title', 'Twelve departments, one mission')}
             description={sectionValue('departments_overview', 'description', 'Each department focuses on a specific area of student life, working together to create a comprehensive support system.')}
           />
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {publicDepartments.map((dept, i) => (
-              <Link
-                key={dept.id}
-                href={`/departments#${dept.id}`}
-                className="group flex flex-col items-center text-center p-5 rounded-xl border border-border bg-card hover:shadow-premium hover:border-gold/30 transition-all duration-300 animate-fade-up"
-                style={{ animationDelay: `${i * 0.05}s` }}
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-navy/5 group-hover:gradient-navy transition-all duration-300 mb-3">
-                  <dept.icon className="h-7 w-7 text-navy group-hover:text-gold transition-colors" />
-                </div>
-                <span className="text-xs font-bold text-gold-dark mb-1">{dept.number}</span>
-                <h3 className="text-sm font-semibold leading-tight">{dept.name}</h3>
-              </Link>
-            ))}
+          {/*
+            Compact directory strip, deliberately not another card grid: the
+            What ASAM Does section above already presents the first six
+            departments as rich cards, so this section now works as a
+            scannable directory of all twelve instead of a visual repeat.
+            The departments_overview CMS section (header copy) is unchanged.
+          */}
+          <div className="mt-8 max-w-4xl mx-auto rounded-2xl border border-border bg-card px-4 py-3 shadow-premium sm:px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              {publicDepartments.map((dept) => (
+                <Link
+                  key={dept.id}
+                  href={`/departments#${dept.id}`}
+                  className="group flex items-baseline gap-3 rounded-lg px-3 py-3 transition-colors hover:bg-secondary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <span className="font-display text-sm font-bold text-gold-dark">{dept.number}</span>
+                  <span className="flex-1 text-sm font-semibold leading-snug">{dept.name}</span>
+                  <ArrowRight className="h-3.5 w-3.5 self-center text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* STUDENT NETWORK */}
-      <section style={sectionStyle('student_network')} className="py-10 lg:py-14 bg-secondary/30">
+      <section style={sectionStyle('student_network')} className="py-12 lg:py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center">
             <div>
@@ -397,7 +404,7 @@ export default function Home() {
                 <span className="h-px w-8 bg-gold" />
                 <span className="text-xs font-bold uppercase tracking-widest text-gold-dark">{sectionValue('student_network', 'subtitle', 'Student Network')}</span>
               </div>
-              <h2 className="font-display text-xl sm:text-2xl lg:text-[1.75rem] font-bold tracking-tight mb-4 text-balance">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-balance">
                 {sectionValue('student_network', 'title', 'From Kabul to Kuala Lumpur')}
               </h2>
               <p className="text-[0.9375rem] text-muted-foreground leading-relaxed mb-5">
@@ -439,7 +446,7 @@ export default function Home() {
       </section>
 
       {/* CHAPTERS */}
-      <section style={sectionStyle('chapters')} className="py-10 lg:py-14">
+      <section style={sectionStyle('chapters')} className="py-12 lg:py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('chapters', 'subtitle', 'Chapters')}
@@ -483,7 +490,7 @@ export default function Home() {
       </section>
 
       {/* UPCOMING EVENTS */}
-      <section style={sectionStyle('events')} className="py-10 lg:py-14 bg-secondary/30">
+      <section style={sectionStyle('events')} className="py-16 lg:py-24 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('events', 'subtitle', 'Events')}
@@ -540,7 +547,7 @@ export default function Home() {
       </section>
 
       {/* OPPORTUNITIES */}
-      <section style={sectionStyle('opportunities')} className="py-10 lg:py-14">
+      <section style={sectionStyle('opportunities')} className="py-12 lg:py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center">
             <div>
@@ -548,7 +555,7 @@ export default function Home() {
                 <span className="h-px w-8 bg-gold" />
               <span className="text-xs font-bold uppercase tracking-widest text-gold-dark">{sectionValue('opportunities', 'subtitle', 'Opportunities')}</span>
               </div>
-              <h2 className="font-display text-xl sm:text-2xl lg:text-[1.75rem] font-bold tracking-tight mb-4 text-balance">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-balance">
                 {sectionValue('opportunities', 'title', 'Your gateway to academic and professional growth')}
               </h2>
               <p className="text-[0.9375rem] text-muted-foreground leading-relaxed mb-5">
@@ -595,7 +602,7 @@ export default function Home() {
       </section>
 
       {/* ACADEMIC SUPPORT */}
-      <section style={sectionStyle('academic_support')} className="py-10 lg:py-14 bg-secondary/30">
+      <section style={sectionStyle('academic_support')} className="py-12 lg:py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('academic_support', 'subtitle', 'Academic Support')}
@@ -634,7 +641,7 @@ export default function Home() {
       </section>
 
       {/* CAREER & ENTREPRENEURSHIP */}
-      <section style={sectionStyle('career_entrepreneurship')} className="py-10 lg:py-14">
+      <section style={sectionStyle('career_entrepreneurship')} className="py-12 lg:py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center">
             <div className="order-2 lg:order-1">
@@ -664,7 +671,7 @@ export default function Home() {
                 <span className="h-px w-8 bg-gold" />
               <span className="text-xs font-bold uppercase tracking-widest text-gold-dark">{sectionValue('career_entrepreneurship', 'subtitle', 'Career & Entrepreneurship')}</span>
               </div>
-              <h2 className="font-display text-xl sm:text-2xl lg:text-[1.75rem] font-bold tracking-tight mb-4 text-balance">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-balance">
                 {sectionValue('career_entrepreneurship', 'title', 'Building professional pathways')}
               </h2>
               <p className="text-[0.9375rem] text-muted-foreground leading-relaxed mb-5">
@@ -683,7 +690,7 @@ export default function Home() {
       </section>
 
       {/* CULTURAL COMMUNITY */}
-      <section style={sectionStyle('cultural_community')} className="py-10 lg:py-14 bg-navy text-white relative overflow-hidden">
+      <section style={sectionStyle('cultural_community')} className="py-16 lg:py-24 bg-navy text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-gold/5 blur-3xl" />
         <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -693,7 +700,7 @@ export default function Home() {
                 <span className="h-px w-8 bg-gold" />
               <span className="text-xs font-bold uppercase tracking-widest text-gold">{sectionValue('cultural_community', 'subtitle', 'Culture & Community')}</span>
               </div>
-              <h2 className="font-display text-xl sm:text-2xl lg:text-[1.75rem] font-bold text-white mb-4 text-balance">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-4 text-balance">
                 {sectionValue('cultural_community', 'title', 'Celebrating Afghan heritage in Malaysia')}
               </h2>
               <p className="text-[0.9375rem] text-white/60 leading-relaxed mb-5">
@@ -739,7 +746,7 @@ export default function Home() {
       </section>
 
       {/* ALUMNI NETWORK */}
-      <section style={sectionStyle('alumni_network')} className="py-10 lg:py-14">
+      <section style={sectionStyle('alumni_network')} className="py-12 lg:py-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('alumni_network', 'subtitle', 'Alumni Network')}
@@ -774,7 +781,7 @@ export default function Home() {
       </section>
 
       {/* LATEST NEWS */}
-      <section style={sectionStyle('latest_news')} className="py-10 lg:py-14 bg-secondary/30">
+      <section style={sectionStyle('latest_news')} className="py-12 lg:py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('latest_news', 'subtitle', 'News & Stories')}
@@ -795,7 +802,7 @@ export default function Home() {
       </section>
 
       {/* FEATURED PROGRAMS */}
-      <section style={sectionStyle('featured_programs')} className="py-10 lg:py-14">
+      <section style={sectionStyle('featured_programs')} className="py-16 lg:py-24">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('featured_programs', 'subtitle', 'Flagship Initiatives')}
@@ -829,7 +836,7 @@ export default function Home() {
       </section>
 
       {/* PARTNERS */}
-      <section style={sectionStyle('partners')} className="py-10 lg:py-14 bg-secondary/30">
+      <section style={sectionStyle('partners')} className="py-12 lg:py-16 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={sectionValue('partners', 'subtitle', 'Partners')}
@@ -861,27 +868,17 @@ export default function Home() {
       />
 
       {/* NEWSLETTER */}
-      <section style={sectionStyle('newsletter')} className="py-10 lg:py-14">
+      <section style={sectionStyle('newsletter')} className="py-12 lg:py-16">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="font-display text-xl lg:text-2xl font-bold mb-3">{sectionValue('newsletter', 'title', 'Stay Connected')}</h2>
             <p className="text-muted-foreground mb-5">
               {sectionValue('newsletter', 'description', 'Subscribe to receive ASAM updates, event announcements, and opportunities directly to your inbox.')}
             </p>
-            <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-xl border border-border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold/40"
-              />
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl gradient-navy text-white font-semibold text-sm shadow-premium hover:shadow-premium-lg transition-all"
-              >
-                {sectionValue('newsletter', 'button_text', 'Subscribe')}
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </form>
+            <NewsletterForm
+              className="max-w-md mx-auto"
+              buttonLabel={sectionValue('newsletter', 'button_text', 'Subscribe')}
+            />
           </div>
         </div>
       </section>

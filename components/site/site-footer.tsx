@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { Mail, MapPin, ArrowRight, Phone } from 'lucide-react';
+import { Mail, MapPin, Phone } from 'lucide-react';
 import { footerNav } from '@/lib/data/navigation';
+import { NewsletterForm } from '@/components/site/newsletter-form';
 import { createClient } from '@/lib/supabase/server';
 
 const FOOTER_SETTINGS_TIMEOUT_MS = 10_000;
@@ -108,20 +109,7 @@ export async function SiteFooter() {
                 Subscribe to receive ASAM updates, event announcements, and opportunities.
               </p>
             </div>
-            <form className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-xl border border-border bg-background text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold/40"
-              />
-              <button
-                type="submit"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl gradient-navy text-white text-sm font-semibold shadow-premium hover:shadow-premium-lg hover:scale-[1.02] transition-all"
-              >
-                Subscribe
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
 
