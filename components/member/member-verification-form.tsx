@@ -51,7 +51,7 @@ export function MemberVerificationForm() {
             value={memberId}
             onChange={(event) => setMemberId(event.target.value)}
             disabled={busy}
-            className="w-full rounded-lg border border-gray-200 bg-white py-3 pl-10 pr-4 font-mono text-sm uppercase tracking-wide text-gray-900 outline-none focus:border-navy/40 focus:ring-2 focus:ring-navy/10"
+            className="w-full rounded-lg border border-gray-200 bg-white py-3 pl-10 pr-4 font-mono text-base uppercase tracking-wide text-gray-900 outline-none focus:border-navy/40 focus:ring-2 focus:ring-navy/10"
           />
         </div>
         {error && (

@@ -9,25 +9,29 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // Refined display scale, pass 2. The workhorse sizes (2xl/3xl/4xl) are
-      // intentionally left alone so body-adjacent text stays comfortable;
-      // only the oversized top of the range is pulled back.
+      // Editorial display scale, rebuilt 2026-10-19 on measured evidence.
       //
-      // The clamp() minimum is what these sizes collapse to on a 320-430px
-      // phone, and the maximum is the previous fixed value reached at the
-      // xl breakpoint (1280px). Previously every one of these was a single fixed
-      // pixel value, so a 3xl heading rendered at 1.625rem on a 320px screen and
-      // wrapped into a stack of oversized lines - the "site looks enormous on
-      // mobile" report. Each size now grows with the viewport, so small screens
-      // get proportionally smaller text while the desktop rendering at xl and
-      // above is byte-for-byte identical to before.
+      // The previous scale was deliberately pulled back during the "visual
+      // polish" passes and, combined with the then-active 85% root font-size,
+      // produced a measured 27px hero H1 / 24px section H2 on desktop - a
+      // nearly flat hierarchy. With the root font restored to 100%, these
+      // clamps establish a real editorial scale:
+      //   2xl 22-24px | 3xl 24-28px (H3) | 4xl 28-34px | 5xl 32-44px (H2)
+      //   6xl 36-52px (page H1) | 7xl 40-64px (display)
+      //
+      // Each size is a clamp(): the minimum is what renders on a 320-430px
+      // phone, the maximum is reached around the xl breakpoint, so small
+      // screens get proportionally smaller text without hand-tuned overrides.
+      // Line heights are unitless ratios so they track the fluid size, and
+      // the largest steps get progressively tighter tracking, matching
+      // editorial display-type convention.
       fontSize: {
-        '2xl': ['clamp(1.25rem, 1.2083rem + 0.2083vw, 1.375rem)', { lineHeight: '1.75rem' }],
-        '3xl': ['clamp(1.375rem, 1.2917rem + 0.4167vw, 1.625rem)', { lineHeight: '2rem' }],
-        '4xl': ['clamp(1.5rem, 1.375rem + 0.625vw, 1.875rem)', { lineHeight: '2.25rem' }],
-        '5xl': ['clamp(1.625rem, 1.4583rem + 0.8333vw, 2.125rem)', { lineHeight: '2.375rem' }],
-        '6xl': ['clamp(1.75rem, 1.5rem + 1.25vw, 2.5rem)', { lineHeight: '2.75rem' }],
-        '7xl': ['clamp(1.875rem, 1.5rem + 1.875vw, 3rem)', { lineHeight: '3.25rem' }],
+        '2xl': ['clamp(1.375rem, 1.32rem + 0.275vw, 1.5rem)', { lineHeight: '1.3' }],
+        '3xl': ['clamp(1.5rem, 1.42rem + 0.4vw, 1.75rem)', { lineHeight: '1.25' }],
+        '4xl': ['clamp(1.75rem, 1.61rem + 0.7vw, 2.125rem)', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
+        '5xl': ['clamp(2rem, 1.78rem + 1.1vw, 2.75rem)', { lineHeight: '1.15', letterSpacing: '-0.015em' }],
+        '6xl': ['clamp(2.25rem, 1.95rem + 1.5vw, 3.25rem)', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        '7xl': ['clamp(2.5rem, 2.1rem + 2vw, 4rem)', { lineHeight: '1.05', letterSpacing: '-0.025em' }],
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],

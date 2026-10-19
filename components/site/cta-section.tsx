@@ -31,23 +31,23 @@ export function CTASection({
           <div className="absolute inset-0 bg-grid opacity-10" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-gold/10 blur-3xl" />
           <div className="relative">
-            <h2 className="font-display text-xl sm:text-2xl lg:text-[1.75rem] font-bold text-white text-balance">
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white text-balance">
               {title}
             </h2>
-            <p className="mt-3 text-sm text-white/70 max-w-xl mx-auto leading-relaxed">
+            <p className="mt-3 text-base text-white/70 max-w-xl mx-auto leading-relaxed">
               {description}
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href={primaryHref}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold text-navy font-semibold shadow-gold hover:scale-[1.02] transition-all duration-300"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold text-navy font-semibold shadow-gold hover:scale-[1.02] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
               >
                 {primaryLabel}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href={secondaryHref}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/10 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/10 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
               >
                 {secondaryLabel}
               </Link>

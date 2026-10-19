@@ -29,7 +29,15 @@
     --navy-light: 222 40% 18%;
     --navy-lighter: 222 35% 25%;
     --gold: 43 74% 66%;
-    --gold-dark: 43 70% 50%;
+    /*
+     * gold-dark is the *text* grade of the brand gold (eyebrows, small links,
+     * category labels, badges). The previous 50% lightness measured 2.13:1 on
+     * ivory - well below the WCAG AA 4.5:1 required for the 12-14px text it is
+     * used for. 30% lightness measures ~5.06:1 on ivory and ~4.7:1 on the
+     * bg-gold/10 tint, while staying recognizably bronze-gold next to navy.
+     * Decorative gold (backgrounds, gradients, borders) still uses --gold.
+     */
+    --gold-dark: 43 78% 30%;
     --ivory: 40 30% 98%;
     --ivory-dark: 40 20% 94%;
 
@@ -69,19 +77,21 @@
   }
   html {
     /*
-     * Global density scale (15% smaller UI).
+     * Root type scale: 100% (16px default).
      *
-     * Every Tailwind size utility - text, padding, gaps, card and box
-     * dimensions, menu sizing - is expressed in rem, so this single value
-     * scales the whole design system proportionally instead of editing
-     * hundreds of components.
+     * This was 85% for a period (a "density scale" experiment). Measured
+     * evidence from the 2026-10-19 design audit showed the result was an
+     * undersized system: a 27px hero headline and 13.6px body text on desktop,
+     * which read as timid and fell below comfortable-reading guidance. Every
+     * Tailwind utility is rem-based, so this single value scales the whole
+     * design system proportionally - 100% restores the intended scale without
+     * editing individual components.
      *
-     * Deliberately a percentage rather than a fixed `13.6px`: percentages
-     * resolve against the reader's own browser font-size preference, so a
-     * visitor who has increased their default text size keeps that
-     * relative setting. Hard-coding pixels would override it.
+     * Kept as a percentage rather than a fixed pixel value so it resolves
+     * against the reader's own browser font-size preference: a visitor who
+     * has increased their default text size keeps that relative setting.
      */
-    font-size: 85%;
+    font-size: 100%;
     /*
      * Mobile overflow guard.
      *

@@ -31,11 +31,11 @@ export function PageHero({
               </span>
             </div>
           )}
-          <h1 className="font-display text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-bold tracking-tight text-balance">
+          <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-balance">
             {title}
           </h1>
           {description && (
-            <p className="mt-4 text-base text-muted-foreground leading-relaxed text-pretty max-w-xl">
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed text-pretty max-w-xl">
               {description}
             </p>
           )}
