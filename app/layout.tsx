@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'sw
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair', display: 'swap' });
 
 const baseMetadata: Metadata = {
-  // Resolves absolute URLs for Open Graph/Twitter images and canonical links.
+  // Resolves relative metadata URLs against the configured public site origin.
   metadataBase: new URL(getServerSiteUrl()),
   title: {
     default: 'Afghan Students Association of Malaysia (ASAM)',
@@ -27,10 +27,10 @@ const baseMetadata: Metadata = {
     'university network',
   ],
   authors: [{ name: 'ASAM' }],
+  icons: { icon: '/logo-512.png' },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://asam.org.my',
     siteName: 'Afghan Students Association of Malaysia',
     title: 'Afghan Students Association of Malaysia (ASAM)',
     description:
@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
       ...baseMetadata,
       title: { default: title, template: `%s — ${organization}` },
       description: data.tagline || baseMetadata.description,
-      icons: data.favicon_url && ((data.favicon_url.startsWith('/') && !data.favicon_url.startsWith('//')) || /^https:\/\//i.test(data.favicon_url)) ? { icon: data.favicon_url } : undefined,
+      icons: data.favicon_url && ((data.favicon_url.startsWith('/') && !data.favicon_url.startsWith('//')) || /^https:\/\//i.test(data.favicon_url)) ? { icon: data.favicon_url } : baseMetadata.icons,
       openGraph: { ...baseMetadata.openGraph, siteName: organization, title, description: data.tagline || baseMetadata.description },
     };
   } catch {
@@ -88,7 +88,7 @@ export default async function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <body className="font-sans min-h-screen flex flex-col">
         <SiteHeader logoUrl={resolveLogoUrl(logoUrl)} />
-        <main className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">{children}</main>
         <SiteFooter />
       </body>
     </html>

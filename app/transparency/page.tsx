@@ -19,7 +19,7 @@ export default async function TransparencyPage() {
         pageKey="transparency"
         eyebrow="Transparency"
         title="Accountability and openness"
-        description="ASAM is committed to operating with full transparency. This page provides information about our governance, policies, and accountability framework."
+        description="Find the governance information and official documents ASAM has published. Some policies and supporting materials are still being finalized."
       />
 
       {/* Transparency Pillars */}
@@ -49,7 +49,7 @@ export default async function TransparencyPage() {
             pageKey="transparency"
             eyebrow="Documents"
             title="Official documents"
-            description="ASAM's official documents will be published here once they are finalized and approved."
+            description="Published official documents appear here. Materials still under review are not presented as approved policies."
           />
           {documentsError ? <p role="status" className="mt-6 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">Official documents are temporarily unavailable.</p> : documents?.length ? <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {documents.map((item, i) => (
@@ -80,11 +80,9 @@ export default async function TransparencyPage() {
           />
           <div className="mt-6 p-5 rounded-xl border border-border bg-card shadow-premium space-y-4">
             <ManagedPageItemCards pageKey="transparency" collectionKey="privacy" variant="sections" fallback={[
-              { title: 'Data Collection', description: 'ASAM collects member information necessary for membership management, including name, university enrollment, contact details, and membership preferences. We do not collect sensitive personal information such as passport numbers or financial details through the website.' },
-              { title: 'Data Usage', description: 'Member data is used for membership verification, communication, event registration, and community building. We do not sell or share member data with third parties.' },
-              { title: 'Data Protection', description: 'ASAM implements appropriate security measures to protect member data. Access to member data is restricted to authorized personnel only. The full privacy policy will be published once finalized.' },
-              { title: 'Member Rights', description: 'Members have the right to access, update, and request deletion of their personal data. Members can control the visibility of their profile information through the member portal.' },
-              { title: 'Malaysian Data Protection', description: 'ASAM is designed to comply with applicable Malaysian data protection obligations, including the Personal Data Protection Act (PDPA). The full compliance framework will be published once finalized.' },
+              { title: 'Privacy information', description: 'ASAM has not yet published a finalized privacy policy. This page should not be treated as a complete statement of how personal information is collected, used, shared, retained, or protected.' },
+              { title: 'Questions about personal information', description: 'For questions about information submitted through ASAM forms, contact ASAM through the public contact page. A complete privacy notice should be published before visitors are asked to rely on detailed privacy terms.' },
+              { title: 'Policy status', description: 'Detailed data rights, retention periods, security measures, and applicable compliance information require confirmation in ASAM’s approved privacy policy.' },
             ]} />
           </div>
         </div>

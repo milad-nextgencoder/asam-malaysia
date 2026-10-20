@@ -55,7 +55,7 @@ export default function WebDeveloperPage() {
 
             {/* Identity */}
             <div className="mt-5 text-center">
-              <h1 className="font-display text-2xl lg:text-[1.75rem] font-bold">{developer.name}</h1>
+              <h2 className="font-display text-2xl lg:text-[1.75rem] font-bold">{developer.name}</h2>
               <p className="mt-1.5 text-sm font-semibold text-gold-dark">{developer.title}</p>
               <div className="mt-2.5 flex items-center justify-center gap-2">
                 <GraduationCap className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />

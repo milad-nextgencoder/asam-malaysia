@@ -18,7 +18,7 @@ export default function MembershipPage() {
         pageKey="membership"
         eyebrow="Membership"
         title="Join the ASAM community"
-        description="Become part of a growing national platform connecting Afghan students across Malaysia. Your journey starts here."
+        description="Review the published membership information and application steps for Afghan students and community supporters in Malaysia."
       >
         <div className="flex flex-col sm:flex-row gap-4">
           <a
@@ -43,15 +43,15 @@ export default function MembershipPage() {
           <SectionHeader
             pageKey="membership"
             eyebrow="Why Join"
-            title="Five reasons to become a member"
-            description="ASAM membership gives you access to a national community, resources, opportunities, and a platform that supports your journey in Malaysia."
+            title="Ways to take part"
+            description="These are areas ASAM aims to support. Availability depends on current published programs and opportunities."
           />
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
             <ManagedPageItemCards pageKey="membership" collectionKey="benefits" fallback={[
               { title: 'Community', description: 'Connect with Afghan students across all Malaysian universities', icon: 'Users' },
-              { title: 'Academic Support', description: 'Access scholarships, mentorship, and academic resources', icon: 'GraduationCap' },
-              { title: 'Opportunities', description: 'Discover internships, jobs, competitions, and training programs', icon: 'Award' },
-              { title: 'Welfare Support', description: 'Get orientation support, peer connections, and referral resources', icon: 'Heart' },
+              { title: 'Academic Support', description: 'Find scholarship listings and academic resources published by ASAM', icon: 'GraduationCap' },
+              { title: 'Opportunities', description: 'Browse current internships, jobs, and programs when listings are available', icon: 'Award' },
+              { title: 'Welfare Support', description: 'Explore published student guidance and contact ASAM with questions', icon: 'Heart' },
               { title: 'Network', description: 'Build professional and social connections for life', icon: 'Handshake' },
             ]} cardClassName="p-6 rounded-2xl border border-border bg-card shadow-premium hover:shadow-premium-lg transition-all duration-300" iconClassName="h-6 w-6 text-gold mb-4" />
           </div>
@@ -65,7 +65,7 @@ export default function MembershipPage() {
             pageKey="membership"
             eyebrow="Membership Types"
             title="Choose the right membership for you"
-            description="ASAM offers five membership categories designed to serve different members of the community."
+            description="The categories below describe the membership types currently presented by ASAM. Confirm eligibility and availability through the application process."
           />
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <ManagedPageItemCards pageKey="membership" collectionKey="membership_types" variant="membership" fallback={membershipTypes.map((type) => ({

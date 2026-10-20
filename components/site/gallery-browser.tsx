@@ -1,13 +1,11 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { SectionHeader } from '@/components/site/section-header';
 import { EmptyState } from '@/components/site/empty-state';
 import { cn } from '@/lib/utils';
 import { Image as ImageIcon, X } from 'lucide-react';
-
-const galleryCategories = ['All', 'Events', 'Students', 'Culture', 'Sports', 'Conferences', 'Leadership', 'Community', 'Academic', 'Other'];
 
 /**
  * Interactive gallery (category filter, album cards, image grid, lightbox).
@@ -19,18 +17,44 @@ const galleryCategories = ['All', 'Events', 'Students', 'Culture', 'Sports', 'Co
 export function GalleryBrowser({ albums, items }: { albums: any[]; items: any[] }) {
   const [filter, setFilter] = useState('All');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const galleryCategories = ['All', ...Array.from(new Set(albums.map((album) => album.category).filter(Boolean))) as string[]];
   const visibleItems = useMemo(() => items.filter((item) => filter === 'All' || albums.find((album) => album.id === item.album_id)?.category === filter), [items, albums, filter]);
   const visibleAlbums = albums.filter((album) => filter === 'All' || album.category === filter);
+
+  useEffect(() => {
+    if (!selectedImage) return;
+    const returnFocus = returnFocusRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') setSelectedImage(null); };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+      returnFocus?.focus();
+    };
+  }, [selectedImage]);
+
+  function openImage(url: string) {
+    returnFocusRef.current = document.activeElement as HTMLElement | null;
+    setSelectedImage(url);
+  }
 
   return (
     <>
       <section className="py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader eyebrow="Gallery" title="Published albums and photographs" description="Browse ASAM event and community photographs." className="mb-6" />
           {/* Filters */}
           <div className="flex flex-wrap gap-2 mb-8">
             {galleryCategories.map((cat) => (
               <button
                 key={cat}
+                type="button"
+                aria-pressed={filter === cat}
                 onClick={() => setFilter(cat)}
                 className={cn(
                   'px-4 py-2 rounded-full text-sm font-medium transition-all',
@@ -57,8 +81,9 @@ export function GalleryBrowser({ albums, items }: { albums: any[]; items: any[] 
               <button
                 key={item.id}
                 type="button"
-                onClick={() => setSelectedImage(item.image_url)}
-                className="overflow-hidden rounded-xl border border-border bg-card shadow-premium hover:border-gold/30 transition-all duration-300 animate-fade-up text-left"
+                onClick={() => openImage(item.image_url)}
+                aria-label={`Open photo: ${item.title || item.caption || `ASAM gallery image ${i + 1}`}`}
+                className="overflow-hidden rounded-xl border border-border bg-card shadow-premium hover:border-gold/30 transition-all duration-300 animate-fade-up text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 style={{ animationDelay: `${i * 0.04}s` }}
               >
                 <img
@@ -70,21 +95,26 @@ export function GalleryBrowser({ albums, items }: { albums: any[]; items: any[] 
               </button>
             ))}
           </div>}
-          {!visibleAlbums.length && !visibleItems.length && <EmptyState title="No published albums yet" message="ASAM photo albums will appear here after an administrator publishes them."/>}
+          {!visibleAlbums.length && !visibleItems.length && <EmptyState title={filter === 'All' ? 'No published albums yet' : `No ${filter.toLowerCase()} photos published`} message={filter === 'All' ? 'ASAM photo albums will appear here after they are published.' : 'Try another category to view published photographs.'}/>}
         </div>
       </section>
 
       {selectedImage && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Photo preview"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-          onClick={() => setSelectedImage(null)}
+          onClick={(event) => { if (event.target === event.currentTarget) setSelectedImage(null); }}
+          onKeyDown={(event) => { if (event.key === 'Tab') { event.preventDefault(); closeButtonRef.current?.focus(); } }}
         >
           <div className="relative max-w-5xl w-full rounded-2xl bg-background p-3 shadow-2xl">
             <button
+              ref={closeButtonRef}
               type="button"
               onClick={() => setSelectedImage(null)}
-              className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white"
-              aria-label="Close image"
+              className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              aria-label="Close photo preview"
             >
               <X className="h-5 w-5" />
             </button>
@@ -97,17 +127,6 @@ export function GalleryBrowser({ albums, items }: { albums: any[]; items: any[] 
         </div>
       )}
 
-      {/* Albums */}
-      <section className="py-10">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Albums"
-            title="Photo albums"
-            description="Browse albums from past ASAM events and activities."
-          />
-          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{visibleAlbums.map((album)=><Link key={album.id} href={`/gallery/${album.id}`} className="rounded-xl border bg-card p-5 hover:border-gold/40"><h3 className="font-display font-semibold">{album.name}</h3><p className="mt-1 text-xs text-muted-foreground">{album.category || 'Gallery'} · View album</p></Link>)}</div>
-        </div>
-      </section>
     </>
   );
 }

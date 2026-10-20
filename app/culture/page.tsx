@@ -2,6 +2,7 @@ import { ManagedPageHero as PageHero, ManagedSectionHeader as SectionHeader, Man
 import { EmptyState } from '@/components/site/empty-state';
 import { ManagedPageItemCards } from '@/components/site/managed-page-items';
 import { PublicEventList } from '@/components/site/public-event-list';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Culture & Heritage',
@@ -134,10 +135,7 @@ export default function CulturePage() {
             description="Real stories from Afghan students about their journey, their culture, and their life in Malaysia."
           />
           <div className="mt-6">
-            <EmptyState
-              title="Stories Coming Soon"
-              message="ASAM will feature authentic stories from Afghan students about their experiences, their culture, and their life in Malaysia. If you have a story to share, contact us."
-            />
+            <p className="rounded-xl border border-border bg-card p-5 text-sm leading-relaxed text-muted-foreground">No student stories have been published yet. If you would like to share your experience, <Link href="/contact" className="font-semibold text-gold-dark underline">contact ASAM</Link>.</p>
           </div>
         </div>
       </section>

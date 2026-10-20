@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function JoinAsamPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border/50">
         <div className="absolute inset-0 bg-gradient-to-br from-navy/[0.07] via-transparent to-gold/[0.08]" />
@@ -256,7 +256,7 @@ export default function JoinAsamPage() {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 

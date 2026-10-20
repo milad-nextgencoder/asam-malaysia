@@ -8,7 +8,7 @@ import { createPublicClient } from '@/lib/supabase/server';
 export const metadata = {
   title: 'Chapters',
   description:
-    'ASAM is building state, city, and university chapters across Malaysia. Explore the growing national chapter network.',
+    'Browse chapter locations published by ASAM, including locations that are active or planned.',
 };
 
 // Chapter list is cached with 60s ISR; admin content actions also call
@@ -32,8 +32,8 @@ export default async function ChaptersPage() {
     <>
       <PageHero
         eyebrow="Chapters"
-        title="A growing national chapter network"
-        description="ASAM is building state, city, and university chapters across Malaysia. Chapter information will appear here as new chapters are established."
+        title="ASAM chapters"
+        description="Browse chapter locations published by ASAM. Locations marked as planned are not yet active."
       />
 
       <ChaptersBrowser chapters={chapters} />
@@ -43,8 +43,8 @@ export default async function ChaptersPage() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="City & University Chapters"
-            title="Local community chapters"
-            description="City and university chapters bring the ASAM community to your doorstep. These chapters will be established as the network grows."
+            title="City and university locations"
+            description="This directory separates published chapter locations from locations still being planned."
           />
           <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-5">
             <div>
@@ -65,9 +65,9 @@ export default async function ChaptersPage() {
 
       <CTASection
         title="Start a chapter at your university"
-        description="If your university or state does not yet have an ASAM chapter, you can help start one. Join ASAM and express your interest in becoming a chapter leader."
+        description="Interested in an ASAM chapter at your university? Contact ASAM to ask about current plans and how to express your interest."
         primaryLabel="Join ASAM"
-        primaryHref="/membership"
+        primaryHref="/contact"
         secondaryLabel="View Universities"
         secondaryHref="/universities"
       />

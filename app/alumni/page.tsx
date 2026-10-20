@@ -3,6 +3,7 @@ import { EmptyState } from '@/components/site/empty-state';
 import { ManagedPageItemCards } from '@/components/site/managed-page-items';
 import { getPublishedPageSection } from '@/lib/page-sections';
 import { ArrowRight, Heart } from 'lucide-react';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Alumni Network',
@@ -56,9 +57,10 @@ export default async function AlumniPage() {
           />
           <div className="mt-6">
             <EmptyState
-              title="Alumni Directory Coming Soon"
-              message="ASAM is building an alumni directory. Alumni profiles, professional stories, and mentorship connections will appear here as alumni register."
+              title="No alumni profiles published yet"
+              message="A public alumni directory is not available on this page yet. Alumni who want to connect with ASAM can use the contact page."
             />
+            <Link href="/contact" className="mt-4 inline-flex text-sm font-semibold text-gold-dark underline">Contact ASAM about the alumni network</Link>
           </div>
         </div>
       </section>
@@ -69,8 +71,8 @@ export default async function AlumniPage() {
           <SectionHeader
             pageKey="alumni"
             eyebrow="Alumni Programs"
-            title="Ways to stay connected"
-            description="ASAM offers multiple ways for alumni to stay engaged with the community."
+            title="Alumni connection areas"
+            description="These are ways ASAM aims to involve alumni as the network develops."
           />
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="alumni" collectionKey="programs" fallback={[

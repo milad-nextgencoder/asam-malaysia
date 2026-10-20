@@ -30,7 +30,7 @@ export function NewsBrowser({ articles }: { articles: any[] }) {
               <div className="bg-navy p-12 flex items-center justify-center text-center min-h-[255px]">
                 {filtered[0].featured_image_url ? <img src={filtered[0].featured_image_url} alt="" className="max-h-[255px] w-full object-cover"/> : <div>
                   <Newspaper className="h-16 w-16 text-gold mx-auto mb-4" />
-                  <p className="text-white/40 text-sm">Featured Article — Coming Soon</p>
+                  <p className="text-white/70 text-sm">{filtered[0].category || 'ASAM News'}</p>
                 </div>}
               </div>
               <div className="p-6 lg:p-6">
@@ -55,9 +55,11 @@ export function NewsBrowser({ articles }: { articles: any[] }) {
         {/* Search & Filters */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <label htmlFor="news-search" className="sr-only">Search articles</label>
+            <Search aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <input
-              type="text"
+              id="news-search"
+              type="search"
               placeholder="Search articles..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -70,6 +72,8 @@ export function NewsBrowser({ articles }: { articles: any[] }) {
           {categories.map((cat) => (
             <button
               key={cat}
+              type="button"
+              aria-pressed={filter === cat}
               onClick={() => setFilter(cat)}
               className={cn(
                 'px-4 py-2 rounded-full text-sm font-medium transition-all',
@@ -82,7 +86,8 @@ export function NewsBrowser({ articles }: { articles: any[] }) {
         </div>
 
         {/* Articles */}
-        {filtered.length > (filtered[0] ? 1 : 0) ? <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{filtered.slice(filtered[0] ? 1 : 0).map((article) => <article key={article.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-premium">{article.featured_image_url && <img src={article.featured_image_url} alt="" className="h-36 w-full object-cover"/>}<div className="p-5">{article.category && <span className="text-xs font-semibold text-gold-dark">{article.category}</span>}<h2 className="mt-2 font-display text-lg font-bold">{article.title}</h2>{article.excerpt && <p className="mt-2 text-sm text-muted-foreground">{article.excerpt}</p>}<details className="mt-4 text-sm"><summary className="cursor-pointer font-semibold text-gold-dark">Read article</summary><p className="mt-3 whitespace-pre-wrap leading-relaxed text-muted-foreground">{article.content || article.excerpt || ''}</p></details></div></article>)}</div> : !filtered.length && <EmptyState title="No Articles Yet" message="Published ASAM stories and announcements will appear here when available."/>}
+        <p role="status" aria-live="polite" className="sr-only">Showing {filtered.length} articles</p>
+        {!filtered.length ? <EmptyState title={articles.length ? 'No matching articles' : 'No articles published yet'} message={articles.length ? 'No published articles match your search and category filters. Try changing them.' : 'Published ASAM stories and announcements will appear here when available.'}/> : filtered.length > (filtered[0] ? 1 : 0) ? <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{filtered.slice(filtered[0] ? 1 : 0).map((article) => <article key={article.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-premium">{article.featured_image_url && <img src={article.featured_image_url} alt="" className="h-36 w-full object-cover"/>}<div className="p-5">{article.category && <span className="text-xs font-semibold text-gold-dark">{article.category}</span>}<h2 className="mt-2 font-display text-lg font-bold">{article.title}</h2>{article.excerpt && <p className="mt-2 text-sm text-muted-foreground">{article.excerpt}</p>}<details className="mt-4 text-sm"><summary className="cursor-pointer font-semibold text-gold-dark">Read article</summary><p className="mt-3 whitespace-pre-wrap leading-relaxed text-muted-foreground">{article.content || article.excerpt || ''}</p></details></div></article>)}</div> : null}
       </div>
     </section>
   );

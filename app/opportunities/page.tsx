@@ -14,7 +14,22 @@ export default function OpportunitiesPage() {
   const [filter, setFilter] = useState('All');
   const [search, setSearch] = useState('');
   const [loadFailed, setLoadFailed] = useState(false);
-  useEffect(() => { const supabase = createClient(); supabase.from('opportunities').select('id,title,organization,category,description,eligibility,location,deadline,application_url,image_url').eq('status', 'published').order('deadline', { ascending: true, nullsFirst: false }).then(({ data, error }) => { setOpportunities(data ?? []); setLoadFailed(Boolean(error)); }); }, []);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let active = true;
+    const supabase = createClient();
+    void supabase.from('opportunities').select('id,title,organization,category,description,eligibility,location,deadline,application_url,image_url').eq('status', 'published').order('deadline', { ascending: true, nullsFirst: false }).then(({ data, error }) => {
+      if (!active) return;
+      setOpportunities(data ?? []);
+      setLoadFailed(Boolean(error));
+      setLoading(false);
+    }, () => {
+      if (!active) return;
+      setLoadFailed(true);
+      setLoading(false);
+    });
+    return () => { active = false; };
+  }, []);
   const opportunityCategories = Array.from(new Set(opportunities.map((item) => item.category).filter(Boolean))) as string[];
   const isOpen = (item: any) => !item.deadline || new Date(`${item.deadline}T23:59:59`) >= new Date();
 
@@ -37,8 +52,10 @@ export default function OpportunitiesPage() {
           {/* Search & Filter */}
           <div className="flex flex-col sm:flex-row gap-4 mb-5">
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <label htmlFor="opportunity-search" className="sr-only">Search opportunities</label>
+                <Search aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <input
+                id="opportunity-search"
                 type="text"
                 placeholder="Search opportunities..."
                 value={search}
@@ -52,6 +69,8 @@ export default function OpportunitiesPage() {
             {['All', ...opportunityCategories].map((cat) => (
               <button
                 key={cat}
+                type="button"
+                aria-pressed={filter === cat}
                 onClick={() => setFilter(cat)}
                 className={cn(
                   'px-4 py-2 rounded-full text-sm font-medium transition-all',
@@ -64,7 +83,7 @@ export default function OpportunitiesPage() {
           </div>
 
           {/* Opportunity Cards */}
-          {filtered.length > 0 ? (
+          {loading ? <p role="status" className="rounded-xl border border-border bg-card p-5 text-sm text-muted-foreground">Loading published opportunities…</p> : loadFailed ? <p role="status" className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">Opportunities could not be loaded right now. Please try again later.</p> : filtered.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {filtered.map((opp, i) => (
                 <div
@@ -112,7 +131,7 @@ export default function OpportunitiesPage() {
                       rel={opp.application_url?.startsWith('http') ? 'noreferrer' : undefined}
                       className="inline-flex items-center gap-1 text-sm font-semibold text-gold-dark hover:gap-2 transition-all"
                     >
-                      Apply Now
+                      {opp.application_url ? 'Apply now' : 'Ask about this opportunity'}
                       <ArrowRight className="h-4 w-4" />
                     </a>
                   )}

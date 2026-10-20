@@ -19,8 +19,8 @@ export default async function WelfarePage() {
       <PageHero
         pageKey="welfare"
         eyebrow="Student Welfare"
-        title="Supporting you every step of the way"
-        description="ASAM's Student Welfare department provides informational and community support for new and continuing students — from orientation to peer support and referral resources."
+        title="Student welfare information"
+        description="Explore guidance published by ASAM. Contact the association to confirm which community support or referral programs are currently available."
       />
 
       {/* Important Notice */}
@@ -47,8 +47,8 @@ export default async function WelfarePage() {
           <SectionHeader
             pageKey="welfare"
             eyebrow="New Student Guide"
-            title="Welcome to Malaysia"
-            description="A guide for new Afghan students arriving in Malaysia — everything you need to know to get started."
+            title="Topics for new students"
+            description="The topics below are areas of practical guidance for students arriving in Malaysia. Confirm current details with your university and relevant authorities."
           />
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="welfare" collectionKey="new_student_guide" fallback={[
@@ -69,8 +69,8 @@ export default async function WelfarePage() {
           <SectionHeader
             pageKey="welfare"
             eyebrow="Orientation"
-            title="ASAM New Student Orientation"
-            description="A virtual welcome session for new Afghan students arriving in Malaysia."
+            title="New student orientation"
+            description="Orientation information will be published here when a session is scheduled. Contact ASAM to ask about current arrangements."
           />
           <div className="mt-6 max-w-3xl mx-auto p-5 rounded-xl border border-border bg-card shadow-premium">
             <div className="flex items-center gap-4 mb-5">
@@ -78,12 +78,12 @@ export default async function WelfarePage() {
                 <Users className="h-7 w-7 text-gold" />
               </div>
               <div>
-                <h3 className="font-display text-xl font-bold">{orientation?.title || 'New Student Welcome & Orientation'}</h3>
-                <p className="text-sm text-muted-foreground">{orientation?.subtitle || 'A virtual session for new students'}</p>
+                <h3 className="font-display text-xl font-bold">{orientation?.title || 'No session currently published'}</h3>
+                <p className="text-sm text-muted-foreground">{orientation?.subtitle || 'Check back for confirmed dates and format'}</p>
               </div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-              {orientation?.body || 'Join our virtual orientation session to learn about university life, living in Malaysia, student resources, and how to connect with the ASAM community. This session is designed for new Afghan students and covers everything you need to know to get started.'}
+              {orientation?.body || 'ASAM has not published details for an upcoming orientation session. For general student guidance, contact your university’s international office.'}
             </p>
             <div className="grid grid-cols-2 gap-4 mb-5">
               <div className="p-3 rounded-xl bg-secondary/40">
@@ -129,8 +129,8 @@ export default async function WelfarePage() {
           <SectionHeader
             pageKey="welfare"
             eyebrow="Peer Support"
-            title="You are not alone"
-            description="ASAM's peer support network connects you with fellow students who understand what you're going through."
+            title="Peer connection and referrals"
+            description="These are support areas ASAM may develop. Contact ASAM to ask what peer connections or referrals are currently available."
           />
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="welfare" collectionKey="peer_support" fallback={[

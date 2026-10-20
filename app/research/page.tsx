@@ -6,7 +6,7 @@ import { createPublicClient } from '@/lib/supabase/server';
 
 export const metadata = {
   title: 'Research & Policy',
-  description: 'Research center, student surveys, publications, reports, data analysis, and policy discussions from ASAM.',
+  description: 'Published reports, research materials, and policy publications from ASAM.',
 };
 
 export const revalidate = 60;
@@ -24,8 +24,8 @@ export default async function ResearchPage() {
       <PageHero
         pageKey="research"
         eyebrow="Research & Policy"
-        title="The ASAM research center"
-        description="Generating data, research, and policy insights to better understand and serve the Afghan student community in Malaysia."
+        title="Research & policy"
+        description="Published reports and research materials from ASAM, when available."
       />
 
       {/* Research Center */}
@@ -34,18 +34,11 @@ export default async function ResearchPage() {
           <SectionHeader
             pageKey="research"
             eyebrow="Research Center"
-            title="Understanding our community through data"
-            description="ASAM is building a research program to study the needs, challenges, and aspirations of Afghan students in Malaysia."
+            title="Research areas"
+            description="ASAM identifies student research, surveys, publications, and policy work as areas of interest. Current public materials are listed below."
           />
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <ManagedPageItemCards pageKey="research" collectionKey="research_cards" fallback={[
-              { title: 'Student Research', description: 'Supporting student-led research projects about the Afghan student experience in Malaysia.', icon: 'FlaskConical' },
-              { title: 'Surveys', description: 'Regular community surveys to understand member needs and gather feedback.', icon: 'BarChart3' },
-              { title: 'Publications', description: 'Research publications, working papers, and policy briefs.', icon: 'FileText' },
-              { title: 'Reports', description: 'Annual and special reports on the state of the Afghan student community.', icon: 'Database' },
-              { title: 'Data Analysis', description: 'Data-driven insights to inform ASAM programs and advocacy.', icon: 'TrendingUp' },
-              { title: 'Policy Research', description: 'Research on policies affecting Afghan students in Malaysia.', icon: 'BookOpen' },
-            ]} cardClassName="group p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300" iconClassName="h-6 w-6 text-navy mb-4" />
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ManagedPageItemCards pageKey="research" collectionKey="research_cards" fallback={[]} cardClassName="rounded-xl border border-border bg-card p-5 shadow-premium" />
           </div>
         </div>
       </section>
@@ -56,22 +49,11 @@ export default async function ResearchPage() {
           <SectionHeader
             pageKey="research"
             eyebrow="Data & Insights"
-            title="Visualizing our community"
-            description="Data visualizations and insights about the Afghan student community in Malaysia will be published here."
+            title="Published community data"
+            description="Verified figures from ASAM are shown here when available."
           />
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <ManagedPageItemCards pageKey="research" collectionKey="statistics" fallback={[
-              { title: 'Total Members', metric: 'Not published', description: 'Verified members' },
-              { title: 'Universities', metric: 'Not published', description: 'With ASAM presence' },
-              { title: 'State Chapters', metric: 'Not published', description: 'Active chapters' },
-              { title: 'Events Held', metric: 'Not published', description: 'Total events' },
-            ]} cardClassName="p-5 rounded-xl border border-border bg-card shadow-premium" />
-          </div>
-          <div className="mt-6">
-            <EmptyState
-              title="Data Visualizations Coming Soon"
-              message="ASAM is building a data and analytics platform. Charts, graphs, and interactive visualizations about the community will appear here once data is collected."
-            />
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <ManagedPageItemCards pageKey="research" collectionKey="statistics" fallback={[]} cardClassName="rounded-xl border border-border bg-card p-5 shadow-premium" />
           </div>
         </div>
       </section>

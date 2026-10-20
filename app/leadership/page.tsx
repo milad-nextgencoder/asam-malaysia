@@ -92,7 +92,7 @@ export default async function LeadershipPage() {
       </section>
 
       {/* Vacant Positions */}
-      <section className="py-10 bg-secondary/30">
+      {vacant.length > 0 && <section className="py-10 bg-secondary/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Open Positions"
@@ -118,7 +118,7 @@ export default async function LeadershipPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Organizational Structure */}
       <section className="py-10">

@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils';
  * RLS check, and the anon role holds no INSERT privilege on it.
  */
 export function NewsletterForm({
-  buttonLabel = 'Subscribe',
+  buttonLabel = 'Request updates',
   className,
 }: {
   buttonLabel?: string;
@@ -82,7 +82,7 @@ export function NewsletterForm({
       <div className="sm:basis-full" aria-live="polite">
         {state === 'done' && (
           <p role="status" className="text-sm text-green-700">
-            Thank you — you are on the list.
+            Thank you. Your request to receive ASAM updates has been sent.
           </p>
         )}
         {state === 'error' && (

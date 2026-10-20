@@ -41,13 +41,16 @@ export function EventsBrowser({ events }: { events: any[] }) {
         />
 
         <div className="relative mx-auto mt-6 max-w-lg">
-          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search events..." className="w-full rounded-xl border border-border bg-card py-3 pl-12 pr-4 text-base outline-none focus:border-gold/40 focus:ring-2 focus:ring-gold/40" />
+          <label htmlFor="event-search" className="sr-only">Search events</label>
+          <Search aria-hidden="true" className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+          <input id="event-search" type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search events..." className="w-full rounded-xl border border-border bg-card py-3 pl-12 pr-4 text-base outline-none focus:border-gold/40 focus:ring-2 focus:ring-gold/40" />
         </div>
 
         {/* Filters */}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
           <button
+            type="button"
+            aria-pressed={filter === 'all'}
             onClick={() => setFilter('all')}
             className={cn(
               'px-4 py-2 rounded-full text-sm font-medium transition-all',
@@ -59,6 +62,8 @@ export function EventsBrowser({ events }: { events: any[] }) {
           {eventCategories.map((cat) => (
             <button
               key={cat}
+              type="button"
+              aria-pressed={filter === cat}
               onClick={() => setFilter(cat)}
               className={cn(
                 'px-4 py-2 rounded-full text-sm font-medium transition-all',
@@ -78,6 +83,8 @@ export function EventsBrowser({ events }: { events: any[] }) {
           ].map((f) => (
             <button
               key={f.key}
+              type="button"
+              aria-pressed={statusFilter === f.key}
               onClick={() => setStatusFilter(f.key as typeof statusFilter)}
               className={cn(
                 'px-3 py-1.5 rounded-full text-xs font-medium transition-all',
@@ -90,6 +97,7 @@ export function EventsBrowser({ events }: { events: any[] }) {
         </div>
 
         {/* Event Cards */}
+        <p role="status" aria-live="polite" className="sr-only">Showing {filtered.length} of {events.length} events</p>
         {filtered.length > 0 ? (
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map((event, i) => (

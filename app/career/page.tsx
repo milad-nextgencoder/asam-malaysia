@@ -3,6 +3,7 @@ import { EmptyState } from '@/components/site/empty-state';
 import { ManagedPageItemCards } from '@/components/site/managed-page-items';
 import { ArrowRight } from 'lucide-react';
 import { createPublicClient } from '@/lib/supabase/server';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Career & Entrepreneurship',
@@ -25,7 +26,7 @@ export default async function CareerPage() {
         pageKey="career"
         eyebrow="Career & Entrepreneurship"
         title="Building professional pathways"
-        description="From your first internship to your first startup, ASAM's Career & Entrepreneurship department is here to support your professional journey in Malaysia and beyond."
+        description="Browse career listings published by ASAM and explore professional support areas the association aims to develop."
       />
 
       {/* Career Network */}
@@ -34,8 +35,8 @@ export default async function CareerPage() {
           <SectionHeader
             pageKey="career"
             eyebrow="Career Network"
-            title="Your career development hub"
-            description="Resources, programs, and connections to help you build a successful career."
+            title="Career development areas"
+            description="Explore career support areas ASAM aims to develop. Published listings appear in the opportunities section below."
           />
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="career" collectionKey="career_services" fallback={[
@@ -95,10 +96,13 @@ export default async function CareerPage() {
                 })}
               </div>
             ) : (
-              <EmptyState
-                title="Internship Board Coming Soon"
-                message="Published career and internship opportunities will appear here when ASAM adds them through the Admin Panel."
-              />
+              <div>
+                <EmptyState
+                  title="No current opportunities published"
+                  message="There are no published career or internship listings at the moment. The opportunities board shows listings as ASAM publishes them."
+                />
+                <Link href="/opportunities" className="mt-4 inline-flex text-sm font-semibold text-gold-dark underline">Browse all opportunities</Link>
+              </div>
             )}
           </div>
         </div>
@@ -117,9 +121,8 @@ export default async function CareerPage() {
                 Support for student entrepreneurs
               </h2>
               <p className="text-[0.9375rem] text-muted-foreground leading-relaxed mb-5">
-                If you have an entrepreneurial spirit, ASAM supports your journey. From idea to
-                execution, we provide resources, mentorship, and a community of like-minded
-                individuals to help you build your venture.
+                Entrepreneurship support is an area ASAM aims to develop. The topics below outline
+                possible resources and connections for Afghan student founders.
               </p>
               <div className="space-y-3">
                 <ManagedPageItemCards pageKey="career" collectionKey="entrepreneurship" variant="list" fallback={[
@@ -149,8 +152,8 @@ export default async function CareerPage() {
           <SectionHeader
             pageKey="career"
             eyebrow="CV & Interview Support"
-            title="Stand out from the crowd"
-            description="Practical workshops and resources to help you craft a compelling CV and ace your interviews."
+            title="Career readiness topics"
+            description="These are potential topics for future career guidance and resources."
           />
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <ManagedPageItemCards pageKey="career" collectionKey="cv_support" fallback={[
@@ -173,22 +176,19 @@ export default async function CareerPage() {
             description="Real stories from Afghan students and alumni who have started businesses and ventures."
           />
           <div className="mt-6">
-            <EmptyState
-              title="Founder Stories Coming Soon"
-              message="ASAM will feature stories from Afghan student entrepreneurs and alumni founders. If you have a story to share, contact us."
-            />
+            <p className="rounded-xl border border-border bg-card p-5 text-sm leading-relaxed text-muted-foreground">No founder stories have been published yet. If you would like to share your experience, <Link href="/contact" className="font-semibold text-gold-dark underline">contact ASAM</Link>.</p>
           </div>
         </div>
       </section>
 
       <CTASection
         pageKey="career"
-        title="Ready to advance your career?"
-        description="Join ASAM to access career resources, mentorship, networking events, and professional development programs."
-        primaryLabel="Become a Member"
-        primaryHref="/membership"
-        secondaryLabel="View Opportunities"
-        secondaryHref="/opportunities"
+        title="Explore career opportunities"
+        description="Browse current published listings or contact ASAM with questions about its career and mentorship initiatives."
+        primaryLabel="Browse Opportunities"
+        primaryHref="/opportunities"
+        secondaryLabel="Contact ASAM"
+        secondaryHref="/contact"
       />
     </>
   );

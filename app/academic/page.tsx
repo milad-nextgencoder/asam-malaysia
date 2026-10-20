@@ -4,6 +4,7 @@ import { ManagedPageItemCards } from '@/components/site/managed-page-items';
 import { BookOpen, Users, FlaskConical, Languages, Calendar, Award } from 'lucide-react';
 import { getPublishedPageSection } from '@/lib/page-sections';
 import { createPublicClient } from '@/lib/supabase/server';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Academic Hub',
@@ -32,8 +33,8 @@ export default async function AcademicPage() {
       <PageHero
         pageKey="academic"
         eyebrow="Academic Hub"
-        title="Your academic support center"
-        description="ASAM's Academic Affairs department provides resources, mentorship, and information to help you succeed academically at your Malaysian university."
+        title="Academic resources and opportunities"
+        description="This page lists scholarships published by ASAM and outlines academic support areas the association aims to develop."
       />
 
       {/* Resource Cards */}
@@ -42,8 +43,8 @@ export default async function AcademicPage() {
           <SectionHeader
             pageKey="academic"
             eyebrow="Resources"
-            title="Academic resources at your fingertips"
-            description="Explore the academic support services available to ASAM members."
+            title="Areas of academic support"
+            description="Explore academic support areas ASAM is working to develop, alongside resources published on this page."
           />
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="academic" collectionKey="academic_resources" fallback={academicResources.map((item) => ({
@@ -124,9 +125,10 @@ export default async function AcademicPage() {
           />
           <div className="mt-6">
             <EmptyState
-              title="Research Network Coming Soon"
-              message="ASAM is building a research collaboration platform where students can find research partners, share resources, and contribute to community research projects. This feature will be available soon."
+              title="Research collaboration information"
+              message="A public research collaboration directory is not available yet. Published reports and research updates are listed on the Research & Policy page."
             />
+            <Link href="/research" className="mt-4 inline-flex text-sm font-semibold text-gold-dark underline">View Research &amp; Policy</Link>
           </div>
         </div>
       </section>
@@ -142,9 +144,10 @@ export default async function AcademicPage() {
           />
           <div className="mt-6">
             <EmptyState
-              title="University Resources Coming Soon"
-              message="University-specific academic resources, including library guides, writing centers, and academic support services, will be listed here as the network is established."
+              title="University resources"
+              message="University-specific guidance is not published here yet. Check the university directory for current ASAM university profiles."
             />
+            <Link href="/universities" className="mt-4 inline-flex text-sm font-semibold text-gold-dark underline">Browse university profiles</Link>
           </div>
         </div>
       </section>
@@ -152,7 +155,7 @@ export default async function AcademicPage() {
       <CTASection
         pageKey="academic"
         title="Need academic support?"
-        description="Join ASAM to access academic resources, mentorship, and a community that supports your educational journey."
+        description="Join the ASAM community and explore academic resources and opportunities as they are published."
         primaryLabel="Become a Member"
         primaryHref="/membership"
         secondaryLabel="View Opportunities"

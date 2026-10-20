@@ -31,7 +31,8 @@ export default function ContactPage() {
     if (name.length > 160 || email.length > 254 || subject.length > 200 || message.length > 10000 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setFormError('Please check your name, email address, and message length.'); setSaving(false); return;
     }
-    const { error } = await createClient().from('contact_messages').insert({ name, email, subject: subject || null, message });
+    const categorizedMessage = `Inquiry category: ${form.category}\n\n${message}`;
+    const { error } = await createClient().from('contact_messages').insert({ name, email, subject: subject || null, message: categorizedMessage });
     if (error) setFormError('Your message could not be sent right now. Please try again later or email ASAM directly.');
     else setSubmitted(true);
     setSaving(false);
@@ -106,8 +107,8 @@ export default function ContactPage() {
                   {formError && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{formError}</p>}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Name *</label>
-                      <input
+                      <label htmlFor="contact-name" className="text-xs font-semibold text-muted-foreground mb-1.5 block">Name *</label>
+                      <input id="contact-name"
                         type="text"
                         required
                         value={form.name}
@@ -117,8 +118,8 @@ export default function ContactPage() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Email *</label>
-                      <input
+                      <label htmlFor="contact-email" className="text-xs font-semibold text-muted-foreground mb-1.5 block">Email *</label>
+                      <input id="contact-email"
                         type="email"
                         required
                         value={form.email}
@@ -129,8 +130,8 @@ export default function ContactPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Category *</label>
-                    <select
+                    <label htmlFor="contact-category" className="text-xs font-semibold text-muted-foreground mb-1.5 block">Category *</label>
+                    <select id="contact-category"
                       required
                       value={form.category}
                       onChange={(e) => setForm({ ...form, category: e.target.value })}
@@ -145,8 +146,8 @@ export default function ContactPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Subject *</label>
-                    <input
+                    <label htmlFor="contact-subject" className="text-xs font-semibold text-muted-foreground mb-1.5 block">Subject *</label>
+                    <input id="contact-subject"
                       type="text"
                       required
                       value={form.subject}
@@ -156,8 +157,8 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Message *</label>
-                    <textarea
+                    <label htmlFor="contact-message" className="text-xs font-semibold text-muted-foreground mb-1.5 block">Message *</label>
+                    <textarea id="contact-message"
                       required
                       rows={5}
                       value={form.message}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Building2, X } from 'lucide-react';
 
 type Partner = {
@@ -14,20 +14,30 @@ type Partner = {
 
 export function PartnerDirectory({ partners }: { partners: Partner[] }) {
   const [selected, setSelected] = useState<Partner | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!selected) return;
+    const returnFocus = returnFocusRef.current;
     const previousOverflow = document.body.style.overflow;
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setSelected(null);
     };
+    closeButtonRef.current?.focus();
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', closeOnEscape);
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', closeOnEscape);
+      returnFocus?.focus();
     };
   }, [selected]);
+
+  function openPartner(partner: Partner) {
+    returnFocusRef.current = document.activeElement as HTMLElement | null;
+    setSelected(partner);
+  }
 
   return (
     <>
@@ -36,7 +46,7 @@ export function PartnerDirectory({ partners }: { partners: Partner[] }) {
           <button
             key={partner.id}
             type="button"
-            onClick={() => setSelected(partner)}
+            onClick={() => openPartner(partner)}
             aria-label={`View details for ${partner.organization}`}
             className="group animate-fade-up rounded-xl border border-border bg-card p-4 text-center shadow-premium transition hover:-translate-y-1 hover:shadow-premium-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             style={{ animationDelay: `${index * 0.05}s` }}
@@ -67,6 +77,13 @@ export function PartnerDirectory({ partners }: { partners: Partner[] }) {
             aria-modal="true"
             aria-labelledby="partner-dialog-title"
             className="flex max-h-[88dvh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl border border-border bg-[#fffefa] shadow-2xl sm:max-h-[85vh] sm:rounded-2xl"
+            onKeyDown={(event) => {
+              if (event.key !== 'Tab') return;
+              const focusable = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button, a[href]')).filter((element) => !element.hasAttribute('disabled'));
+              const first = focusable[0]; const last = focusable[focusable.length - 1];
+              if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+              else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+            }}
           >
             <header className="flex shrink-0 items-start gap-4 border-b border-border px-5 py-5 sm:px-7">
               {selected.logo_url ? (
@@ -80,7 +97,7 @@ export function PartnerDirectory({ partners }: { partners: Partner[] }) {
                 {selected.partner_type && <p className="text-[9px] font-bold uppercase tracking-[.16em] text-gold-dark">{selected.partner_type}</p>}
                 <h2 id="partner-dialog-title" className="mt-1 break-words font-display text-xl font-semibold leading-snug text-[#172436] sm:text-2xl">{selected.organization}</h2>
               </div>
-              <button type="button" onClick={() => setSelected(null)} aria-label="Close partner details" className="rounded-lg p-2 text-[#596273] hover:bg-[#f1efe9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">
+              <button ref={closeButtonRef} type="button" onClick={() => setSelected(null)} aria-label="Close partner details" className="rounded-lg p-2 text-[#596273] hover:bg-[#f1efe9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">
                 <X className="h-5 w-5" />
               </button>
             </header>

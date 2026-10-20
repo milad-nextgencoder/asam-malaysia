@@ -110,6 +110,10 @@
     /* The body cannot scroll sideways even if a descendant escapes the guard. */
     overflow-x: clip;
   }
+  .public-site :where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 3px;
+  }
   /*
    * Media never overflows its container. `max-width: 100%` is applied instead of
    * relying on every img rule, so remote CMS images cannot widen the layout.

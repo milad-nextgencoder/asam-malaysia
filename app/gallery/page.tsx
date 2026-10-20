@@ -1,14 +1,12 @@
 import { PageHero } from '@/components/site/page-hero';
-import { SectionHeader } from '@/components/site/section-header';
 import { CTASection } from '@/components/site/cta-section';
 import { GalleryBrowser } from '@/components/site/gallery-browser';
 import { createPublicClient } from '@/lib/supabase/server';
-import { Video } from 'lucide-react';
 
 export const metadata = {
   title: 'Gallery',
   description:
-    'Photos, videos, and albums from ASAM events, programs, and community activities across Malaysia.',
+    'Browse photographs from ASAM events, programs, and community activities in Malaysia.',
 };
 
 // Gallery is cached with 60s ISR; admin gallery actions also call
@@ -36,8 +34,8 @@ export default async function GalleryPage() {
     <>
       <PageHero
         eyebrow="Gallery"
-        title="The ASAM media center"
-        description="Photos, videos, and albums from ASAM events, programs, and community activities."
+        title="ASAM event gallery"
+        description="Browse photographs from ASAM events, programs, and community activities."
       />
 
       {loadError && (
@@ -48,31 +46,6 @@ export default async function GalleryPage() {
         </div>
       )}
       <GalleryBrowser albums={albums} items={items} />
-
-      {/* Video Section */}
-      <section className="py-10 bg-secondary/30">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Videos"
-            title="Video content"
-            description="Videos from ASAM events, interviews, and community features."
-          />
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div
-                key={i}
-                className="aspect-video rounded-2xl border border-dashed border-border bg-card flex items-center justify-center text-center p-4 hover:border-gold/30 transition-all duration-300 animate-fade-up"
-                style={{ animationDelay: `${i * 0.08}s` }}
-              >
-                <div>
-                  <Video className="h-10 w-10 text-muted-foreground/30 mx-auto mb-2" />
-                  <div className="text-xs text-muted-foreground font-medium">Video — Coming Soon</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <CTASection
         title="Captured a great moment?"

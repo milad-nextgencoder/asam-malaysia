@@ -37,6 +37,8 @@ export function ChaptersBrowser({ chapters }: { chapters: any[] }) {
           ].map((f) => (
             <button
               key={f.key}
+              type="button"
+              aria-pressed={filter === f.key}
               onClick={() => setFilter(f.key as typeof filter)}
               className={cn(
                 'px-4 py-2 rounded-full text-sm font-medium transition-all',
@@ -55,6 +57,8 @@ export function ChaptersBrowser({ chapters }: { chapters: any[] }) {
           {filteredStates.map((state, i) => (
             <button
               key={state.id}
+              type="button"
+              aria-pressed={selectedState === state.id}
               onClick={() => setSelectedState(state.id)}
               className={cn(
                 'text-left p-5 rounded-xl border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up',

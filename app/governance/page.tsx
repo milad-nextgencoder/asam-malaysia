@@ -29,7 +29,7 @@ export default function GovernancePage() {
         pageKey="governance"
         eyebrow="Governance & Structure"
         title="The architecture of a national association"
-        description="ASAM is built on a clear organizational structure, defined governance principles, and a decision-making framework designed to ensure accountability, transparency, and effective coordination."
+        description="Explore ASAM’s published organizational structure and stated governance principles. Details about formal procedures and reporting should be confirmed in approved organizational documents."
       />
 
       {/* Hierarchy */}
@@ -39,7 +39,7 @@ export default function GovernancePage() {
             pageKey="governance"
             eyebrow="Organizational Hierarchy"
             title="From President to Volunteers"
-            description="Every role in ASAM has a defined place in the organizational structure, ensuring clear reporting lines and accountability."
+            description="This overview presents the roles ASAM identifies in its organizational structure."
           />
           <div className="mt-6 max-w-3xl mx-auto">
             <div className="space-y-3">
@@ -76,7 +76,7 @@ export default function GovernancePage() {
             pageKey="governance"
             eyebrow="Governance Principles"
             title="The principles that guide our decisions"
-            description="ASAM operates according to a set of governance principles that ensure the organization remains accountable, transparent, and effective."
+            description="These principles describe the standards ASAM says should guide its governance."
           />
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <ManagedPageItemCards pageKey="governance" collectionKey="principles" fallback={governancePrinciples.map((item) => ({
@@ -94,7 +94,7 @@ export default function GovernancePage() {
             pageKey="governance"
             eyebrow="Decision-Making Framework"
             title="How decisions are made"
-            description="ASAM follows a structured decision-making process that balances efficiency with inclusivity."
+            description="The steps below describe ASAM’s stated decision-making approach. Refer to approved governance documents for formal requirements."
           />
           <div className="mt-6 max-w-3xl mx-auto space-y-4">
             <ManagedPageItemCards pageKey="governance" collectionKey="decision_steps" variant="steps" fallback={[
@@ -116,7 +116,7 @@ export default function GovernancePage() {
             pageKey="governance"
             eyebrow="Internal Coordination"
             title="How we stay aligned"
-            description="ASAM uses regular meetings, reporting, and communication channels to ensure all departments and chapters stay coordinated."
+            description="The information below outlines coordination practices described by ASAM."
           />
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ManagedPageItemCards pageKey="governance" collectionKey="coordination" fallback={[
@@ -134,7 +134,7 @@ export default function GovernancePage() {
       <CTASection
         pageKey="governance"
         title="Transparency is our commitment"
-        description="ASAM is committed to operating with full transparency. Visit our transparency page to learn more about our governance, policies, and accountability."
+        description="Review the governance information and documents ASAM has published."
         primaryLabel="View Transparency"
         primaryHref="/transparency"
         secondaryLabel="Meet the Team"

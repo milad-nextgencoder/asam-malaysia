@@ -100,7 +100,7 @@ export async function SiteFooter() {
             <div>
               <h3 className="font-display text-xl font-bold mb-2">Stay Connected</h3>
               <p className="text-sm text-muted-foreground">
-                Subscribe to receive ASAM updates, event announcements, and opportunities.
+                Send ASAM a request to receive event announcements and opportunities.
               </p>
             </div>
             <NewsletterForm />

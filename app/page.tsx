@@ -117,7 +117,7 @@ export default function Home() {
   }, [activeHeroPhotos.length]);
 
   return (
-    <main className="flex flex-col">
+    <div className="flex flex-col">
       {/* HERO */}
       <section style={sectionStyle('hero')} className="relative min-h-[78vh] flex items-center overflow-hidden bg-gradient-to-br from-background via-ivory to-secondary/70 pt-20">
         {activeHeroPhotos.map((photo, index) => (
@@ -245,14 +245,14 @@ export default function Home() {
               <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-navy mb-5">
                 <Globe2 className="h-7 w-7 text-gold" />
               </div>
-              <h3 className="font-display text-xl lg:text-2xl font-bold mb-4">{sectionValue('vision', 'title', 'Our Vision')}</h3>
+              <h2 className="font-display text-xl lg:text-2xl font-bold mb-4">{sectionValue('vision', 'title', 'Our Vision')}</h2>
               <p className="text-[0.9375rem] text-muted-foreground leading-relaxed">{sectionValue('vision', 'description', 'To build a connected, empowered, and thriving Afghan student community across Malaysia — one where every student has access to support, opportunity, and a sense of belonging, regardless of which university they attend.')}</p>
             </div>
             <div className="p-5 lg:p-5 rounded-xl border border-border bg-card shadow-premium">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-gold mb-5">
                 <TrendingUp className="h-7 w-7 text-navy" />
               </div>
-              <h3 className="font-display text-xl lg:text-2xl font-bold mb-4">{sectionValue('mission', 'title', 'Our Mission')}</h3>
+              <h2 className="font-display text-xl lg:text-2xl font-bold mb-4">{sectionValue('mission', 'title', 'Our Mission')}</h2>
               <p className="text-[0.9375rem] text-muted-foreground leading-relaxed">{sectionValue('mission', 'description', 'To connect Afghan students across Malaysian universities through academic collaboration, student welfare, professional development, cultural engagement, leadership, and community building — creating a national platform that serves and empowers its members.')}</p>
             </div>
           </div>
@@ -607,13 +607,13 @@ export default function Home() {
           <SectionHeader
             eyebrow={sectionValue('academic_support', 'subtitle', 'Academic Support')}
             title={sectionValue('academic_support', 'title', 'Excelling in your studies')}
-            description={sectionValue('academic_support', 'description', "ASAM's Academic Affairs department provides resources, mentorship, and information to help you succeed academically.")}
+            description={sectionValue('academic_support', 'description', 'Explore scholarship listings and academic support areas ASAM aims to develop.')}
           />
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { icon: BookOpen, title: 'Scholarship Information', desc: 'Discover and apply for scholarships available to Afghan students in Malaysia.' },
-              { icon: Users, title: 'Academic Mentorship', desc: 'Connect with mentors who can guide you through your academic journey.' },
-              { icon: GraduationCap, title: 'Research Collaboration', desc: 'Find research partners and collaborate on academic projects.' },
+              { icon: BookOpen, title: 'Scholarship Listings', desc: 'Browse scholarship opportunities published by ASAM.' },
+              { icon: Users, title: 'Academic Mentorship', desc: 'Mentorship is an area ASAM aims to develop.' },
+              { icon: GraduationCap, title: 'Research Updates', desc: 'See reports and research updates published by ASAM.' },
             ].map((item, i) => (
               <div
                 key={item.title}
@@ -873,15 +873,15 @@ export default function Home() {
           <div className="text-center">
             <h2 className="font-display text-xl lg:text-2xl font-bold mb-3">{sectionValue('newsletter', 'title', 'Stay Connected')}</h2>
             <p className="text-muted-foreground mb-5">
-              {sectionValue('newsletter', 'description', 'Subscribe to receive ASAM updates, event announcements, and opportunities directly to your inbox.')}
+              {sectionValue('newsletter', 'description', 'Send ASAM a request to receive event announcements and opportunities.')}
             </p>
             <NewsletterForm
               className="max-w-md mx-auto"
-              buttonLabel={sectionValue('newsletter', 'button_text', 'Subscribe')}
+              buttonLabel={sectionValue('newsletter', 'button_text', 'Request updates')}
             />
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
