@@ -39,7 +39,8 @@ export async function signUpWithEmail(email: string, password: string, firstName
   });
   if (error) {
     if (error.code === 'user_already_exists' || error.code === 'email_exists') return { ok: true as const, accountExists: true as const, message: registrationMessage({ identities: [] }), signedIn: false };
-    return { ok: false as const, message: error.status === 429 ? 'Too many attempts. Please wait before trying again.' : 'Registration could not be completed. Try again, or sign in if you already have an account.' };
+    if (error.code === 'over_email_send_rate_limit') return { ok: false as const, message: 'We could not send your confirmation email because our email service has reached its sending limit. Please try again later.' };
+    return { ok: false as const, message: error.status === 429 ? 'Please wait a moment before trying again.' : 'Registration could not be completed. Please try again.' };
   }
   const accountExists = Boolean(data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0);
   return { ok: true as const, accountExists, message: registrationMessage(data.user), signedIn: Boolean(data.session) };

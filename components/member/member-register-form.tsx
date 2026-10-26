@@ -64,7 +64,7 @@ export function MemberRegisterForm() {
         </div>
       )}
 
-      <p className="rounded-lg border border-navy/10 bg-navy/5 p-3 text-sm text-muted-foreground">Use one email for your ASAM account. If you already registered, sign in or reset your password instead of registering again. Your membership ID is issued once, after approval.</p>
+      <p className="rounded-lg border border-navy/10 bg-navy/5 p-3 text-sm text-muted-foreground">Confirm your email to continue to your member profile. Your membership ID is issued after your application is approved.</p>
       <form className="space-y-5" onSubmit={handleSubmit} aria-busy={busy}>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
