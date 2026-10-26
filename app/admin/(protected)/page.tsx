@@ -9,7 +9,7 @@ const emptyCounts: DashboardCount[] = [
 ].map((label) => ({ label, scope: 'Published', value: null, failed: true }));
 
 export default async function AdminHomePage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const [claimsResult, userResult] = await Promise.all([
     supabase.auth.getClaims(),
     supabase.auth.getUser(),

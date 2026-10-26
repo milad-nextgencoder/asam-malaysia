@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/supabase/client';
+import { useMemberAction } from '@/hooks/use-member-action';
 import { resetPassword } from '@/app/member/actions/auth';
 
 export function MemberResetPasswordForm() {
@@ -15,7 +16,7 @@ export function MemberResetPasswordForm() {
   const [hasRecoverySession, setHasRecoverySession] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
-  const [busy, setBusy] = useState(false);
+  const { run, pending: busy, error: actionError } = useMemberAction();
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -47,16 +48,7 @@ export function MemberResetPasswordForm() {
       return;
     }
 
-    setBusy(true);
-    const result = await resetPassword(password);
-    if (!result.ok) {
-      setErrorMessage(result.message);
-      setBusy(false);
-      return;
-    }
-
-    router.push('/member/login?notice=password-updated');
-    router.refresh();
+    await run(() => resetPassword(password), () => { router.replace('/member/login?notice=password-updated'); router.refresh(); });
   }
 
   if (checkingSession) {
@@ -78,9 +70,9 @@ export function MemberResetPasswordForm() {
 
   return (
     <div className="w-full space-y-6">
-      {errorMessage && (
+      {(errorMessage || actionError) && (
         <div className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
-          {errorMessage}
+          {errorMessage || actionError}
         </div>
       )}
 

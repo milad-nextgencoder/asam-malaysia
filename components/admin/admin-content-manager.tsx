@@ -16,7 +16,7 @@ const labelClass = 'mb-1.5 block text-xs font-semibold text-[#596273]';
 const formatTimestamp = (value: string) => new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeStyle: 'medium', timeZone: 'Asia/Kuala_Lumpur' }).format(new Date(value));
 const formatDate = (value: string) => new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeZone: 'Asia/Kuala_Lumpur' }).format(new Date(value));
 
-export function AdminContentManager({ module, initialRecords, departments = [] }: { module: ContentModule; initialRecords: RecordRow[]; departments?: { id: string; name: string; number: string }[] }) {
+export function AdminContentManager({ module, initialRecords, departments = [], canReorder = true }: { module: ContentModule; initialRecords: RecordRow[]; canReorder?: boolean; departments?: { id: string; name: string; number: string }[] }) {
   const config = contentConfig[module];
   const router = useRouter();
   const [records, setRecords] = useState(initialRecords);
@@ -42,6 +42,7 @@ export function AdminContentManager({ module, initialRecords, departments = [] }
   }
 
   function move(index: number, delta: number) {
+    if (pending || !canReorder || query || statusFilter !== "all") { setError("Clear filters and show the complete list before reordering."); return; }
     const current = visibleRecords[index];
     if (!current) return;
     const group = visibleRecords.filter((row) => !config.pageItems || row.collection_key === current.collection_key);
@@ -51,8 +52,7 @@ export function AdminContentManager({ module, initialRecords, departments = [] }
     [group[groupIndex], group[target]] = [group[target], group[groupIndex]];
     const nextGroup = new Map(group.map((row, order) => [row.id, { ...row, display_order: order + 1 }]));
     const nextRecords = records.map((row) => nextGroup.get(row.id) || row);
-    setRecords(nextRecords);
-    run(() => reorderContent(module, group.map((row) => row.id)), ADMIN_FEEDBACK.saved);
+    void runWithFeedback(() => reorderContent(module, group.map((row) => row.id)), { success: ADMIN_FEEDBACK.saved, onSuccess: () => { setRecords(nextRecords); router.refresh(); } });
   }
 
   /**
@@ -107,7 +107,7 @@ export function AdminContentManager({ module, initialRecords, departments = [] }
             <button onClick={() => setPreview(record)} className="rounded-md border border-[#e1e4e8] px-2.5 py-2 text-xs font-semibold text-[#455064] hover:bg-gray-50"><Eye className="mr-1 inline h-3.5 w-3.5"/>Preview</button>
             <button onClick={() => { setError(''); setEditing(record); }} className="rounded-md border border-[#e1e4e8] px-2.5 py-2 text-xs font-semibold text-[#455064] hover:bg-gray-50"><Pencil className="mr-1 inline h-3.5 w-3.5"/>Edit</button>
             {module === 'events' && <button onClick={() => { setError(''); setEditing({ ...record, id: undefined, title: `${record.title} (Copy)`, slug: '', status: 'draft' } as unknown as RecordRow); }} className="rounded-md border border-[#e1e4e8] px-2.5 py-2 text-xs font-semibold text-[#455064]">Duplicate</button>}
-            {config.ordered && <><button title="Move up" disabled={index === 0} onClick={() => move(index, -1)} className="rounded-md border border-[#e1e4e8] px-2.5 py-2 text-xs disabled:opacity-40"><ArrowUp className="h-3.5 w-3.5"/></button><button title="Move down" disabled={index === visibleRecords.length - 1} onClick={() => move(index, 1)} className="rounded-md border border-[#e1e4e8] px-2.5 py-2 text-xs disabled:opacity-40"><ArrowDown className="h-3.5 w-3.5"/></button></>}
+            {config.ordered && canReorder && <><button title="Move up" disabled={index === 0} onClick={() => move(index, -1)} className="rounded-md border border-[#e1e4e8] px-2.5 py-2 text-xs disabled:opacity-40"><ArrowUp className="h-3.5 w-3.5"/></button><button title="Move down" disabled={index === visibleRecords.length - 1} onClick={() => move(index, 1)} className="rounded-md border border-[#e1e4e8] px-2.5 py-2 text-xs disabled:opacity-40"><ArrowDown className="h-3.5 w-3.5"/></button></>}
             <button disabled={pending} onClick={() => { const hiding = record.status === 'published' || record.status === 'active' || record.status === 'coming_soon'; if (!hiding || window.confirm('Unpublish or hide this item from the public website?')) setStatus(record, hiding ? (module === 'chapters' ? 'inactive' : 'draft') : (module === 'chapters' ? 'active' : 'published')); }} className="rounded-md bg-[#f5f1e7] px-2.5 py-2 text-xs font-semibold text-[#79612a] disabled:opacity-50">{record.status === 'published' || record.status === 'active' || record.status === 'coming_soon' ? 'Unpublish / Hide' : 'Publish / Show'}</button>
             {module !== 'chapters' && <button disabled={pending} onClick={() => { if (window.confirm(`Archive “${record.name || record.title}”?`)) setStatus(record, 'archived'); }} className="rounded-md border border-[#e1e4e8] px-2.5 py-2 text-xs font-semibold text-[#596273] disabled:opacity-50">Archive</button>}
             <button disabled={pending} onClick={() => { if (window.confirm(`Permanently delete “${record.name || record.title}”? This cannot be undone.`)) run(() => deleteContent(module, record.id), ADMIN_FEEDBACK.deleted); }} className="rounded-md border border-red-200 px-2.5 py-2 text-xs font-semibold text-red-700 disabled:opacity-50">Delete</button>

@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteImage } from '@/components/site/site-image';
+
+
 import { useState } from 'react';
 import { SectionHeader } from '@/components/site/section-header';
 import { EmptyState } from '@/components/site/empty-state';
@@ -106,7 +109,7 @@ export function EventsBrowser({ events }: { events: any[] }) {
                 className="group p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up"
                 style={{ animationDelay: `${i * 0.08}s` }}
               >
-                {event.featured_image_url && <img src={event.featured_image_url} alt="" className="mb-4 h-32 w-full rounded-xl object-cover"/>}
+                {event.featured_image_url && <SiteImage src={event.featured_image_url} alt="" className="mb-4 h-32 w-full rounded-xl object-cover"/>}
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-xs font-semibold text-gold-dark bg-gold/10 px-3 py-1 rounded-full">
                     {event.category}

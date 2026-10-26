@@ -121,18 +121,13 @@ export function getCertificateLogoDataUrl(): string {
 /**
  * Reads a single certificate.
  *
- * Prefers the public RPC `get_public_certificate` (available to anonymous QR
- * scanners once supabase/migrations/20260930010000_certificate_public_verification.sql
- * is applied). Falls back to the direct table read, which is what lets the
- * certificate owner or an administrator keep using the feature before that
- * migration is applied. Member IDs are only allocated on approval, so a memberId
- * match already implies an approved membership.
+ * Reads the approved snapshot through the public verification RPC.\n * Database failures never fall back to mutable profile information.
  */
 export async function getCertificateRecord(memberId: string): Promise<CertificateRecord | null> {
   const id = (memberId || '').trim();
   if (!id) return null;
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: rpcData, error: rpcError } = await supabase.rpc('get_public_certificate', {
     p_member_id: id,
@@ -157,35 +152,8 @@ export async function getCertificateRecord(memberId: string): Promise<Certificat
     };
   }
 
-  const { data: application, error } = await supabase
-    .from('membership_applications')
-    .select('id, user_id, status, member_id, certificate_number, approved_at')
-    .eq('member_id', id)
-    .maybeSingle();
-
-  if (error || !application) return null;
-
-  const { data: member } = await supabase
-    .from('member_profiles')
-    .select('first_name, last_name, preferred_name, university_id, program')
-    .eq('user_id', application.user_id)
-    .maybeSingle();
-
-  const { data: university } = member?.university_id
-    ? await supabase.from('universities').select('id, name').eq('id', member.university_id).maybeSingle()
-    : { data: null };
-
-  return {
-    userId: application.user_id,
-    memberId: application.member_id as string,
-    memberName: buildDisplayName(member),
-    certificateNumber: certificateNumberForApplication(application),
-    university: university?.name?.trim() || '\u2014',
-    program: member?.program?.trim() || '\u2014',
-    approvedAt: application.approved_at,
-    status: application.status,
-    isApproved: application.status === 'approved',
-  };
+  console.error('Certificate snapshot lookup failed', { code: rpcError?.code });
+  throw new Error('Certificate verification is temporarily unavailable. Please try again.');
 }
 
 export function buildCertificateView(

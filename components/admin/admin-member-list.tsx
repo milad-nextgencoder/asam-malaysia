@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Search, Eye, CheckCircle, XCircle, Clock, Send, CreditCard } from 'lucide-react';
-import { useState, useMemo } from 'react';
+
 
 interface MemberRecord {
   id: string;
@@ -33,31 +33,19 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   rejected: { label: 'Rejected', className: 'bg-red-50 text-red-700' },
 };
 
-export function AdminMemberList({ members }: { members: MemberRecord[] }) {
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+export function AdminMemberList({ members, query = '', status = 'all' }: { members: MemberRecord[]; query?: string; status?: string }) {
+  const search = query;
+  const statusFilter = status;
+  const filtered = members;
 
-  const filtered = useMemo(() => {
-    return members.filter((m) => {
-      if (statusFilter !== 'all' && m.membership_status !== statusFilter) return false;
-      if (!search) return true;
-      const query = search.toLowerCase();
-      return (
-        `${m.first_name ?? ''} ${m.last_name ?? ''} ${m.preferred_name ?? ''} ${m.email ?? ''} ${m.member_id ?? ''}`
-          .toLowerCase()
-          .includes(query)
-      );
-    });
-  }, [members, search, statusFilter]);
-
-  const statusCounts = useMemo(() => {
+  const statusCounts = (() => {
     const counts: Record<string, number> = { all: members.length };
     for (const m of members) {
       const status = m.membership_status ?? 'draft';
       counts[status] = (counts[status] ?? 0) + 1;
     }
     return counts;
-  }, [members]);
+  })();
 
   /**
    * Members table.
@@ -73,30 +61,33 @@ export function AdminMemberList({ members }: { members: MemberRecord[] }) {
         <p className="mt-1 text-sm text-muted-foreground">View and manage member profiles and membership applications.</p>
       </div>
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+      <form method="get" className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search by name, email, or member ID..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            name="q"
+            aria-label="Search all records"
+            defaultValue={search}
             className="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-navy/20"
           />
         </div>
         <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          name="status"
+          aria-label="Membership status"
+          defaultValue={statusFilter}
           className="rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy/20"
         >
-          <option value="all">All ({statusCounts.all ?? 0})</option>
-          <option value="draft">Not Submitted ({statusCounts.draft ?? 0})</option>
-          <option value="submitted">Submitted ({statusCounts.submitted ?? 0})</option>
-          <option value="under_review">Under Review ({statusCounts.under_review ?? 0})</option>
-          <option value="approved">Approved ({statusCounts.approved ?? 0})</option>
-          <option value="rejected">Rejected ({statusCounts.rejected ?? 0})</option>
+          <option value="all">All</option>
+          <option value="draft">Not Submitted</option>
+          <option value="submitted">Submitted</option>
+          <option value="under_review">Under Review</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
         </select>
-      </div>
+        <button type="submit" className="rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white">Search all records</button>
+      </form>
 
       {filtered.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-200 bg-white p-12 text-center">

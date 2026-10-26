@@ -1,3 +1,4 @@
+import { SiteImage } from '@/components/site/site-image';
 import { PageHero } from '@/components/site/page-hero';
 import { SectionHeader } from '@/components/site/section-header';
 import { CTASection } from '@/components/site/cta-section';
@@ -46,7 +47,7 @@ export default async function LeadershipPage() {
                   <div className="flex items-start gap-5">
                     <div className="relative flex-shrink-0">
                       <div className="relative h-24 w-24 overflow-hidden rounded-2xl gradient-navy flex items-center justify-center shadow-premium">
-                        {member.photo_url ? <img src={member.photo_url} alt={member.name} className="absolute inset-0 h-full w-full object-cover" /> : <span className="font-display text-2xl font-bold text-gold">{member.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}</span>}
+                        {member.photo_url ? <SiteImage src={member.photo_url} alt={member.name} className="absolute inset-0 h-full w-full object-cover" /> : <span className="font-display text-2xl font-bold text-gold">{member.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}</span>}
                       </div>
                       <div className="absolute -bottom-2 -right-2 px-3 py-1 rounded-full bg-gold text-navy text-xs font-bold shadow-premium">
                         {member.title}

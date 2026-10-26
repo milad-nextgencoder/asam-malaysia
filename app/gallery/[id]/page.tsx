@@ -6,7 +6,8 @@ import { GalleryLightbox } from '@/components/site/gallery-lightbox';
 
 export const revalidate = 60;
 
-export default async function GalleryAlbumPage({ params }: { params: { id: string } }) {
+export default async function GalleryAlbumPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const db = createPublicClient();
   const { data: album } = await db.from('gallery_albums').select('id,name,description,category,status').eq('id', params.id).eq('status','published').maybeSingle();
   if (!album) notFound();

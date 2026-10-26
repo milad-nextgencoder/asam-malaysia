@@ -1,3 +1,4 @@
+import { SiteImage } from '@/components/site/site-image';
 import Link from 'next/link';
 import { createPublicClient } from '@/lib/supabase/server';
 import { EmptyState } from '@/components/site/empty-state';
@@ -16,7 +17,7 @@ export async function PublicEventList({ category }: { category: string }) {
 
   return <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
     {data.map((event) => <article key={event.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-premium">
-      {event.featured_image_url && <img src={event.featured_image_url} alt="" loading="lazy" className="h-40 w-full object-cover" />}
+      {event.featured_image_url && <SiteImage src={event.featured_image_url} alt="" loading="lazy" className="h-40 w-full object-cover" />}
       <div className="p-5">
         <p className="text-xs font-bold uppercase tracking-wider text-gold-dark">{event.date || 'Date to be announced'}{event.time ? ` · ${event.time}` : ''}</p>
         <h3 className="mt-2 font-display text-lg font-bold">{event.title}</h3>

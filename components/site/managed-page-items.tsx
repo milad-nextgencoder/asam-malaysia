@@ -1,3 +1,4 @@
+import { SiteImage } from '@/components/site/site-image';
 import Link from 'next/link';
 import {
   ArrowRight, Award, BarChart3, BookOpen, Briefcase, CalendarDays, Check, Compass, Database, FileText, FlaskConical,
@@ -59,7 +60,7 @@ export async function ManagedPageItemCards({
         <div><h3 className="mb-1 font-semibold text-base">{item.title}</h3>{item.description && <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{item.description}</p>}</div>
       </article>;
       return <article key={`${collectionKey}-${item.title}-${index}`} className={`${cardClassName} animate-fade-up`} style={{ animationDelay: `${index * 0.07}s` }}>
-        {item.image_url && <img src={item.image_url} alt="" loading="lazy" className="mb-3 max-h-28 w-full rounded-lg object-cover" />}
+        {item.image_url && <SiteImage src={item.image_url} alt="" loading="lazy" className="mb-3 max-h-28 w-full rounded-lg object-cover" />}
         {Icon && <Icon className={iconClassName} aria-hidden="true" />}
         {item.phase && <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold-dark">{item.phase}</p>}
         {item.metric && <p className="mb-2 text-2xl font-bold text-gold-dark">{item.metric}</p>}

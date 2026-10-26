@@ -19,7 +19,8 @@ export const metadata = {
  * The data is read once through lib/member/certificate.ts, which prefers the
  * public RPC and falls back to the owner/admin-readable table read.
  */
-export default async function CertificatePage({ params }: { params: { 'member-id': string } }) {
+export default async function CertificatePage({ params: paramsPromise }: { params: Promise<{ 'member-id': string }> }) {
+  const params = await paramsPromise;
   const memberId = params['member-id'];
   // The certificate-specific logo copy is 46 KB, compared with 825 KB for the
   // full site logo, and the emblem is only displayed at 46 px.

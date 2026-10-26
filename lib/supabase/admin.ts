@@ -4,7 +4,7 @@ import { createClient } from './server';
 const allowedAdminRoles = ['SUPER_ADMIN', 'EDITOR'];
 
 export async function requireAdmin() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
   const userId = data?.claims?.sub;
 

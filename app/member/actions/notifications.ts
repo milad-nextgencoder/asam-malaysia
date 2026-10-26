@@ -4,9 +4,9 @@ import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 
 export async function markNotificationRead(notificationId: string) {
-  const supabase = createClient();
-  const { data } = await supabase.auth.getClaims();
-  const userId = data?.claims?.sub;
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  const userId = data.user?.id;
 
   if (!userId) return { ok: false as const, message: 'Not authenticated.' };
 
@@ -25,9 +25,9 @@ export async function markNotificationRead(notificationId: string) {
 }
 
 export async function markAllNotificationsRead() {
-  const supabase = createClient();
-  const { data } = await supabase.auth.getClaims();
-  const userId = data?.claims?.sub;
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  const userId = data.user?.id;
 
   if (!userId) return { ok: false as const, message: 'Not authenticated.' };
 

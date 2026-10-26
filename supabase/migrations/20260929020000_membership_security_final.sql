@@ -293,19 +293,11 @@ $$;
 -- ============================================================
 DO $$
 DECLARE
-  v_max_num integer := 0;
-  v_current_max text;
+  highest bigint; previous bigint; called boolean;
 BEGIN
-  SELECT member_id INTO v_current_max
-  FROM public.membership_applications
-  WHERE member_id IS NOT NULL
-  ORDER BY member_id DESC
-  LIMIT 1;
-
-  IF v_current_max IS NOT NULL THEN
-    v_max_num := CAST(SUBSTRING(v_current_max FROM 10) AS integer);
-  END IF;
-
-  PERFORM setval('public.member_id_seq', v_max_num, true);
+  SELECT coalesce(max((regexp_match(member_id,'^ASAM-[0-9]{4}-([0-9]{6})$'))[1]::bigint),0)
+    INTO highest FROM public.membership_applications;
+  SELECT last_value,is_called INTO previous,called FROM public.member_id_seq;
+  PERFORM setval('public.member_id_seq',greatest(highest,previous,1),highest>0 OR called);
 END;
 $$;

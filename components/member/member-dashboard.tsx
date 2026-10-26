@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteImage } from '@/components/site/site-image';
+
+
 import Link from 'next/link';
 import { User, Mail, CheckCircle, AlertCircle, LogOut, Camera, CreditCard, Clock, XCircle, Send, Calendar, Bell } from 'lucide-react';
 import { signOut } from '@/app/member/actions/auth';
@@ -42,7 +45,7 @@ export function MemberDashboard({
         <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
           <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-gray-200 bg-gray-100">
             {profilePhotoUrl ? (
-              <img src={profilePhotoUrl} alt="" className="h-full w-full object-cover" />
+              <SiteImage src={profilePhotoUrl} alt="" className="h-full w-full object-cover" />
             ) : (
               <div className="flex h-full w-full items-center justify-center">
                 <User className="h-8 w-8 text-gray-400" />

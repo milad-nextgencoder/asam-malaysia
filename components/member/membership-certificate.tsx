@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Download, Printer, LoaderCircle } from 'lucide-react';
 import {
@@ -44,6 +45,7 @@ export function MembershipCertificate({ html, memberId }: MembershipCertificateP
   const [scale, setScale] = useState(1);
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState('');
+  const [needsSignIn, setNeedsSignIn] = useState(false);
 
   /**
    * Downloads through the same production API the plain link used to point at.
@@ -59,6 +61,7 @@ export function MembershipCertificate({ html, memberId }: MembershipCertificateP
     if (downloading) return;
     setDownloading(true);
     setDownloadError('');
+    setNeedsSignIn(false);
 
     try {
       const response = await fetch(
@@ -67,6 +70,7 @@ export function MembershipCertificate({ html, memberId }: MembershipCertificateP
       );
 
       if (!response.ok) {
+        setNeedsSignIn(response.status === 401);
         // The route answers failures with JSON { error } and a matching status.
         const body = await response.json().catch(() => null);
         setDownloadError(
@@ -173,7 +177,7 @@ export function MembershipCertificate({ html, memberId }: MembershipCertificateP
             role="alert"
             className="mt-3 w-full rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
           >
-            {downloadError}
+            {downloadError} {needsSignIn && <Link href="/member/login" className="font-semibold underline">Sign in to your member account</Link>}
           </p>
         )}
       </div>

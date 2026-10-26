@@ -19,7 +19,8 @@ export const metadata = {
  * intentionally not shown here: the public verification record is limited to the
  * fields needed to confirm a membership.
  */
-export default async function VerifyMemberPage({ params }: { params: { 'member-id': string } }) {
+export default async function VerifyMemberPage({ params: paramsPromise }: { params: Promise<{ 'member-id': string }> }) {
+  const params = await paramsPromise;
   const memberId = params['member-id'];
   const record = await getCertificateRecord(memberId);
 

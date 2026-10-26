@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteImage } from '@/components/site/site-image';
+
+
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -51,7 +54,7 @@ export default function Home() {
           .order('display_order', { ascending: true }),
           supabase.from('departments').select('id,name,number,description,mission,icon,display_order').eq('status', 'published').order('display_order', { ascending: true }),
           supabase.from('leadership').select('id,name,position,bio,photo_url,display_order').eq('status', 'published').order('display_order', { ascending: true }),
-          supabase.from('events').select('id,title,description,date,time,location,category,featured_image_url').eq('status', 'published').order('date', { ascending: true, nullsFirst: false }).limit(3),
+          supabase.rpc('get_upcoming_events', { p_limit: 3 }),
           supabase.from('chapters').select('id,name,state,city,university,status').in('status', ['active','coming_soon']).order('display_order', { ascending: true }).limit(9),
           supabase.from('news').select('id,title,slug,excerpt,featured_image_url,author,publication_date').eq('status', 'published').order('publication_date', { ascending: false, nullsFirst: false }).limit(3),
           supabase.from('partners').select('id,organization,logo_url,partner_type,website').eq('status','published').order('display_order').limit(8),
@@ -64,7 +67,7 @@ export default function Home() {
           return { ...existing, ...row, id: existing?.id ?? `department-${row.number}`, mission: row.mission || row.description || existing?.mission || '', icon: dbIcon ?? existing?.icon ?? departments[0].icon };
         }));
         if (!leadershipResult.error && leadershipResult.data) setPublicLeadership(leadershipResult.data.map((row) => ({ ...leadership.find((item) => item.filled && item.name === row.name), ...row, title: row.position, bio: row.bio || leadership.find((item) => item.filled && item.name === row.name)?.bio || '' })));
-        if (!eventResult.error && eventResult.data) setPublicEvents(eventResult.data.filter((event) => !event.date || new Date(`${event.date}T${event.time || '23:59'}`) >= new Date()));
+        if (!eventResult.error && eventResult.data) setPublicEvents(eventResult.data);
         if (!chapterResult.error && chapterResult.data) setPublicChapters(chapterResult.data);
         if (!newsResult.error && newsResult.data) setPublicNews(newsResult.data);
         if (!partnerResult.error && partnerResult.data) setPublicPartners(partnerResult.data);
@@ -124,6 +127,7 @@ export default function Home() {
           <Image
             key={photo}
             src={photo}
+            unoptimized={/^https?:/.test(photo) && !photo.startsWith((process.env.NEXT_PUBLIC_SUPABASE_URL || "") + "/storage/v1/object/public/")}
             alt=""
             fill
             priority={index === 0}
@@ -332,7 +336,7 @@ export default function Home() {
                 <div className="flex items-start gap-5">
                   <div className="relative flex-shrink-0">
                     <div className="relative h-16 w-16 overflow-hidden rounded-xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center border border-white/10">
-                      {member.photo_url ? <img src={member.photo_url} alt={member.name} className="absolute inset-0 h-full w-full object-cover"/> : <span className="font-display text-2xl font-bold text-gold">
+                      {member.photo_url ? <SiteImage src={member.photo_url} alt={member.name} className="absolute inset-0 h-full w-full object-cover"/> : <span className="font-display text-2xl font-bold text-gold">
                         {member.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                       </span>}
                     </div>
@@ -505,7 +509,7 @@ export default function Home() {
                 className="group p-5 rounded-xl border border-border bg-card shadow-premium hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up"
                 style={{ animationDelay: `${i * 0.1}s` }}
               >
-                {event.featured_image_url && <img src={event.featured_image_url} alt="" className="mb-4 h-32 w-full rounded-xl object-cover"/>}
+                {event.featured_image_url && <SiteImage src={event.featured_image_url} alt="" className="mb-4 h-32 w-full rounded-xl object-cover"/>}
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-xs font-semibold text-gold-dark bg-gold/10 px-3 py-1 rounded-full">
                     {event.category}
@@ -788,7 +792,7 @@ export default function Home() {
             title={sectionValue('latest_news', 'title', 'The latest from ASAM')}
             description={sectionValue('latest_news', 'description', 'Updates, announcements, and stories from the Afghan student community in Malaysia.')}
           />
-          {publicNews.length ? <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">{publicNews.map((article) => <article key={article.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-premium">{article.featured_image_url && <img src={article.featured_image_url} alt="" className="h-32 w-full object-cover"/>}<div className="p-5"><h3 className="font-display text-lg font-bold">{article.title}</h3>{article.excerpt && <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{article.excerpt}</p>}{article.publication_date && <p className="mt-4 text-xs text-muted-foreground">{new Date(article.publication_date).toLocaleDateString()}</p>}</div></article>)}</div> : <div className="mt-6"><EmptyState title="No Articles Yet" message="ASAM's news and stories will appear here as they are published." /></div>}
+          {publicNews.length ? <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">{publicNews.map((article) => <article key={article.id} className="overflow-hidden rounded-xl border border-border bg-card shadow-premium">{article.featured_image_url && <SiteImage src={article.featured_image_url} alt="" className="h-32 w-full object-cover"/>}<div className="p-5"><h3 className="font-display text-lg font-bold">{article.title}</h3>{article.excerpt && <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{article.excerpt}</p>}{article.publication_date && <p className="mt-4 text-xs text-muted-foreground">{new Date(article.publication_date).toLocaleDateString()}</p>}</div></article>)}</div> : <div className="mt-6"><EmptyState title="No Articles Yet" message="ASAM's news and stories will appear here as they are published." /></div>}
           <div className="mt-6 text-center">
             <Link
               href={sectionHref('latest_news', 'button_url', '/news')}
@@ -843,7 +847,7 @@ export default function Home() {
             title={sectionValue('partners', 'title', 'Building institutional partnerships')}
             description={sectionValue('partners', 'description', 'ASAM is building relationships with universities, organizations, and companies. Partner information will appear here as partnerships are established.')}
           />
-          {publicPartners.length ? <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">{publicPartners.map((partner,i)=><div key={partner.id} className="animate-fade-up rounded-xl border border-border bg-card p-4 text-center shadow-premium" style={{animationDelay:`${i*.05}s`}}>{partner.logo_url?<img loading="lazy" src={partner.logo_url} alt={`${partner.organization} logo`} className="mx-auto h-20 w-full object-contain"/>:<Building2 className="mx-auto my-6 h-8 w-8 text-muted-foreground/30"/>}<div className="mt-2 text-sm font-semibold">{partner.organization}</div>{partner.partner_type&&<div className="mt-1 text-xs text-muted-foreground">{partner.partner_type}</div>}</div>)}</div>:<div className="mt-6 rounded-2xl border border-dashed border-border bg-card p-6 text-center text-sm text-muted-foreground">Confirmed ASAM partners will appear here when published.</div>}
+          {publicPartners.length ? <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">{publicPartners.map((partner,i)=><div key={partner.id} className="animate-fade-up rounded-xl border border-border bg-card p-4 text-center shadow-premium" style={{animationDelay:`${i*.05}s`}}>{partner.logo_url?<SiteImage loading="lazy" src={partner.logo_url} alt={`${partner.organization} logo`} className="mx-auto h-20 w-full object-contain"/>:<Building2 className="mx-auto my-6 h-8 w-8 text-muted-foreground/30"/>}<div className="mt-2 text-sm font-semibold">{partner.organization}</div>{partner.partner_type&&<div className="mt-1 text-xs text-muted-foreground">{partner.partner_type}</div>}</div>)}</div>:<div className="mt-6 rounded-2xl border border-dashed border-border bg-card p-6 text-center text-sm text-muted-foreground">Confirmed ASAM partners will appear here when published.</div>}
           <div className="mt-6 text-center">
             <Link
               href={sectionHref('partners', 'button_url', '/partners')}

@@ -6,6 +6,7 @@ import { Mail, LockKeyhole, LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useMemberAction } from '@/hooks/use-member-action';
 import { signInWithEmail, signInWithGoogle } from '@/app/member/actions/auth';
 
 interface MemberLoginFormProps {
@@ -17,43 +18,18 @@ export function MemberLoginForm({ initialError, initialNotice }: MemberLoginForm
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [googleBusy, setGoogleBusy] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(initialError || '');
-  const [notice, setNotice] = useState(initialNotice || '');
-
+  const { run, pending: busy, error: actionError } = useMemberAction();
+  const googleBusy = busy;
+  const errors: Record<string, string> = { unauthenticated: 'Please sign in to continue.', callback: 'That sign-in link is invalid or expired. Please try again.' };
+  const notices: Record<string, string> = { 'password-updated': 'Your password has been updated. Sign in with your new password.', 'signed-out': 'You have been signed out.' };
+  const errorMessage = actionError || (initialError ? errors[initialError] || 'Please sign in again.' : '');
+  const notice = initialNotice ? notices[initialNotice] || '' : '';
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setBusy(true);
-    setErrorMessage('');
-    setNotice('');
-
-    const result = await signInWithEmail(email, password);
-    if (!result.ok) {
-      setErrorMessage(result.message);
-      setBusy(false);
-      return;
-    }
-
-    router.push('/member');
-    router.refresh();
+    await run(() => signInWithEmail(email, password), () => { router.replace('/member'); router.refresh(); });
   }
-
   async function handleGoogleLogin() {
-    setGoogleBusy(true);
-    setErrorMessage('');
-    setNotice('');
-
-    const result = await signInWithGoogle();
-    if (!result.ok) {
-      setErrorMessage(result.message);
-      setGoogleBusy(false);
-      return;
-    }
-
-    if (result.url) {
-      window.location.href = result.url;
-    }
+    await run(signInWithGoogle, (result) => { if (result.ok && result.url) window.location.assign(result.url); });
   }
 
   return (
@@ -121,7 +97,7 @@ export function MemberLoginForm({ initialError, initialNotice }: MemberLoginForm
         variant="outline"
         className="w-full"
         onClick={handleGoogleLogin}
-        disabled={googleBusy}
+        disabled={busy}
       >
         {googleBusy ? (
           <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />

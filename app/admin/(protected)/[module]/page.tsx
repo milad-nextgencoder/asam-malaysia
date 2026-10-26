@@ -8,17 +8,27 @@ import type { HomepageSection } from '@/lib/homepage/types';
 import { contentConfig, pageContentModules, pageContentPageKeys, pageItemsModules, pageItemPageKeys, type ContentModule, type PageContentModule, type PageItemsModule } from '@/lib/admin/content-config';
 import { AdminContentManager } from '@/components/admin/admin-content-manager';
 import { AdminRemainingManager } from '@/components/admin/admin-remaining-manager';
+import { DirectoryPagination } from '@/components/admin/directory-pagination';
+import { DirectorySearch } from '@/components/admin/directory-search';
+import { ADMIN_PAGE_SIZE, readDirectoryParams } from '@/lib/admin/pagination';
 import { requireAdmin, requireSuperAdmin } from '@/lib/supabase/admin';
 
 interface AdminModulePageProps {
-  params: { module: string };
+  params: Promise<{ module: string }>;
+  searchParams?: Promise<Record<string,string|string[]|undefined>>;
 }
 
-export default async function AdminModulePage({ params }: AdminModulePageProps) {
+export default async function AdminModulePage({ params: paramsPromise, searchParams: searchParamsPromise }: AdminModulePageProps) {
+  const params = await paramsPromise;
+  const searchParams = await searchParamsPromise || {};
+  const { page,q,status,offset } = readDirectoryParams(searchParams);
+  const moduleName = params.module === 'faq' ? 'faqs' : params.module;
+  const queryValue = JSON.stringify('%' + q.replace(/[\\%_]/g, (character) => '\\' + character) + '%');
+  const searchFilter = (columns: string[]) => columns.map(column => column + '.ilike.' + queryValue).join(',');
   const restricted = ['settings', 'users', 'audit-logs'].includes(params.module);
   const identity = restricted ? await requireSuperAdmin() : await requireAdmin();
   if (params.module === 'homepage') {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from('homepage_sections')
       .select('id, section_key, title, subtitle, description, image_url, button_text, button_url, secondary_button_text, secondary_button_url, display_order, visible, status, created_at, updated_at')
@@ -27,41 +37,45 @@ export default async function AdminModulePage({ params }: AdminModulePageProps) 
   }
 
   if (['gallery', 'messages', 'settings', 'users', 'audit-logs'].includes(params.module)) {
-    const supabase = createClient();
+    const supabase = await createClient();
     let records: Record<string, any>[] = [];
     let settings: Record<string, any> | null = null;
     let loadFailed = false;
+    let total = 0;
+    const paginated = ['gallery','messages','audit-logs'].includes(params.module);
     if (params.module === 'gallery') {
-      let result = await supabase.from('gallery_albums').select('*').order('display_order').range(0, 99);
+      let result = await supabase.from('gallery_albums').select('*', { count: 'exact' }).or(searchFilter(['name','description'])).order('display_order').order('id').range(offset, offset + ADMIN_PAGE_SIZE - 1);
       if (result.error) {
         // Existing rows remain manageable before the additive category migration is applied.
-        result = await supabase.from('gallery_albums').select('id,name,description,cover_image_url,display_order,status,created_at,updated_at').order('display_order').range(0, 99);
+        result = await supabase.from('gallery_albums').select('id,name,description,cover_image_url,display_order,status,created_at,updated_at', { count: 'exact' }).or(searchFilter(['name','description'])).order('display_order').order('id').range(offset, offset + ADMIN_PAGE_SIZE - 1);
       }
-      records = result.data ?? []; loadFailed = Boolean(result.error);
+      records = result.data ?? []; loadFailed = Boolean(result.error); total = result.count ?? records.length;
     } else if (params.module === 'messages') {
-      const result = await supabase.from('contact_messages').select('id,name,email,subject,message,status,created_at').order('created_at', { ascending: false }).range(0, 249);
-      records = result.data ?? []; loadFailed = Boolean(result.error);
+      const result = await supabase.from('contact_messages').select('id,name,email,subject,message,status,created_at', { count: 'exact' }).or(searchFilter(['name','email','subject','message'])).order('created_at', { ascending: false }).order('id').range(offset, offset + ADMIN_PAGE_SIZE - 1);
+      records = result.data ?? []; loadFailed = Boolean(result.error); total = result.count ?? records.length;
     } else if (params.module === 'settings') {
       const result = await supabase.from('site_settings').select('*').eq('singleton', true).maybeSingle();
       settings = result.data; loadFailed = Boolean(result.error);
     } else if (params.module === 'users') {
       const result = await supabase.from('admin_roles').select('user_id,role,created_at,updated_at').order('created_at');
-      records = result.data ?? []; loadFailed = Boolean(result.error);
+      records = result.data ?? []; loadFailed = Boolean(result.error); total = result.count ?? records.length;
     } else {
-      const result = await supabase.from('audit_logs').select('id,actor_user_id,action,entity_type,entity_id,metadata,created_at').order('created_at', { ascending: false }).range(0, 249);
-      records = result.data ?? []; loadFailed = Boolean(result.error);
+      const result = await supabase.from('audit_logs').select('id,actor_user_id,action,entity_type,entity_id,metadata,created_at', { count: 'exact' }).or(searchFilter(['action','entity_type'])).order('created_at', { ascending: false }).order('id').range(offset, offset + ADMIN_PAGE_SIZE - 1);
+      records = result.data ?? []; loadFailed = Boolean(result.error); total = result.count ?? records.length;
     }
     return <>
       {loadFailed && <p role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">This information could not be loaded. Check your connection and administrator access.</p>}
       {params.module === 'settings' && !settings && <p role="alert" className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">The existing singleton settings row is missing. This screen will not create a duplicate; restore the existing row through a reviewed database operation.</p>}
-      <AdminRemainingManager module={params.module} records={records} settings={settings} role={identity.role} />
+      {paginated && <DirectorySearch query={q} status={status} />}
+      <AdminRemainingManager key={JSON.stringify(searchParams)} module={params.module} records={records} settings={settings} role={identity.role} canReorder={!q && page === 1 && total <= ADMIN_PAGE_SIZE} />
+      {paginated && <DirectoryPagination base={`/admin/${params.module}`} page={page} total={total} query={q} />}
     </>;
   }
 
   if (pageContentModules.includes(params.module as PageContentModule)) {
     const sectionModule = params.module as PageContentModule;
     const itemModule = `${params.module}-items` as PageItemsModule;
-    const supabase = createClient();
+    const supabase = await createClient();
     const [sectionsResult, itemsResult] = await Promise.all([
       supabase.from('page_sections').select('*').eq('page_key', pageContentPageKeys[sectionModule]).order('display_order', { ascending: true }),
       supabase.from('page_items').select('*').eq('page_key', pageItemPageKeys[itemModule]).order('collection_key', { ascending: true }).order('display_order', { ascending: true }),
@@ -76,14 +90,16 @@ export default async function AdminModulePage({ params }: AdminModulePageProps) 
 
   if (pageItemsModules.includes(params.module as PageItemsModule)) notFound();
 
-  if (params.module in contentConfig) {
-    const contentType = params.module as ContentModule;
+  if (Object.prototype.hasOwnProperty.call(contentConfig, moduleName)) {
+    const contentType = moduleName as ContentModule;
     const config = contentConfig[contentType];
-    const supabase = createClient();
-    let query = supabase.from(config.table).select('*');
+    const supabase = await createClient();
+    let query = supabase.from(config.table).select('*', { count: 'exact' });
+    if (status !== 'all') query = query.eq('status', status);
+    if (q) query = query.or(searchFilter([contentType === 'partners' ? 'organization' : contentType === 'faqs' ? 'question' : ['leadership','departments','chapters','universities'].includes(contentType) ? 'name' : 'title']));
     if (pageContentModules.includes(contentType as PageContentModule)) query = query.eq('page_key', pageContentPageKeys[contentType as PageContentModule]);
     query = config.ordered ? query.order('display_order', { ascending: true }) : query.order('created_at', { ascending: false });
-    const { data, error } = await query;
+    const { data, error, count } = await query.order('id').range(offset, offset + ADMIN_PAGE_SIZE - 1);
     let departments: { id: string; name: string; number: string }[] = [];
     if (contentType === 'leadership') {
       const result = await supabase.from('departments').select('id,name,number').order('display_order', { ascending: true });
@@ -91,7 +107,9 @@ export default async function AdminModulePage({ params }: AdminModulePageProps) 
     }
     return <>
       {error && <p role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">The database content could not be loaded. Refresh after checking your connection and administrator access.</p>}
-      <AdminContentManager module={contentType} initialRecords={data ?? []} departments={departments} />
+      <DirectorySearch query={q} status={status} statuses={contentType === 'chapters' ? ['active','coming_soon','inactive'] : ['draft','published','archived']} />
+      <AdminContentManager key={JSON.stringify(searchParams)} module={contentType} initialRecords={data ?? []} departments={departments} canReorder={!q && status === "all" && page === 1 && (count || 0) <= ADMIN_PAGE_SIZE} />
+      <DirectoryPagination base={`/admin/${params.module}`} page={page} total={count || 0} query={q} status={status} />
     </>;
   }
 

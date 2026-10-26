@@ -15,24 +15,28 @@ CREATE TABLE IF NOT EXISTS public.event_registrations (
 CREATE INDEX IF NOT EXISTS event_registrations_event_id_idx ON public.event_registrations (event_id);
 CREATE INDEX IF NOT EXISTS event_registrations_user_id_idx ON public.event_registrations (user_id);
 
+DROP TRIGGER IF EXISTS event_registrations_set_updated_at ON public.event_registrations;
 CREATE TRIGGER event_registrations_set_updated_at
   BEFORE UPDATE ON public.event_registrations
   FOR EACH ROW EXECUTE FUNCTION public.asam_set_updated_at();
 
 ALTER TABLE public.event_registrations ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS event_registrations_select_own ON public.event_registrations;
 CREATE POLICY event_registrations_select_own
   ON public.event_registrations
   FOR SELECT
   TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS event_registrations_insert_own ON public.event_registrations;
 CREATE POLICY event_registrations_insert_own
   ON public.event_registrations
   FOR INSERT
   TO authenticated
   WITH CHECK (user_id = auth.uid());
 
+DROP POLICY IF EXISTS event_registrations_delete_own ON public.event_registrations;
 CREATE POLICY event_registrations_delete_own
   ON public.event_registrations
   FOR DELETE

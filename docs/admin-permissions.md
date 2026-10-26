@@ -11,7 +11,7 @@ Authorization is checked by the protected admin layout and again by sensitive se
 | View audit history | Yes | No | No |
 | Append own audit event | Yes | Yes | No |
 | Manage admin role assignments | Yes | No | No |
-| Access membership portal or member data | Not part of this CMS | Not part of this CMS | No |
+| Read member profiles and review applications | Yes | Yes | No |
 
 Admin assignment applies to an existing Supabase Auth user ID. The current browser configuration has no service-role key, so this UI does not create Auth accounts or display account email/last-sign-in data. Self-role changes and removal/demotion of the final SUPER_ADMIN are blocked.
 

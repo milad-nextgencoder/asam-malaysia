@@ -1,7 +1,12 @@
 'use client';
 
+import { SiteImage } from '@/components/site/site-image';
+
+
 import { useState, type ChangeEvent } from 'react';
 import { Camera, LoaderCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useMemberAction } from '@/hooks/use-member-action';
 import { uploadProfilePhoto } from '@/app/member/actions/profile';
 
 interface MemberProfilePhotoUploadProps {
@@ -10,37 +15,26 @@ interface MemberProfilePhotoUploadProps {
 }
 
 export function MemberProfilePhotoUpload({ currentPhotoUrl }: MemberProfilePhotoUploadProps) {
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState('');
+  const router = useRouter();
+  const { run, pending: uploading, error } = useMemberAction();
   const [preview, setPreview] = useState<string | null>(null);
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
+    const input = event.currentTarget;
+    const file = input.files?.[0];
     if (!file) return;
-
-    setError('');
-    setUploading(true);
-
-    const formData = new FormData();
-    formData.append('photo', file);
-
-    const result = await uploadProfilePhoto(formData);
-    if (!result.ok) {
-      setError(result.message);
-      setUploading(false);
-      return;
-    }
-
-    setPreview(result.url || null);
-    setUploading(false);
+    const formData = new FormData(); formData.append('photo', file);
+    await run(() => uploadProfilePhoto(formData), (result) => {
+      if (result.ok) { setPreview(result.url || null); router.refresh(); }
+    });
+    input.value = '';
   }
-
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-4">
         <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-gray-200 bg-gray-100">
           {preview || currentPhotoUrl ? (
-            <img src={preview || currentPhotoUrl || ''} alt="" className="h-full w-full object-cover" />
+            <SiteImage src={preview || currentPhotoUrl || ''} alt="" className="h-full w-full object-cover" />
           ) : (
             <div className="flex h-full w-full items-center justify-center">
               <Camera className="h-8 w-8 text-gray-400" />

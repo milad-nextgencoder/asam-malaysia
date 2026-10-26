@@ -1,7 +1,9 @@
 'use client';
 
 import { Calendar, MapPin, Clock, CheckCircle, ExternalLink } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useMemberAction } from '@/hooks/use-member-action';
+import { safeSiteLink } from '@/lib/member/validation';
 import { registerForEvent, cancelEventRegistration } from '@/app/member/actions/events';
 
 interface EventItem {
@@ -19,43 +21,29 @@ interface EventItem {
 export function MemberEventsList({ events, registeredEventIds }: { events: EventItem[]; registeredEventIds: Set<string> }) {
   const [eventRegistrations, setEventRegistrations] = useState(registeredEventIds);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [message, setMessage] = useState('');
+  const { run, pending, error, notice } = useMemberAction();
+  const message = error || notice;
+  useEffect(() => setEventRegistrations(registeredEventIds), [registeredEventIds]);
 
   async function handleRegister(eventId: string) {
+    if (pending) return;
     setBusyId(eventId);
-    setMessage('');
-    const result = await registerForEvent(eventId);
-    if (result.ok) {
-      setEventRegistrations((prev) => new Set(prev).add(eventId));
-      setMessage('Successfully registered for event.');
-    } else {
-      setMessage(result.message);
-    }
+    await run(() => registerForEvent(eventId), () => setEventRegistrations((previous) => new Set(previous).add(eventId)), 'You are registered for this event.');
     setBusyId(null);
   }
-
   async function handleCancel(eventId: string) {
+    if (pending) return;
     setBusyId(eventId);
-    setMessage('');
-    const result = await cancelEventRegistration(eventId);
-    if (result.ok) {
-      setEventRegistrations((prev) => {
-        const next = new Set(prev);
-        next.delete(eventId);
-        return next;
-      });
-      setMessage('Registration cancelled.');
-    } else {
-      setMessage(result.message);
-    }
+    await run(() => cancelEventRegistration(eventId), () => setEventRegistrations((previous) => {
+      const next = new Set(previous); next.delete(eventId); return next;
+    }), 'Your registration has been cancelled.');
     setBusyId(null);
   }
-
   if (events.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center">
         <Calendar className="mx-auto h-12 w-12 text-gray-300" />
-        <p className="mt-4 text-sm text-gray-500">No upcoming events at this time.</p>
+        <h1 className="mt-4 font-display text-xl font-bold text-navy">Events</h1><p className="mt-2 text-sm text-gray-500">No published events are available at this time.</p>
       </div>
     );
   }
@@ -68,7 +56,7 @@ export function MemberEventsList({ events, registeredEventIds }: { events: Event
       </div>
 
       {message && (
-        <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800" role="status">
+        <div className={error ? "rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" : "rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"} role={error ? "alert" : "status"}>
           {message}
         </div>
       )}
@@ -76,7 +64,7 @@ export function MemberEventsList({ events, registeredEventIds }: { events: Event
       <div className="space-y-4">
         {events.map((event) => {
           const isRegistered = eventRegistrations.has(event.id);
-          const isPast = event.date ? new Date(`${event.date}T${event.time || '23:59'}`) < new Date() : false;
+          const isPast = event.date ? new Date(`${event.date}T${event.time || '23:59:59'}+08:00`) < new Date() : false;
 
           return (
             <div key={event.id} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -119,15 +107,15 @@ export function MemberEventsList({ events, registeredEventIds }: { events: Event
                 </div>
 
                 <div className="shrink-0">
-                  {isPast ? (
+                  {isPast || !event.date ? (
                     <span className="inline-flex items-center gap-1 rounded-lg bg-gray-100 px-4 py-2 text-sm text-gray-500">
-                      Event Ended
+                      {isPast ? "Event ended" : "Date to be confirmed"}
                     </span>
                   ) : isRegistered ? (
                     <button
                       type="button"
                       onClick={() => handleCancel(event.id)}
-                      disabled={busyId === event.id}
+                      disabled={pending}
                       className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 disabled:opacity-50"
                     >
                       <CheckCircle className="h-4 w-4" />
@@ -137,7 +125,7 @@ export function MemberEventsList({ events, registeredEventIds }: { events: Event
                     <button
                       type="button"
                       onClick={() => handleRegister(event.id)}
-                      disabled={busyId === event.id}
+                      disabled={pending}
                       className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy/90 disabled:opacity-50"
                     >
                       {busyId === event.id ? 'Registering...' : 'Register'}
@@ -146,10 +134,10 @@ export function MemberEventsList({ events, registeredEventIds }: { events: Event
                 </div>
               </div>
 
-              {event.registration_url && (
+              {safeSiteLink(event.registration_url) && (
                 <div className="mt-4 border-t border-gray-100 pt-3">
                   <a
-                    href={event.registration_url}
+                    href={safeSiteLink(event.registration_url)!}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1 text-sm font-medium text-gold-dark hover:underline"

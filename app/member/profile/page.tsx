@@ -1,16 +1,17 @@
 import { createClient } from '@/lib/supabase/server';
-import { requireMember } from '@/lib/member/helpers';
+import { requireMember, getMemberAuth } from '@/lib/member/helpers';
 import { ensureMemberProfile, getPublishedUniversities } from '@/lib/member/profile';
 import { MemberDashboardShell } from '@/components/member/member-dashboard-shell';
 import { MemberProfileForm } from '@/components/member/member-profile-form';
+import { ProfileCompletion } from '@/components/member/profile-completion';
 import { redirect } from 'next/navigation';
 
 export default async function MemberProfilePage() {
   const { userId } = await requireMember();
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const [{ data: userData }, universities] = await Promise.all([
-    supabase.auth.getUser(),
+    getMemberAuth(),
     getPublishedUniversities(),
   ]);
   const user = userData.user;
@@ -33,6 +34,7 @@ export default async function MemberProfilePage() {
       userEmail={user.email || ''}
       profileCompleted={profile.profile_completed}
     >
+      <ProfileCompletion profile={profile} />
       <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
         <h1 className="font-display text-2xl font-bold text-gray-900">Edit Profile</h1>
         <p className="mt-1 text-sm text-gray-500">

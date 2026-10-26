@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteImage } from '@/components/site/site-image';
+
+
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Building2, X } from 'lucide-react';
 
@@ -52,7 +55,7 @@ export function PartnerDirectory({ partners }: { partners: Partner[] }) {
             style={{ animationDelay: `${index * 0.05}s` }}
           >
             {partner.logo_url ? (
-              <img loading="lazy" src={partner.logo_url} alt={`${partner.organization} logo`} className="mx-auto mb-4 h-20 w-full object-contain" />
+              <SiteImage loading="lazy" src={partner.logo_url} alt={`${partner.organization} logo`} className="mx-auto mb-4 h-20 w-full object-contain" />
             ) : (
               <span className="mb-4 flex h-20 items-center justify-center">
                 <Building2 className="h-8 w-8 text-muted-foreground/30" />
@@ -87,7 +90,7 @@ export function PartnerDirectory({ partners }: { partners: Partner[] }) {
           >
             <header className="flex shrink-0 items-start gap-4 border-b border-border px-5 py-5 sm:px-7">
               {selected.logo_url ? (
-                <img src={selected.logo_url} alt="" className="h-14 w-20 shrink-0 rounded-lg border border-border bg-white object-contain p-2" />
+                <SiteImage src={selected.logo_url} alt="" className="h-14 w-20 shrink-0 rounded-lg border border-border bg-white object-contain p-2" />
               ) : (
                 <span className="flex h-14 w-20 shrink-0 items-center justify-center rounded-lg border border-border bg-white">
                   <Building2 className="h-7 w-7 text-gold-dark" />

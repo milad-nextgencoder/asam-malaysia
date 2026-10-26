@@ -5,29 +5,15 @@ import { Mail, LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useMemberAction } from '@/hooks/use-member-action';
 import { forgotPassword } from '@/app/member/actions/auth';
 
 export function MemberForgotPasswordForm() {
   const [email, setEmail] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-
+  const { run, pending: busy, error: errorMessage, notice: successMessage } = useMemberAction();
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setBusy(true);
-    setErrorMessage('');
-    setSuccessMessage('');
-
-    const result = await forgotPassword(email);
-    if (!result.ok) {
-      setErrorMessage(result.message);
-      setBusy(false);
-      return;
-    }
-
-    setSuccessMessage('If an account exists for this email, a password reset link has been sent.');
-    setBusy(false);
+    await run(() => forgotPassword(email), undefined, 'If an account exists for this email, a password reset link has been sent.');
   }
 
   return (

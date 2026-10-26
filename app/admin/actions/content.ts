@@ -40,7 +40,7 @@ function isSafeLink(value: string) {
 }
 
 function revalidateContent(module: ContentModule) {
-  const adminPath = module.endsWith('-items')
+  const adminPath = module === 'faqs' ? '/admin/faq' : module.endsWith('-items')
     ? `/admin/${module.slice(0, -6)}`
     : `/admin/${module}`;
 
@@ -66,7 +66,7 @@ function revalidateContent(module: ContentModule) {
 
   const pages: Record<string, string[]> = {
     faqs: ['/faq', '/membership', '/welfare'],
-    documents: ['/transparency'],
+    documents: ['/transparency', '/research'],
     scholarships: ['/scholarships', '/academic'],
     opportunities: ['/opportunities', '/career'],
     partners: ['/partners', '/'],
@@ -83,7 +83,7 @@ function revalidateContent(module: ContentModule) {
 async function context() {
   await requireAdmin();
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data } = await supabase.auth.getClaims();
 

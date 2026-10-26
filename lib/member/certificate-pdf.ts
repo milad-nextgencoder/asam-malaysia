@@ -1,9 +1,11 @@
+import { createRenderCapacity } from '@/lib/member/render-capacity';
 import puppeteer from 'puppeteer-core';
 import { existsSync } from 'fs';
 import { buildCertificateDocument, CERTIFICATE_WIDTH_PX, CERTIFICATE_HEIGHT_PX } from '@/lib/member/certificate-html';
 import { getCertificateView, getCertificateLogoDataUrl } from '@/lib/member/certificate';
 import { isServerlessRuntime } from '@/lib/member/serverless-runtime';
 
+const renderCapacity = createRenderCapacity(2);
 const PDF_WIDTH_MM = 297;
 const PDF_HEIGHT_MM = 210;
 
@@ -164,14 +166,18 @@ export async function generateCertificatePDF(memberId: string): Promise<Uint8Arr
   const chrome = await resolveChrome();
   let browser: Awaited<ReturnType<typeof puppeteer.launch>> | undefined;
 
+  if (!renderCapacity.acquire()) throw new CertificatePdfError("The certificate renderer is busy. Please try again.", 429);
   try {
     browser = await puppeteer.launch({
+      timeout: 20_000,
       headless: chrome.headless,
       executablePath: chrome.executablePath,
       args: chrome.args,
     });
 
     const page = await browser.newPage();
+    page.setDefaultTimeout(20_000);
+    page.setDefaultNavigationTimeout(20_000);
     await page.setViewport({
       width: CERTIFICATE_WIDTH_PX,
       height: CERTIFICATE_HEIGHT_PX,
@@ -184,6 +190,7 @@ export async function generateCertificatePDF(memberId: string): Promise<Uint8Arr
       width: PDF_WIDTH_MM + 'mm',
       height: PDF_HEIGHT_MM + 'mm',
       printBackground: true,
+      timeout: 20_000,
       pageRanges: '1',
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
     });
@@ -204,6 +211,7 @@ export async function generateCertificatePDF(memberId: string): Promise<Uint8Arr
     console.error('Certificate PDF rendering failed:', error);
     throw new CertificatePdfError('PDF rendering is unavailable on this server.', 503);
   } finally {
+    renderCapacity.release();
     if (browser) {
       try {
         await browser.close();

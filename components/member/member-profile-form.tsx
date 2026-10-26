@@ -13,6 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useRouter } from 'next/navigation';
+import { useMemberAction } from '@/hooks/use-member-action';
 import { updateProfile } from '@/app/member/actions/profile';
 import { MemberProfilePhotoUpload } from './member-profile-photo-upload';
 import type { MemberProfile, UniversityOption } from '@/lib/member/types';
@@ -34,44 +36,18 @@ export function MemberProfileForm({ profile, universities }: MemberProfileFormPr
   const [city, setCity] = useState(profile.city || '');
   const [state, setState] = useState(profile.state || '');
   const [bio, setBio] = useState(profile.bio || '');
-  const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const router = useRouter();
+  const { run, pending: busy, notice: message, error } = useMemberAction();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setBusy(true);
-    setMessage('');
-    setError('');
-
-    const payload = {
-      first_name: firstName,
-      middle_name: middleName,
-      last_name: lastName,
-      preferred_name: preferredName,
-      phone,
-      university_id: universityId || null,
-      program,
-      faculty,
-      city,
-      state,
-      bio,
-    };
-
-    const result = await updateProfile(payload);
-
-    if (!result.ok) {
-      setError(result.message);
-      setBusy(false);
-      return;
-    }
-
-    setMessage('Profile saved successfully.');
-    setBusy(false);
+    await run(() => updateProfile({
+      first_name: firstName, middle_name: middleName, last_name: lastName, preferred_name: preferredName,
+      phone, university_id: universityId || null, program, faculty, city, state, bio,
+    }), () => router.refresh(), 'Profile saved successfully.');
   }
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8" aria-busy={busy}>
       {message && (
         <div
           className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"
@@ -106,6 +82,8 @@ export function MemberProfileForm({ profile, universities }: MemberProfileFormPr
             <Label htmlFor="profile-first-name">First Name</Label>
             <Input
               id="profile-first-name"
+              autoComplete="given-name"
+              maxLength={100}
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               disabled={busy}
@@ -126,6 +104,8 @@ export function MemberProfileForm({ profile, universities }: MemberProfileFormPr
             <Label htmlFor="profile-last-name">Last Name</Label>
             <Input
               id="profile-last-name"
+              autoComplete="family-name"
+              maxLength={100}
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               disabled={busy}
@@ -151,6 +131,8 @@ export function MemberProfileForm({ profile, universities }: MemberProfileFormPr
           <Label htmlFor="profile-phone">Phone</Label>
           <Input
             id="profile-phone"
+            autoComplete="tel"
+            maxLength={20}
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -164,14 +146,14 @@ export function MemberProfileForm({ profile, universities }: MemberProfileFormPr
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label>University</Label>
+            <Label htmlFor="profile-university">University</Label>
 
             <Select
               value={universityId || undefined}
               onValueChange={(value) => setUniversityId(value || '')}
               disabled={busy}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger id="profile-university" className="w-full">
                 <SelectValue placeholder="Select your university" />
               </SelectTrigger>
 
@@ -256,6 +238,7 @@ export function MemberProfileForm({ profile, universities }: MemberProfileFormPr
 
           <Textarea
             id="profile-bio"
+            maxLength={2000}
             rows={4}
             value={bio}
             onChange={(e) => setBio(e.target.value)}

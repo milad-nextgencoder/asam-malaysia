@@ -26,7 +26,9 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (saving) return;
     setSaving(true); setFormError('');
+    try {
     const name = form.name.trim(); const email = form.email.trim(); const subject = form.subject.trim(); const message = form.message.trim();
     if (name.length > 160 || email.length > 254 || subject.length > 200 || message.length > 10000 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setFormError('Please check your name, email address, and message length.'); setSaving(false); return;
@@ -35,7 +37,8 @@ export default function ContactPage() {
     const { error } = await createClient().from('contact_messages').insert({ name, email, subject: subject || null, message: categorizedMessage });
     if (error) setFormError('Your message could not be sent right now. Please try again later or email ASAM directly.');
     else setSubmitted(true);
-    setSaving(false);
+    } catch { setFormError('Your connection was interrupted. Please try again.'); }
+    finally { setSaving(false); }
   };
 
   const contactTypes = [

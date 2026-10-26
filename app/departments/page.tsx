@@ -1,3 +1,4 @@
+import { SiteImage } from '@/components/site/site-image';
 import { PageHero } from '@/components/site/page-hero';
 import { SectionHeader } from '@/components/site/section-header';
 import { CTASection } from '@/components/site/cta-section';
@@ -53,7 +54,7 @@ export default async function DepartmentsPage() {
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">{dept.mission}</p>
                     {dept.leader && <p className="mt-3 text-xs text-muted-foreground">Department leader: <span className="font-semibold text-foreground">{dept.leader}</span></p>}
-                    {dept.image_url && <img src={dept.image_url} alt="" className="mt-4 max-h-36 w-full rounded-xl object-cover" />}
+                    {dept.image_url && <SiteImage src={dept.image_url} alt="" className="mt-4 max-h-36 w-full rounded-xl object-cover" />}
                   </div>
 
                   <div className="lg:col-span-4">

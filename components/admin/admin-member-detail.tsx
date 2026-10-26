@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { ArrowLeft, CheckCircle, XCircle, User, Mail, Phone, GraduationCap, MapPin, Clock, CreditCard, Send, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useMemberAction } from '@/hooks/use-member-action';
 import { approveMemberAction, rejectMemberAction, startReviewAction } from '@/app/member/actions/membership';
 import { ADMIN_FEEDBACK } from '@/lib/admin/feedback';
 import type { MembershipApplication } from '@/lib/member/types';
@@ -60,8 +62,9 @@ export function AdminMemberDetail({
   application: MembershipApplication | null;
   universityName: string | null;
 }) {
-  const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState('');
+  const router = useRouter();
+  const { run, pending: busy, error, notice } = useMemberAction();
+  const message = error || notice;
   const [showReject, setShowReject] = useState(false);
   const [rejectReason, setRejectReason] = useState('');
 
@@ -70,48 +73,17 @@ export function AdminMemberDetail({
   const status = application?.status ?? 'draft';
 
   async function handleStartReview() {
-    setBusy(true);
-    setMessage('');
-    const result = await startReviewAction(member.user_id);
-    if (result.ok) {
-      setMessage(ADMIN_FEEDBACK.saved);
-    } else {
-      setMessage(result.message);
-    }
-    setBusy(false);
+    await run(() => startReviewAction(member.user_id), () => router.refresh(), 'Application is now under review.');
   }
-
   async function handleApprove() {
-    setBusy(true);
-    setMessage('');
-    const result = await approveMemberAction(member.user_id);
-    if (result.ok) {
-      // Approving is a publish-equivalent decision, so it uses the publish wording.
-      setMessage(ADMIN_FEEDBACK.published);
-    } else {
-      setMessage(result.message);
-    }
-    setBusy(false);
+    if (!window.confirm('Approve this membership and issue its permanent member ID and certificate?')) return;
+    await run(() => approveMemberAction(member.user_id), () => router.refresh(), 'Membership approved and certificate issued.');
   }
-
   async function handleReject() {
-    if (!rejectReason.trim()) {
-      setMessage('Please provide a reason for rejection.');
-      return;
-    }
-    setBusy(true);
-    setMessage('');
-    const result = await rejectMemberAction(member.user_id, rejectReason.trim());
-    if (result.ok) {
-      setMessage(ADMIN_FEEDBACK.saved);
-      setShowReject(false);
-      setRejectReason('');
-    } else {
-      setMessage(result.message);
-    }
-    setBusy(false);
+    await run(() => rejectMemberAction(member.user_id, rejectReason), () => {
+      setShowReject(false); setRejectReason(''); router.refresh();
+    }, 'Application rejected. The member can update their profile and resubmit.');
   }
-
   return (
     <div className="space-y-6">
       <Link href="/admin/members" className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900">
@@ -134,7 +106,7 @@ export function AdminMemberDetail({
       </div>
 
       {message && (
-        <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+        <div role={error ? "alert" : "status"} className={error ? "rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" : "rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"}>
           {message}
         </div>
       )}
@@ -271,7 +243,7 @@ export function AdminMemberDetail({
       {status === 'submitted' ? (
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <h3 className="font-display text-lg font-bold text-gray-900">Review Application</h3>
-          <p className="mt-1 text-sm text-gray-500">Begin review or reject this membership application.</p>
+          <p className="mt-1 text-sm text-gray-500">Begin the review before making an approval or rejection decision.</p>
           <div className="mt-4 flex gap-3">
             <button
               type="button"
@@ -280,13 +252,6 @@ export function AdminMemberDetail({
               className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy/90 disabled:opacity-50"
             >
               {busy ? 'Processing...' : 'Begin Review'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowReject(true)}
-              className="rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50"
-            >
-              Reject
             </button>
           </div>
         </div>

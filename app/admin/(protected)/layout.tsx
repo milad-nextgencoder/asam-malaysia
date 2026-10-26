@@ -10,7 +10,7 @@ export default async function ProtectedAdminLayout({
   children: ReactNode;
 }): Promise<ReactElement> {
   const { role } = await requireAdmin();
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   const user = data.user;
   const fullName = [user?.user_metadata?.full_name, user?.user_metadata?.name]

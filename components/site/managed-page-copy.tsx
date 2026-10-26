@@ -1,3 +1,5 @@
+import { SiteImage } from '@/components/site/site-image';
+import { safeSiteLink } from '@/lib/member/validation';
 import { getPublishedPageSection } from '@/lib/page-sections';
 import Link from 'next/link';
 import { PageHero, type PageHeroProps } from './page-hero';
@@ -20,7 +22,7 @@ export async function ManagedPageHero({ pageKey, sectionKey = 'hero', ...props }
       <Link href={primaryUrl!} className="inline-flex items-center justify-center rounded-xl gradient-navy px-8 py-4 text-base font-bold text-white shadow-premium transition-all hover:shadow-premium-lg">{managed?.button_text}</Link>
       {managed?.secondary_button_text && secondaryUrl && <Link href={secondaryUrl} className="inline-flex items-center justify-center rounded-xl border border-border px-8 py-4 text-base font-semibold transition-all hover:bg-secondary/60">{managed.secondary_button_text}</Link>}
     </div> : props.children}
-    {managed?.image_url && <img src={managed.image_url} alt="" className="mt-8 max-h-80 w-full rounded-2xl object-cover" loading="lazy" />}
+    {managed?.image_url && <SiteImage src={managed.image_url} alt="" className="mt-8 max-h-80 w-full rounded-2xl object-cover" loading="lazy" />}
   </PageHero>;
 }
 
@@ -30,8 +32,8 @@ export async function ManagedSectionHeader({ pageKey, sectionKey, ...props }: Se
   return <>
     <SectionHeader {...props} eyebrow={managed?.eyebrow || props.eyebrow} title={managed?.title || props.title} description={managed?.description || managed?.subtitle || props.description} />
     {managed?.body && <div className="mx-auto mt-6 max-w-3xl whitespace-pre-line text-base leading-relaxed text-muted-foreground">{managed.body}</div>}
-    {managed?.image_url && <img src={managed.image_url} alt="" loading="lazy" className="mx-auto mt-8 max-h-96 w-full max-w-4xl rounded-2xl object-cover" />}
-    {managed?.secondary_image_url && <img src={managed.secondary_image_url} alt="" loading="lazy" className="mx-auto mt-5 max-h-96 w-full max-w-4xl rounded-2xl object-cover" />}
+    {managed?.image_url && <SiteImage src={managed.image_url} alt="" loading="lazy" className="mx-auto mt-8 max-h-96 w-full max-w-4xl rounded-2xl object-cover" />}
+    {managed?.secondary_image_url && <SiteImage src={managed.secondary_image_url} alt="" loading="lazy" className="mx-auto mt-5 max-h-96 w-full max-w-4xl rounded-2xl object-cover" />}
   </>;
 }
 
@@ -42,9 +44,9 @@ export async function ManagedCTASection({ pageKey, sectionKey = 'cta', ...props 
     title={managed?.title || props.title}
     description={managed?.description || props.description}
     primaryLabel={managed?.button_text || props.primaryLabel}
-    primaryHref={managed?.button_url || props.primaryHref}
+    primaryHref={safeSiteLink(managed?.button_url) || props.primaryHref}
     secondaryLabel={managed?.secondary_button_text || props.secondaryLabel}
-    secondaryHref={managed?.secondary_button_url || props.secondaryHref}
+    secondaryHref={safeSiteLink(managed?.secondary_button_url) || props.secondaryHref}
   />;
 }
 

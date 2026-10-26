@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import { SiteHeader } from '@/components/site/site-header';
+import { SiteChrome } from '@/components/site/site-chrome';
 import { SiteFooter } from '@/components/site/site-footer';
 import { getSiteSettings, resolveLogoUrl } from '@/lib/data/site-settings';
 import { getServerSiteUrl } from '@/lib/member/site-url';
@@ -87,9 +88,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <body className="font-sans min-h-screen flex flex-col">
-        <SiteHeader logoUrl={resolveLogoUrl(logoUrl)} />
-        <main id="main-content" className="flex-1">{children}</main>
-        <SiteFooter />
+        <SiteChrome header={<SiteHeader logoUrl={resolveLogoUrl(logoUrl)} />} footer={<SiteFooter />}>{children}</SiteChrome>
       </body>
     </html>
   );

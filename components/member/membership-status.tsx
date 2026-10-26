@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useMemberAction } from '@/hooks/use-member-action';
 import { CheckCircle, Clock, XCircle, AlertCircle, Send, RotateCcw, Award, Download, ShieldCheck } from 'lucide-react';
 import { submitApplication } from '@/app/member/actions/membership';
 import type { MembershipApplication } from '@/lib/member/types';
@@ -26,29 +27,17 @@ export function MembershipStatusCard({
   universityName,
   program,
 }: MembershipStatusCardProps) {
-  const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState('');
+  const router = useRouter();
+  const { run, pending: busy, error, notice } = useMemberAction();
+  const message = error || notice;
 
   const status = application?.status ?? 'draft';
   const config = STATUS_CONFIG[status];
   const Icon = config.icon;
 
   async function handleSubmit() {
-    setBusy(true);
-    setMessage('');
-    const result = await submitApplication();
-    if (result.ok) {
-      setMessage(
-        status === 'rejected'
-          ? 'Application resubmitted successfully.'
-          : 'Application submitted successfully.'
-      );
-    } else {
-      setMessage(result.message);
-    }
-    setBusy(false);
+    await run(submitApplication, () => router.refresh(), status === 'rejected' ? 'Application resubmitted successfully.' : 'Application submitted successfully.');
   }
-
   const canSubmit = profileCompleted && (status === 'draft' || status === 'rejected');
 
   return (
@@ -154,7 +143,7 @@ export function MembershipStatusCard({
       {canSubmit && (
         <div className="space-y-4">
           {message && (
-            <div className={`rounded-lg border px-4 py-3 text-sm ${
+            <div role={error ? "alert" : "status"} className={`rounded-lg border px-4 py-3 text-sm ${
               message.includes('successfully')
                 ? 'border-green-200 bg-green-50 text-green-800'
                 : 'border-red-200 bg-red-50 text-red-800'

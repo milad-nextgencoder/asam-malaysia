@@ -1,7 +1,9 @@
 'use client';
 
 import { Bell, CheckCircle, AlertCircle, Info, AlertTriangle, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useMemberAction } from '@/hooks/use-member-action';
+import { safeSiteLink } from '@/lib/member/validation';
 import { markNotificationRead, markAllNotificationsRead } from '@/app/member/actions/notifications';
 import Link from 'next/link';
 
@@ -32,28 +34,18 @@ const TYPE_COLORS = {
 export function MemberNotificationsList({ notifications }: { notifications: NotificationItem[] }) {
   const [items, setItems] = useState(notifications);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [busyAll, setBusyAll] = useState(false);
+  const { run, pending: busyAll, error } = useMemberAction();
+  useEffect(() => setItems(notifications), [notifications]);
 
   async function handleMarkRead(id: string) {
+    if (busyAll) return;
     setBusyId(id);
-    const result = await markNotificationRead(id);
-    if (result.ok) {
-      setItems((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-      );
-    }
+    await run(() => markNotificationRead(id), () => setItems((previous) => previous.map((n) => n.id === id ? { ...n, read: true } : n)));
     setBusyId(null);
   }
-
   async function handleMarkAllRead() {
-    setBusyAll(true);
-    const result = await markAllNotificationsRead();
-    if (result.ok) {
-      setItems((prev) => prev.map((n) => ({ ...n, read: true })));
-    }
-    setBusyAll(false);
+    await run(markAllNotificationsRead, () => setItems((previous) => previous.map((n) => ({ ...n, read: true }))));
   }
-
   const unreadCount = items.filter((n) => !n.read).length;
 
   return (
@@ -62,7 +54,7 @@ export function MemberNotificationsList({ notifications }: { notifications: Noti
         <div>
           <h1 className="font-display text-2xl font-bold text-gray-900">Notifications</h1>
           <p className="mt-1 text-sm text-gray-500">
-            {unreadCount > 0 ? `${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}` : 'All caught up'}
+            {unreadCount > 0 ? `${unreadCount} unread notification${unreadCount > 1 ? 's' : ''} on this page` : 'All caught up'}
           </p>
         </div>
         {unreadCount > 0 && (
@@ -78,6 +70,7 @@ export function MemberNotificationsList({ notifications }: { notifications: Noti
         )}
       </div>
 
+      {error && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">{error}</p>}
       {items.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center">
           <Bell className="mx-auto h-12 w-12 text-gray-300" />
@@ -112,7 +105,7 @@ export function MemberNotificationsList({ notifications }: { notifications: Noti
                         <button
                           type="button"
                           onClick={() => handleMarkRead(notification.id)}
-                          disabled={busyId === notification.id}
+                          disabled={busyAll}
                           className="shrink-0 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50"
                         >
                           {busyId === notification.id ? '...' : 'Mark read'}
@@ -129,8 +122,8 @@ export function MemberNotificationsList({ notifications }: { notifications: Noti
                           minute: '2-digit',
                         })}
                       </span>
-                      {notification.link && (
-                        <Link href={notification.link} className="font-medium text-gold-dark hover:underline">
+                      {safeSiteLink(notification.link) && (
+                        <Link href={safeSiteLink(notification.link)!} className="font-medium text-gold-dark hover:underline">
                           View details
                         </Link>
                       )}

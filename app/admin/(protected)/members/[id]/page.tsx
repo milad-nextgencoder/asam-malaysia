@@ -3,9 +3,10 @@ import { requireAdmin } from '@/lib/supabase/admin';
 import { AdminMemberDetail } from '@/components/admin/admin-member-detail';
 import { notFound } from 'next/navigation';
 
-export default async function AdminMemberDetailPage({ params }: { params: { id: string } }) {
+export default async function AdminMemberDetailPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   await requireAdmin();
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: member, error } = await supabase
     .from('member_profiles')

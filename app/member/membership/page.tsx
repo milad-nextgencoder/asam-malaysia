@@ -1,19 +1,20 @@
 import { createClient } from '@/lib/supabase/server';
-import { requireMember } from '@/lib/member/helpers';
-import { ensureMemberProfile, getPublishedUniversities } from '@/lib/member/profile';
+import { requireMember, getMemberAuth } from '@/lib/member/helpers';
+import { ensureMemberProfile } from '@/lib/member/profile';
 import { getMembershipApplication } from '@/lib/member/membership';
 import { MemberDashboardShell } from '@/components/member/member-dashboard-shell';
 import { MembershipStatusCard } from '@/components/member/membership-status';
 import { MembershipCard } from '@/components/member/membership-card';
+import { getCertificateRecord } from '@/lib/member/certificate';
+import { ProfileCompletion } from '@/components/member/profile-completion';
 import { redirect } from 'next/navigation';
 
 export default async function MemberMembershipPage() {
   const { userId } = await requireMember();
-  const supabase = createClient();
+  const supabase = await createClient();
 
-  const [{ data: userData }, universities, application] = await Promise.all([
-    supabase.auth.getUser(),
-    getPublishedUniversities(),
+  const [{ data: userData }, application] = await Promise.all([
+    getMemberAuth(),
     getMembershipApplication(userId),
   ]);
   const user = userData.user;
@@ -30,25 +31,12 @@ export default async function MemberMembershipPage() {
     user.email ||
     'Member';
 
-  const universityName = profile.university_id
-    ? universities.find((u) => u.id === profile.university_id)?.name ?? null
-    : null;
+  const { data: university } = profile.university_id
+    ? await supabase.from('universities').select('name').eq('id',profile.university_id).maybeSingle()
+    : { data: null };
+  const universityName = university?.name || null;
+  const certificate = application?.status === "approved" && application.member_id ? await getCertificateRecord(application.member_id) : null;
 
-  const completionChecks = {
-    first_name: profile.first_name?.trim() ? true : false,
-    last_name: profile.last_name?.trim() ? true : false,
-    preferred_name: profile.preferred_name?.trim() ? true : false,
-    phone: profile.phone?.trim() ? true : false,
-    profile_photo_url: profile.profile_photo_url?.trim() ? true : false,
-    university_id: profile.university_id ? true : false,
-    program: profile.program?.trim() ? true : false,
-    faculty: profile.faculty?.trim() ? true : false,
-    city: profile.city?.trim() ? true : false,
-    state: profile.state?.trim() ? true : false,
-    bio: profile.bio?.trim() ? true : false,
-  };
-  const completedCount = Object.values(completionChecks).filter(Boolean).length;
-  const completionPercentage = Math.round((completedCount / 11) * 100);
 
   return (
     <MemberDashboardShell
@@ -56,13 +44,14 @@ export default async function MemberMembershipPage() {
       userEmail={user.email || ''}
       profileCompleted={profile.profile_completed}
     >
+      <ProfileCompletion profile={profile} />
       {application?.status === 'approved' && application.member_id ? (
         <>
           <MembershipCard
-            memberName={displayName}
+            memberName={certificate?.memberName || displayName}
             memberId={application.member_id}
-            universityName={universityName}
-            program={profile.program}
+            universityName={certificate?.university || universityName}
+            program={certificate?.program || profile.program}
             status="Active Member"
             profilePhotoUrl={profile.profile_photo_url}
             issueDate={application.approved_at}
@@ -70,16 +59,16 @@ export default async function MemberMembershipPage() {
           <MembershipStatusCard
             application={application}
             profileCompleted={profile.profile_completed}
-            universityName={universityName}
-            program={profile.program}
+            universityName={certificate?.university || universityName}
+            program={certificate?.program || profile.program}
           />
         </>
       ) : (
         <MembershipStatusCard
           application={application}
           profileCompleted={profile.profile_completed}
-          universityName={universityName}
-          program={profile.program}
+          universityName={certificate?.university || universityName}
+          program={certificate?.program || profile.program}
         />
       )}
     </MemberDashboardShell>

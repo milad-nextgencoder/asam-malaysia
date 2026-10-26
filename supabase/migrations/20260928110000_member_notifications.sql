@@ -19,12 +19,14 @@ CREATE INDEX IF NOT EXISTS member_notifications_read_idx ON public.member_notifi
 
 ALTER TABLE public.member_notifications ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS member_notifications_select_own ON public.member_notifications;
 CREATE POLICY member_notifications_select_own
   ON public.member_notifications
   FOR SELECT
   TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS member_notifications_update_own ON public.member_notifications;
 CREATE POLICY member_notifications_update_own
   ON public.member_notifications
   FOR UPDATE

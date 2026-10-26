@@ -59,26 +59,8 @@ $$;
 -- then skip the ALTER because the constraint already exists. Guarding on the
 -- constraint alone avoids that, and the DROP clears any index left behind by a
 -- previous partial run.
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1
-    FROM pg_constraint
-    WHERE conrelid = 'public.universities'::regclass
-      AND conname = 'universities_name_unique'
-      AND contype = 'u'
-  ) THEN
-    DROP INDEX IF EXISTS public.universities_name_unique_idx;
-
-    CREATE UNIQUE INDEX universities_name_unique_idx
-      ON public.universities (lower(btrim(name)));
-
-    ALTER TABLE public.universities
-      ADD CONSTRAINT universities_name_unique
-      UNIQUE USING INDEX universities_name_unique_idx;
-  END IF;
-END;
-$$;
+CREATE UNIQUE INDEX IF NOT EXISTS universities_name_normalized_key
+  ON public.universities (lower(btrim(name)));
 
 -- ---------------------------------------------------------------------------
 -- 3. Correct the IIUM website. The seed stored https://www.iium.edu.py, which

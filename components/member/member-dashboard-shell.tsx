@@ -59,7 +59,7 @@ export function MemberDashboardShell({ children, userName, userEmail, profileCom
           horizontal scroll. min-w-[85px] x 6 overflowed a 320px viewport, so the
           floor is lowered on the smallest screens and the row is allowed to wrap.
         */}
-        <nav className="mb-8 flex flex-wrap gap-1 rounded-xl border border-gray-200 bg-white p-1">
+        <nav aria-label="Member navigation" className="mb-8 grid grid-cols-3 gap-1 sm:grid-cols-6 rounded-xl border border-gray-200 bg-white p-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -69,17 +69,17 @@ export function MemberDashboardShell({ children, userName, userEmail, profileCom
                 href={item.href}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors min-w-[71px] sm:min-w-[85px]',
+                  'flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors min-w-[71px] sm:min-w-[85px]',
                   isActive
                     ? 'bg-navy text-white'
                     : 'text-gray-600 hover:bg-gray-100'
                 )}
               >
                 <Icon className="h-4 w-4" />
-                <span className="hidden sm:inline">{item.label}</span>
+                <span className="text-xs sm:text-sm">{item.label}</span>
                 {/* The label is visually hidden on mobile but exposed to screen
                     readers, so the tab is never an unlabelled icon. */}
-                <span className="sr-only sm:hidden">{item.label}</span>
+
               </Link>
             );
           })}
@@ -105,7 +105,7 @@ export function MemberDashboardShell({ children, userName, userEmail, profileCom
           </div>
         )}
 
-        <main>{children}</main>
+        <section aria-label="Member workspace">{children}</section>
       </div>
     </div>
   );

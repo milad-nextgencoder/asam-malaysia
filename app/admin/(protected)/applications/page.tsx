@@ -1,37 +1,17 @@
 import { createClient } from '@/lib/supabase/server';
 import { requireAdmin } from '@/lib/supabase/admin';
 import { AdminApplicationsList } from '@/components/admin/admin-applications-list';
-import { redirect } from 'next/navigation';
+import { DirectoryPagination } from '@/components/admin/directory-pagination';
+import { ADMIN_PAGE_SIZE, readDirectoryParams } from '@/lib/admin/pagination';
 
 export const metadata = { title: 'Membership Applications' };
-
-export default async function AdminApplicationsPage() {
+export default async function DirectoryPage({ searchParams: searchParamsPromise }: { searchParams?: Promise<Record<string,string|string[]|undefined>> }) {
+  const searchParams = await searchParamsPromise || {};
   await requireAdmin();
-  const supabase = createClient();
-
-  const [{ data: applications, error }, { data: members }] = await Promise.all([
-    supabase
-      .from('membership_applications')
-      .select('id, user_id, status, member_id, rejection_reason, application_submitted_at, reviewed_at, reviewed_by, approved_at, created_at, updated_at')
-      .order('created_at', { ascending: false }),
-    supabase
-      .from('member_profiles')
-      .select('user_id, first_name, last_name, preferred_name, email, university_id, program, profile_photo_url'),
-  ]);
-
-  if (error) {
-    redirect('/admin?error=applications-load-failed');
-  }
-
-  // Merge member data into applications
-  const memberMap = new Map(
-    (members ?? []).map((m) => [m.user_id, m])
-  );
-
-  const applicationsWithMembers = (applications ?? []).map((app) => ({
-    ...app,
-    member: memberMap.get(app.user_id) ?? null,
-  }));
-
-  return <AdminApplicationsList applications={applicationsWithMembers} />;
+  const { page,q,status,offset } = readDirectoryParams(searchParams);
+  const { data,error } = await (await createClient()).rpc('get_admin_directory', { p_kind: 'applications',p_query:q,p_status:status,p_offset:offset,p_limit:ADMIN_PAGE_SIZE });
+  if (error) { console.error('Admin directory unavailable', { code: error.code }); throw new Error('The directory could not be loaded. Please try again.'); }
+  const total = Number(data?.[0]?.total_count || 0);
+  return <><AdminApplicationsList applications={(data || []).map((row: { record: any }) => row.record)} query={q} status={status} />
+    <DirectoryPagination base="/admin/applications" page={page} total={total} query={q} status={status} /></>;
 }

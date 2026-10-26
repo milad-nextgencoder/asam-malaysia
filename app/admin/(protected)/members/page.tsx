@@ -1,41 +1,17 @@
 import { createClient } from '@/lib/supabase/server';
 import { requireAdmin } from '@/lib/supabase/admin';
 import { AdminMemberList } from '@/components/admin/admin-member-list';
-import { redirect } from 'next/navigation';
+import { DirectoryPagination } from '@/components/admin/directory-pagination';
+import { ADMIN_PAGE_SIZE, readDirectoryParams } from '@/lib/admin/pagination';
 
 export const metadata = { title: 'Members' };
-
-export default async function AdminMembersPage() {
+export default async function DirectoryPage({ searchParams: searchParamsPromise }: { searchParams?: Promise<Record<string,string|string[]|undefined>> }) {
+  const searchParams = await searchParamsPromise || {};
   await requireAdmin();
-  const supabase = createClient();
-
-  const [{ data: members, error }, { data: applications }] = await Promise.all([
-    supabase
-      .from('member_profiles')
-      .select('id, user_id, first_name, last_name, preferred_name, email, phone, university_id, program, faculty, city, state, profile_completed, profile_photo_url, created_at, updated_at')
-      .order('created_at', { ascending: false }),
-    supabase
-      .from('membership_applications')
-      .select('user_id, status, member_id'),
-  ]);
-
-  if (error) {
-    redirect('/admin?error=members-load-failed');
-  }
-
-  // Merge membership data into member records
-  const applicationMap = new Map(
-    (applications ?? []).map((app) => [app.user_id, app])
-  );
-
-  const membersWithStatus = (members ?? []).map((member) => {
-    const app = applicationMap.get(member.user_id);
-    return {
-      ...member,
-      membership_status: app?.status ?? 'draft',
-      member_id: app?.member_id ?? null,
-    };
-  });
-
-  return <AdminMemberList members={membersWithStatus} />;
+  const { page,q,status,offset } = readDirectoryParams(searchParams);
+  const { data,error } = await (await createClient()).rpc('get_admin_directory', { p_kind: 'members',p_query:q,p_status:status,p_offset:offset,p_limit:ADMIN_PAGE_SIZE });
+  if (error) { console.error('Admin directory unavailable', { code: error.code }); throw new Error('The directory could not be loaded. Please try again.'); }
+  const total = Number(data?.[0]?.total_count || 0);
+  return <><AdminMemberList members={(data || []).map((row: { record: any }) => row.record)} query={q} status={status} />
+    <DirectoryPagination base="/admin/members" page={page} total={total} query={q} status={status} /></>;
 }

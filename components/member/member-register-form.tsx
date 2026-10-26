@@ -6,6 +6,7 @@ import { Mail, LockKeyhole, User, LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useMemberAction } from '@/hooks/use-member-action';
 import { signUpWithEmail } from '@/app/member/actions/auth';
 
 export function MemberRegisterForm() {
@@ -14,33 +15,19 @@ export function MemberRegisterForm() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const { run, pending: busy, error: errorMessage, notice: successMessage } = useMemberAction();
+  const [completion, setCompletion] = useState('');
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setBusy(true);
-    setErrorMessage('');
-    setSuccessMessage('');
-
-    if (password.length < 8) {
-      setErrorMessage('Password must be at least 8 characters.');
-      setBusy(false);
-      return;
-    }
-
-    const result = await signUpWithEmail(email, password, firstName, lastName);
-    if (!result.ok) {
-      setErrorMessage(result.message);
-      setBusy(false);
-      return;
-    }
-
-    setSuccessMessage('Account created! Check your email to verify your account.');
-    setBusy(false);
+    setCompletion('');
+    await run(() => signUpWithEmail(email, password, firstName, lastName), (result) => {
+      if (result.ok) {
+        setCompletion(result.message);
+        if (result.signedIn) { router.replace('/member'); router.refresh(); }
+      }
+    });
   }
-
   return (
     <div className="w-full space-y-6">
       {errorMessage && (
@@ -48,13 +35,14 @@ export function MemberRegisterForm() {
           {errorMessage}
         </div>
       )}
-      {successMessage && (
+      {(completion || successMessage) && (
         <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800" role="status">
-          {successMessage}
+          {completion || successMessage}
         </div>
       )}
 
-      <form className="space-y-5" onSubmit={handleSubmit}>
+      <p className="rounded-lg border border-navy/10 bg-navy/5 p-3 text-sm text-muted-foreground">Use one email for your ASAM account. Your membership ID is issued once, after approval.</p>
+      <form className="space-y-5" onSubmit={handleSubmit} aria-busy={busy}>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="first-name">First Name</Label>
@@ -65,6 +53,7 @@ export function MemberRegisterForm() {
                 className="pl-10"
                 type="text"
                 autoComplete="given-name"
+                maxLength={100}
                 required
                 value={firstName}
                 onChange={(event) => setFirstName(event.target.value)}
@@ -78,6 +67,7 @@ export function MemberRegisterForm() {
               id="last-name"
               type="text"
               autoComplete="family-name"
+              maxLength={100}
               required
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
@@ -94,6 +84,7 @@ export function MemberRegisterForm() {
               className="pl-10"
               type="email"
               autoComplete="email"
+              maxLength={254}
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -112,6 +103,7 @@ export function MemberRegisterForm() {
               autoComplete="new-password"
               required
               minLength={8}
+              maxLength={128}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               disabled={busy}

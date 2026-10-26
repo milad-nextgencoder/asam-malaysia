@@ -9,7 +9,7 @@ const failure = 'The request could not be completed. Check the form and your adm
 
 async function actorContext(superOnly = false) {
   if (superOnly) await requireSuperAdmin(); else await requireAdmin();
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
   return { supabase, actor: typeof data?.claims?.sub === 'string' ? data.claims.sub : null };
 }
@@ -109,7 +109,7 @@ export async function saveGalleryItem(input: { id?: string; album_id?: string; i
 }
 
 export async function setGalleryStatus(table: 'gallery_albums' | 'gallery_items', id: string, status: string) {
-  if (!id || !['draft', 'published', 'archived'].includes(status)) return { ok: false, message: failure };
+  if (!['gallery_albums', 'gallery_items'].includes(table) || !id || !['draft', 'published', 'archived'].includes(status)) return { ok: false, message: failure };
   try {
     const { supabase, actor } = await actorContext();
     const { data, error } = await supabase.from(table).update({ status, updated_at: new Date().toISOString() }).eq('id', id).select('id').maybeSingle();
@@ -121,7 +121,7 @@ export async function setGalleryStatus(table: 'gallery_albums' | 'gallery_items'
 }
 
 export async function deleteGalleryRecord(table: 'gallery_albums' | 'gallery_items', id: string) {
-  if (!id) return { ok: false, message: failure };
+  if (!['gallery_albums', 'gallery_items'].includes(table) || !id) return { ok: false, message: failure };
   try {
     const { supabase, actor } = await actorContext();
     const { error } = await supabase.from(table).delete().eq('id', id);
@@ -148,7 +148,7 @@ export async function setAlbumCover(albumId: string, imageUrl: string | null) {
 }
 
 export async function reorderGallery(table: 'gallery_albums' | 'gallery_items', ids: string[]) {
-  if (!Array.isArray(ids) || ids.length > 500 || new Set(ids).size !== ids.length) return { ok: false, message: failure };
+  if (!['gallery_albums', 'gallery_items'].includes(table) || !Array.isArray(ids) || ids.length > 500 || new Set(ids).size !== ids.length) return { ok: false, message: failure };
   try {
     const { supabase, actor } = await actorContext();
     for (let i = 0; i < ids.length; i += 1) {

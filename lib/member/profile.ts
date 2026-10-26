@@ -1,62 +1,45 @@
 import { createClient } from '@/lib/supabase/server';
 import type { MemberProfile, MemberProfileInput, UniversityOption } from './types';
+import { getMemberAuth } from './helpers';
+import { normalizeEmail, profileProgress } from './validation';
 
 export async function ensureMemberProfile(
   userId: string,
   userMetadata?: Record<string, unknown>
 ): Promise<MemberProfile> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
-  const { data: existing } = await supabase
-    .from('member_profiles')
-    .select('*')
-    .eq('user_id', userId)
-    .maybeSingle();
 
+  const { data: auth, error: authError } = await getMemberAuth();
+  if (authError || !auth.user || auth.user.id !== userId || !auth.user.email) throw new Error('Please sign in again.');
+  const { data: existing, error: readError } = await supabase.from('member_profiles').select('*').eq('user_id', userId).maybeSingle();
+  if (readError) throw new Error('Your profile could not be loaded. Please try again.');
   if (existing) return existing;
-
-  const fullName =
-    (userMetadata?.full_name as string | undefined) ||
-    (userMetadata?.name as string | undefined) ||
-    null;
-
-  const nameParts = fullName ? fullName.split(' ') : [];
-  const firstName = nameParts[0] || null;
-  const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : null;
-
-  const { data: created, error } = await supabase
-    .from('member_profiles')
-    .insert({
-      user_id: userId,
-      email: (userMetadata?.email as string | undefined) || null,
-      first_name: firstName,
-      last_name: lastName,
-      preferred_name: fullName,
-    })
-    .select('*')
-    .maybeSingle();
-
-  if (error && error.code !== '23505') throw error;
-
-  if (!created) {
-    const { data: retry } = await supabase
-      .from('member_profiles')
-      .select('*')
-      .eq('user_id', userId)
-      .single();
-    return retry;
-  }
-
-  return created;
+  const text = (value: unknown) => typeof value === 'string' ? value.trim().slice(0, 100) : '';
+  const metadata = auth.user.user_metadata || userMetadata || {};
+  const fullName = text(metadata.full_name) || text(metadata.name);
+  const parts = fullName.split(/\s+/).filter(Boolean);
+  const firstName = text(metadata.first_name) || parts[0] || '';
+  const lastName = text(metadata.last_name) || parts.slice(1).join(' ');
+  const { data: created, error } = await supabase.from('member_profiles').insert({
+    user_id: userId, email: normalizeEmail(auth.user.email), first_name: firstName || null,
+    last_name: lastName || null, preferred_name: fullName || [firstName, lastName].filter(Boolean).join(' ') || null,
+  }).select('*').maybeSingle();
+  if (error && error.code !== '23505') throw new Error('Your profile could not be created. Please try again.');
+  if (created) return created;
+  const { data: retry, error: retryError } = await supabase.from('member_profiles').select('*').eq('user_id', userId).single();
+  if (retryError || !retry) throw new Error('This email is already linked to an account. Sign in using your original account or contact ASAM.');
+  return retry;
 }
 
 export async function getMemberProfile(userId: string): Promise<MemberProfile | null> {
-  const supabase = createClient();
-  const { data } = await supabase
+  const supabase = await createClient();
+  const { data, error } = await supabase
     .from('member_profiles')
     .select('*')
     .eq('user_id', userId)
     .maybeSingle();
+  if (error) throw new Error('Your profile could not be loaded.');
   return data;
 }
 
@@ -65,14 +48,14 @@ export async function getMemberProfile(userId: string): Promise<MemberProfile | 
  * Returns an empty array if the query fails or no universities exist.
  */
 export async function getPublishedUniversities(): Promise<UniversityOption[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from('universities')
     .select('id, name, city, state')
     .eq('status', 'published')
     .order('name', { ascending: true });
 
-  if (error || !data) return [];
+  if (error) throw new Error('The university directory could not be loaded. Please try again.');
   return data;
 }
 
@@ -102,26 +85,14 @@ export function calculateProfileCompletion(profile: {
   state: string | null;
   bio: string | null;
 }): boolean {
-  return Boolean(
-    profile.first_name?.trim() &&
-    profile.last_name?.trim() &&
-    profile.preferred_name?.trim() &&
-    profile.phone?.trim() &&
-    profile.profile_photo_url?.trim() &&
-    profile.university_id &&
-    profile.program?.trim() &&
-    profile.faculty?.trim() &&
-    profile.city?.trim() &&
-    profile.state?.trim() &&
-    profile.bio?.trim()
-  );
+  return profileProgress(profile).missing.length === 0;
 }
 
 export async function updateMemberProfile(
   userId: string,
   input: MemberProfileInput
 ): Promise<MemberProfile> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // First, get the current profile to merge with the input
   const { data: current } = await supabase

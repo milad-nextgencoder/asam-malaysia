@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteImage } from '@/components/site/site-image';
+
+
 import { QRCodeSVG } from 'qrcode.react';
 import { User, GraduationCap, Calendar } from 'lucide-react';
 import { getCertificateVerifyUrl, getClientSiteUrl } from '@/lib/member/site-url';
@@ -42,7 +45,7 @@ export function MembershipCard({
             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-gray-200 bg-gray-100">
               {profilePhotoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={profilePhotoUrl} alt="" className="h-full w-full object-cover" />
+                <SiteImage src={profilePhotoUrl} alt="" className="h-full w-full object-cover" />
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
                   <User className="h-8 w-8 text-gray-400" />

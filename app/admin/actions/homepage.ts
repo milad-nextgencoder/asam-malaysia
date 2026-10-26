@@ -34,7 +34,7 @@ function safeResult(error: unknown) {
 
 async function adminContext() {
   const auth = await requireAdmin();
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
   const actorId = typeof data?.claims?.sub === 'string' ? data.claims.sub : null;
   return { auth, supabase, actorId };

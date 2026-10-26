@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
-import { requireMember } from '@/lib/member/helpers';
-import { ensureMemberProfile, getPublishedUniversities } from '@/lib/member/profile';
+import { requireMember, getMemberAuth } from '@/lib/member/helpers';
+import { ensureMemberProfile } from '@/lib/member/profile';
 import { getMembershipApplication } from '@/lib/member/membership';
 import { MemberDashboardShell } from '@/components/member/member-dashboard-shell';
 import { MemberDashboard } from '@/components/member/member-dashboard';
@@ -8,20 +8,20 @@ import { AuthenticatedWelcome } from '@/components/member/authenticated-welcome'
 import { redirect } from 'next/navigation';
 
 interface MemberDashboardPageProps {
-  searchParams?: { authenticated?: string | string[] };
+  searchParams?: Promise<{ authenticated?: string | string[] }>;
 }
 
 function firstValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
-export default async function MemberDashboardPage({ searchParams }: MemberDashboardPageProps) {
+export default async function MemberDashboardPage({ searchParams: searchParamsPromise }: MemberDashboardPageProps) {
+  const searchParams = await searchParamsPromise;
   const { userId } = await requireMember();
-  const supabase = createClient();
+  const supabase = await createClient();
 
-  const [{ data: userData }, universities, application] = await Promise.all([
-    supabase.auth.getUser(),
-    getPublishedUniversities(),
+  const [{ data: userData }, application] = await Promise.all([
+    getMemberAuth(),
     getMembershipApplication(userId),
   ]);
   const user = userData.user;
@@ -45,9 +45,10 @@ export default async function MemberDashboardPage({ searchParams }: MemberDashbo
   // on the portal with no explanation.
   const justAuthenticated = firstValue(searchParams?.authenticated) === '1';
 
-  const universityName = profile.university_id
-    ? universities.find((u) => u.id === profile.university_id)?.name ?? null
-    : null;
+  const { data: university } = profile.university_id
+    ? await supabase.from('universities').select('name').eq('id',profile.university_id).maybeSingle()
+    : { data: null };
+  const universityName = university?.name || null;
 
   return (
     <MemberDashboardShell

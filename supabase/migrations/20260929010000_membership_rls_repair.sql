@@ -22,6 +22,7 @@ $$;
 -- ============================================================
 
 -- Members can SELECT their own application
+DROP POLICY IF EXISTS membership_applications_select_own ON public.membership_applications;
 CREATE POLICY membership_applications_select_own
   ON public.membership_applications
   FOR SELECT
@@ -29,6 +30,7 @@ CREATE POLICY membership_applications_select_own
   USING (user_id = auth.uid());
 
 -- Members can INSERT their own application
+DROP POLICY IF EXISTS membership_applications_insert_own ON public.membership_applications;
 CREATE POLICY membership_applications_insert_own
   ON public.membership_applications
   FOR INSERT
@@ -36,6 +38,7 @@ CREATE POLICY membership_applications_insert_own
   WITH CHECK (user_id = auth.uid());
 
 -- Members can UPDATE only their own application (for resubmission)
+DROP POLICY IF EXISTS membership_applications_update_own ON public.membership_applications;
 CREATE POLICY membership_applications_update_own
   ON public.membership_applications
   FOR UPDATE
@@ -44,6 +47,7 @@ CREATE POLICY membership_applications_update_own
   WITH CHECK (user_id = auth.uid());
 
 -- Admins can SELECT all applications
+DROP POLICY IF EXISTS membership_applications_select_admin ON public.membership_applications;
 CREATE POLICY membership_applications_select_admin
   ON public.membership_applications
   FOR SELECT
@@ -51,6 +55,7 @@ CREATE POLICY membership_applications_select_admin
   USING (public.is_admin());
 
 -- Admins can UPDATE all applications (for approve/reject/review)
+DROP POLICY IF EXISTS membership_applications_update_admin ON public.membership_applications;
 CREATE POLICY membership_applications_update_admin
   ON public.membership_applications
   FOR UPDATE
@@ -63,6 +68,7 @@ CREATE POLICY membership_applications_update_admin
 -- ============================================================
 
 -- Admins can SELECT member profiles
+DROP POLICY IF EXISTS member_profiles_select_admin ON public.member_profiles;
 CREATE POLICY member_profiles_select_admin
   ON public.member_profiles
   FOR SELECT

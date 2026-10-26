@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteImage } from '@/components/site/site-image';
+
+
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { SectionHeader } from '@/components/site/section-header';
@@ -70,7 +73,7 @@ export function GalleryBrowser({ albums, items }: { albums: any[]; items: any[] 
           <div className="mb-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {visibleAlbums.map((album) => (
               <Link key={album.id} href={`/gallery/${album.id}`} className="group overflow-hidden rounded-xl border border-border bg-card shadow-premium transition-all hover:-translate-y-1 hover:border-gold/30 hover:shadow-premium-lg">
-                {album.cover_image_url ? <img src={album.cover_image_url} loading="lazy" alt={`${album.name} album cover`} className="aspect-[16/9] w-full object-cover"/> : <div className="flex aspect-[16/9] items-center justify-center bg-secondary/60"><ImageIcon className="h-10 w-10 text-muted-foreground/40"/></div>}
+                {album.cover_image_url ? <SiteImage src={album.cover_image_url} loading="lazy" alt={`${album.name} album cover`} className="aspect-[16/9] w-full object-cover"/> : <div className="flex aspect-[16/9] items-center justify-center bg-secondary/60"><ImageIcon className="h-10 w-10 text-muted-foreground/40"/></div>}
                 <div className="p-4"><div className="text-[9px] font-bold uppercase tracking-widest text-gold-dark">{album.category || 'ASAM Album'}</div><h3 className="mt-1 font-display text-lg font-semibold">{album.name}</h3><p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{album.description || 'View published photos from this album.'}</p></div>
               </Link>
             ))}
@@ -86,7 +89,7 @@ export function GalleryBrowser({ albums, items }: { albums: any[]; items: any[] 
                 className="overflow-hidden rounded-xl border border-border bg-card shadow-premium hover:border-gold/30 transition-all duration-300 animate-fade-up text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 style={{ animationDelay: `${i * 0.04}s` }}
               >
-                <img
+                <SiteImage
                   src={item.image_url}
                   alt={item.title || item.caption || `Published ASAM gallery image ${i + 1}`}
                   loading="lazy"
@@ -118,7 +121,7 @@ export function GalleryBrowser({ albums, items }: { albums: any[]; items: any[] 
             >
               <X className="h-5 w-5" />
             </button>
-            <img
+            <SiteImage
               src={selectedImage}
               alt="Expanded gallery item"
               className="max-h-[80vh] w-full rounded-xl object-contain"

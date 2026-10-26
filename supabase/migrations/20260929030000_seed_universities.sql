@@ -3,7 +3,7 @@
 -- Status: published (visible in public directory and member profile selector)
 
 INSERT INTO public.universities (name, state, city, website, description, chapter_status, status)
-VALUES
+SELECT seed.* FROM (VALUES
   ('University of Malaya', 'Kuala Lumpur', 'Kuala Lumpur', 'https://www.um.edu.my', 'Malaysia''s oldest and most prestigious public research university, located in Kuala Lumpur.', 'active', 'published'),
   ('Universiti Kebangsaan Malaysia', 'Selangor', 'Bangi', 'https://www.ukm.my', 'National University of Malaysia, a leading public research university in Bangi, Selangor.', 'active', 'published'),
   ('Universiti Putra Malaysia', 'Selangor', 'Serdang', 'https://www.upm.edu.my', 'UPM is a renowned public research university specializing in agriculture, forestry, and related fields.', 'active', 'published'),
@@ -19,4 +19,6 @@ VALUES
   ('Universiti Tun Hussein Onn Malaysia', 'Johor', 'Parit Raja', 'https://www.uthm.edu.my', 'UTHM is a public university in Parit Raja, Johor, specializing in engineering and technology.', 'coming_soon', 'published'),
   ('Universiti Malaysia Terengganu', 'Terengganu', 'Kuala Terengganu', 'https://www.umt.edu.my', 'UMT is a public university in Kuala Terengganu, focusing on marine science and fisheries.', 'coming_soon', 'published'),
   ('Universiti Malaysia Perlis', 'Perlis', 'Arau', 'https://www.unimap.edu.my', 'UniMAP is a public university in Arau, Perlis, specializing in engineering and technology.', 'coming_soon', 'published')
-ON CONFLICT (name) DO NOTHING;
+) AS seed(name,state,city,website,description,chapter_status,status)
+WHERE NOT EXISTS (SELECT 1 FROM public.universities u WHERE lower(btrim(u.name))=lower(btrim(seed.name)))
+ON CONFLICT DO NOTHING;

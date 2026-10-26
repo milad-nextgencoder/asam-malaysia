@@ -40,3 +40,9 @@ tmp-*.mjs
 *.tsbuildinfo
 next-env.d.ts
 .env.local
+
+# Local browser verification screenshots
+/artifacts/
+
+# Supabase CLI local metadata
+/supabase/.temp/
