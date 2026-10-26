@@ -44,6 +44,7 @@ export function MembershipCertificate({ html, memberId }: MembershipCertificateP
   const frameRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [downloading, setDownloading] = useState(false);
+  const downloadInFlight = useRef(false);
   const [downloadError, setDownloadError] = useState('');
   const [needsSignIn, setNeedsSignIn] = useState(false);
 
@@ -58,15 +59,18 @@ export function MembershipCertificate({ html, memberId }: MembershipCertificateP
    * to the client.
    */
   async function handleDownload() {
-    if (downloading) return;
+    if (downloadInFlight.current) return;
+    downloadInFlight.current = true;
     setDownloading(true);
     setDownloadError('');
     setNeedsSignIn(false);
 
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 115_000);
     try {
       const response = await fetch(
         `/api/certificate/${encodeURIComponent(memberId)}/pdf`,
-        { cache: 'no-store' }
+        { cache: 'no-store', credentials: 'same-origin', signal: controller.signal }
       );
 
       if (!response.ok) {
@@ -89,9 +93,9 @@ export function MembershipCertificate({ html, memberId }: MembershipCertificateP
       }
 
       const blob = await response.blob();
-      if (blob.size === 0) {
+      if (blob.size < 5 || await blob.slice(0, 5).text() !== '%PDF-') {
         setDownloadError(
-          'The downloaded certificate was empty. Please try again shortly.'
+          'The downloaded file was not a valid PDF. Please try again shortly.'
         );
         return;
       }
@@ -103,13 +107,17 @@ export function MembershipCertificate({ html, memberId }: MembershipCertificateP
       document.body.appendChild(link);
       link.click();
       link.remove();
-      // Revoked on the next tick so Safari has time to start the download.
-      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+      // Allow mobile browsers time to consume the file before releasing it.
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
     } catch {
       setDownloadError(
-        'The certificate could not be downloaded. Check your connection and try again.'
+        controller.signal.aborted
+          ? 'Preparing the PDF took too long. Please try again.'
+          : 'The certificate could not be downloaded. Check your connection and try again.'
       );
     } finally {
+      window.clearTimeout(timeout);
+      downloadInFlight.current = false;
       setDownloading(false);
     }
   }

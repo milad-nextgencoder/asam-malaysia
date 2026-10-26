@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useMemberAction } from '@/hooks/use-member-action';
-import { signUpWithEmail } from '@/app/member/actions/auth';
+import { resendSignupConfirmation, signUpWithEmail } from '@/app/member/actions/auth';
 
 export function MemberRegisterForm() {
   const router = useRouter();
@@ -17,17 +17,30 @@ export function MemberRegisterForm() {
   const [password, setPassword] = useState('');
   const { run, pending: busy, error: errorMessage, notice: successMessage } = useMemberAction();
   const [completion, setCompletion] = useState('');
+  const [existingEmail, setExistingEmail] = useState('');
+  const [resending, setResending] = useState(false);
+  const [resendMessage, setResendMessage] = useState('');
+  const [resendError, setResendError] = useState('');
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setCompletion('');
+    setCompletion(''); setExistingEmail(''); setResendMessage(''); setResendError('');
     await run(() => signUpWithEmail(email, password, firstName, lastName), (result) => {
       if (result.ok) {
-        setCompletion(result.message);
+        if (result.accountExists) setExistingEmail(email.trim()); else setCompletion(result.message);
         if (result.signedIn) { router.replace('/member'); router.refresh(); }
       }
     });
   }
+
+  async function resendConfirmation() {
+    if (resending) return;
+    setResending(true); setResendError(''); setResendMessage('');
+    try { const result = await resendSignupConfirmation(existingEmail || email); if (result.ok) setResendMessage(result.message); else setResendError(result.message); }
+    catch { setResendError('The request could not be completed. Check your connection and try again.'); }
+    finally { setResending(false); }
+  }
+
   return (
     <div className="w-full space-y-6">
       {errorMessage && (
@@ -35,13 +48,23 @@ export function MemberRegisterForm() {
           {errorMessage}
         </div>
       )}
+      {existingEmail && (
+        <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-950" role="status">
+          <p className="font-semibold">This email already has an ASAM account.</p>
+          <p className="mt-1">Sign in with its original method, or reset the password if you registered by email. We will not create another account or membership ID.</p>
+          <div className="mt-3 flex flex-wrap gap-4 font-semibold"><a href="/member/login" className="underline">Sign in</a><a href="/member/forgot-password" className="underline">Reset password</a><button type="button" onClick={resendConfirmation} disabled={resending} className="underline disabled:opacity-60">{resending ? 'Sending...' : 'Resend confirmation email'}</button></div>
+          {resendMessage && <p className="mt-3" role="status">{resendMessage}</p>}{resendError && <p className="mt-3 text-red-700" role="alert">{resendError}</p>}
+        </div>
+      )}
       {(completion || successMessage) && (
         <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800" role="status">
           {completion || successMessage}
+          {!existingEmail && !resendMessage && <button type="button" onClick={resendConfirmation} disabled={resending} className="ml-2 font-semibold underline disabled:opacity-60">{resending ? 'Sending confirmation...' : 'Resend confirmation email'}</button>}
+          {resendMessage && <span className="ml-2">{resendMessage}</span>}{resendError && <span className="ml-2 text-red-700">{resendError}</span>}
         </div>
       )}
 
-      <p className="rounded-lg border border-navy/10 bg-navy/5 p-3 text-sm text-muted-foreground">Use one email for your ASAM account. Your membership ID is issued once, after approval.</p>
+      <p className="rounded-lg border border-navy/10 bg-navy/5 p-3 text-sm text-muted-foreground">Use one email for your ASAM account. If you already registered, sign in or reset your password instead of registering again. Your membership ID is issued once, after approval.</p>
       <form className="space-y-5" onSubmit={handleSubmit} aria-busy={busy}>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">

@@ -4,6 +4,8 @@ import { certificateDownloadResponse } from '@/lib/member/certificate-download';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+// Includes cold-start Chromium extraction, rendering and cleanup.
+export const maxDuration = 120;
 
 export async function GET(_request: Request, { params: paramsPromise }: { params: Promise<{ 'member-id': string }> }) {
   const params = await paramsPromise;

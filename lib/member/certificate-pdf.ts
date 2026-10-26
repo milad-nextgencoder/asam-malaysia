@@ -52,6 +52,8 @@ export type ChromeLaunch = {
   serverless: boolean;
 };
 
+let serverlessChromePromise: Promise<ChromeLaunch> | undefined;
+
 const BASE_ARGS = ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--font-render-hinting=none'];
 
 /**
@@ -91,6 +93,7 @@ export async function resolveChrome(): Promise<ChromeLaunch> {
     'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
     'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+    'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     '/usr/bin/google-chrome',
     '/usr/bin/google-chrome-stable',
@@ -112,6 +115,7 @@ export async function resolveChrome(): Promise<ChromeLaunch> {
 
   if (isServerless()) {
     // Imported lazily so the ~64 MB package is only loaded on serverless hosts.
+    serverlessChromePromise ??= (async () => {
     const { default: chromium } = await import('@sparticuz/chromium');
     const executablePath = await chromium.executablePath();
     // The sparticuz flags are required verbatim on Lambda (--single-process,
@@ -120,9 +124,11 @@ export async function resolveChrome(): Promise<ChromeLaunch> {
     return {
       executablePath,
       args: [...BASE_ARGS, ...chromium.args],
-      headless: 'shell',
+      headless: 'shell' as const,
       serverless: true,
     };
+    })().catch((error) => { serverlessChromePromise = undefined; throw error; });
+    return serverlessChromePromise;
   }
 
   // Last resort: let puppeteer resolve the bare name so the thrown error names
@@ -162,12 +168,16 @@ export async function generateCertificatePDF(memberId: string): Promise<Uint8Arr
   if (!result) throw new CertificatePdfError('Certificate not found', 404);
   if (!result.record.isApproved) throw new CertificatePdfError('Membership not active', 400);
 
-  const html = buildCertificateDocument(result.view);
-  const chrome = await resolveChrome();
+  return renderCertificateDocument(buildCertificateDocument(result.view));
+}
+
+/** Render the shared, self-contained certificate document with bounded browser resources. */
+export async function renderCertificateDocument(html: string): Promise<Uint8Array> {
   let browser: Awaited<ReturnType<typeof puppeteer.launch>> | undefined;
 
   if (!renderCapacity.acquire()) throw new CertificatePdfError("The certificate renderer is busy. Please try again.", 429);
   try {
+    const chrome = await resolveChrome();
     browser = await puppeteer.launch({
       timeout: 20_000,
       headless: chrome.headless,
@@ -211,13 +221,17 @@ export async function generateCertificatePDF(memberId: string): Promise<Uint8Arr
     console.error('Certificate PDF rendering failed:', error);
     throw new CertificatePdfError('PDF rendering is unavailable on this server.', 503);
   } finally {
-    renderCapacity.release();
     if (browser) {
+      const process = browser.process();
+      const cleanupTimer = setTimeout(() => { process?.kill('SIGKILL'); }, 5_000);
       try {
         await browser.close();
       } catch {
         // Browser process already gone.
+      } finally {
+        clearTimeout(cleanupTimer);
       }
     }
+    renderCapacity.release();
   }
 }

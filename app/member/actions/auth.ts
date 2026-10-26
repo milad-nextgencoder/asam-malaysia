@@ -17,7 +17,11 @@ async function requestOrigin(): Promise<string | null> {
 export async function signInWithEmail(email: string, password: string) {
   if (typeof email !== 'string' || typeof password !== 'string') return { ok: false as const, message: 'Enter your email and password.' };
   const { error } = await (await createClient()).auth.signInWithPassword({ email: normalizeEmail(email), password });
-  if (error) return { ok: false as const, message: 'We could not sign you in. Check your email, password, and email confirmation.' };
+  if (error) {
+    if (error.code === 'email_not_confirmed') return { ok: false as const, message: 'Confirm your email using the link we sent before signing in. Request a new link from Create Account if needed.' };
+    if (error.code === 'over_request_rate_limit' || error.code === 'over_email_send_rate_limit') return { ok: false as const, message: 'Too many attempts. Wait a few minutes before trying again.' };
+    return { ok: false as const, message: 'That email and password did not match. If you registered with Google, choose Sign in with Google. Otherwise reset your password and try again.' };
+  }
   revalidatePath('/member', 'layout');
   return { ok: true as const };
 }
@@ -34,10 +38,18 @@ export async function signUpWithEmail(email: string, password: string, firstName
     },
   });
   if (error) {
-    if (error.code === 'user_already_exists' || error.code === 'email_exists') return { ok: true as const, message: registrationMessage({ identities: [] }), signedIn: false };
+    if (error.code === 'user_already_exists' || error.code === 'email_exists') return { ok: true as const, accountExists: true as const, message: registrationMessage({ identities: [] }), signedIn: false };
     return { ok: false as const, message: error.status === 429 ? 'Too many attempts. Please wait before trying again.' : 'Registration could not be completed. Try again, or sign in if you already have an account.' };
   }
-  return { ok: true as const, message: registrationMessage(data.user), signedIn: Boolean(data.session) };
+  const accountExists = Boolean(data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0);
+  return { ok: true as const, accountExists, message: registrationMessage(data.user), signedIn: Boolean(data.session) };
+}
+
+export async function resendSignupConfirmation(email: string) {
+  if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizeEmail(email))) return { ok: false as const, message: 'Enter your email address first.' };
+  const { error } = await (await createClient()).auth.resend({ type: 'signup', email: normalizeEmail(email), options: { emailRedirectTo: getAuthCallbackUrl('/auth/member-callback', await requestOrigin()) } });
+  if (error) return { ok: false as const, message: error.status === 429 || error.code === 'over_email_send_rate_limit' ? 'The email service is temporarily rate limited. Wait a little and try again, then check your inbox and spam folder.' : 'We could not send the confirmation link. Check the email address and try again.' };
+  return { ok: true as const, message: 'If this address has a pending account, a confirmation link is on its way. Check your inbox and spam folder.' };
 }
 
 export async function signInWithGoogle() {
@@ -60,7 +72,7 @@ export async function forgotPassword(email: string) {
   const { error } = await (await createClient()).auth.resetPasswordForEmail(normalizeEmail(email), {
     redirectTo: getAuthCallbackUrl('/auth/member-callback?next=/member/reset-password', await requestOrigin()),
   });
-  if (error) return { ok: false as const, message: 'A reset link could not be requested. Please wait and try again.' };
+  if (error) return { ok: false as const, message: error.status === 429 || error.code === 'over_email_send_rate_limit' ? 'The email service has reached its sending limit. Wait a while before requesting another link, then check your inbox and spam folder.' : 'A reset link could not be requested. Check the address and try again.' };
   return { ok: true as const };
 }
 

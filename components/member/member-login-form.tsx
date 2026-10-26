@@ -126,7 +126,7 @@ export function MemberLoginForm({ initialError, initialNotice }: MemberLoginForm
 
       <div className="flex items-center justify-between text-sm">
         <a href="/member/forgot-password" className="font-semibold text-gold-dark hover:underline">
-          Forgot password?
+          Reset password if you cannot sign in
         </a>
         <a href="/member/register" className="font-semibold text-gold-dark hover:underline">
           Create account
