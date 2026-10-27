@@ -80,6 +80,13 @@ export function SiteHeader({ logoUrl = '/logo-512.png' }: { logoUrl?: string }) 
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen && !searchOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previous; };
+  }, [mobileOpen, searchOpen]);
+
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLocaleLowerCase();
     if (!query) return searchablePages.slice(0, 6);
@@ -124,6 +131,7 @@ export function SiteHeader({ logoUrl = '/logo-512.png' }: { logoUrl?: string }) 
                     item.children && setOpenDropdown(item.label)
                   }
                   onMouseLeave={() => setOpenDropdown(null)}
+                  onKeyDown={(event) => { if (event.key === 'Escape') { event.currentTarget.querySelector('button')?.focus(); setOpenDropdown(null); } }}
                   onFocusCapture={() => item.children && setOpenDropdown(item.label)}
                   onBlur={(event) => {
                     if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpenDropdown(null);

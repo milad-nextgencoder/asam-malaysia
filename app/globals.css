@@ -499,3 +499,61 @@ body.public-site #main-content.asam-public .asam-hero h1 { font-size: clamp(2.7r
   .asam-cta-panel a { justify-content: center; width: 100%; }
   .asam-wordmark small { font-size: .43rem; }
 }
+
+/* Compact editorial refinement, layered over the original preview. */
+body.public-site #main-content.asam-public h1 {
+  font-size: clamp(2rem, 1.5rem + 1.8vw, 3.25rem);
+  line-height: 1.12;
+  letter-spacing: -.045em;
+}
+body.public-site #main-content.asam-public .asam-hero h1 {
+  font-size: clamp(2.1rem, 1.45rem + 2.3vw, 3.6rem);
+  line-height: 1.12;
+}
+body.public-site #main-content.asam-public h2 {
+  font-size: clamp(1.55rem, 1.2rem + 1vw, 2.2rem);
+  line-height: 1.22;
+  letter-spacing: -.035em;
+}
+body.public-site #main-content.asam-public h3 {
+  font-size: clamp(1.05rem, 1rem + .2vw, 1.2rem);
+  line-height: 1.4;
+}
+body.public-site #main-content.asam-public p.text-base,
+body.public-site #main-content.asam-public p.text-lg { font-size: .9375rem; line-height: 1.75; }
+.asam-hero-copy > p { font-size: .9375rem; max-width: 27rem; line-height: 1.75; }
+.asam-hero { padding-top: 7.25rem; }
+.asam-hero-grid { gap: 4rem; padding-bottom: 2.5rem; }
+.asam-photo-frame { height: clamp(23rem, 32vw, 29rem); }
+.asam-page-hero { padding: 8.5rem 0 3rem; background: #eef1ee; }
+.asam-public > section:not(.asam-hero):not(.asam-page-hero) { scroll-margin-top: 6rem; }
+.asam-public .asam-section-header { margin-bottom: 1.75rem; }
+.asam-public .asam-section-header p { max-width: 34rem; }
+.asam-public .asam-empty-state { padding: 1.75rem; background: #eef1ee; }
+.asam-public .asam-empty-state > div { width: 2rem; height: 2rem; background: transparent; margin-bottom: .5rem; }
+.asam-public .asam-empty-state svg { width: 1.15rem; height: 1.15rem; color: #87652b; }
+.asam-public .asam-cta-panel { padding: 3rem 2rem; }
+.asam-public .shadow-gold { box-shadow: none; }
+.asam-public a.rounded-xl { border-radius: .6rem; }
+.asam-public a.group { transition: border-color .2s, box-shadow .2s, transform .2s; }
+.asam-public a.group:hover { border-color: #a37b3b70; }
+.asam-public .bg-navy { background-color: #102b3e; }
+.asam-public .bg-secondary\/30 { background-color: #edf0ed; }
+.asam-site-footer { margin-top: 2rem; }
+.asam-site-footer p { line-height: 1.75; }
+.asam-site-footer a { text-underline-offset: .25em; }
+.asam-site-footer a:hover { text-decoration: underline; }
+/* Keep workspace controls legible while reducing large display headings. */
+#main-content.asam-workspace h1 { font-size: clamp(1.5rem, 1.25rem + .7vw, 2rem); line-height: 1.25; }
+@media (max-width: 1023px) {
+  .asam-hero { padding-top: 5.5rem; }
+  .asam-hero-grid { gap: 1.75rem; }
+  .asam-photo-frame { height: 23rem; }
+  .asam-page-hero { padding: 6.75rem 0 2.5rem; }
+}
+@media (max-width: 540px) {
+  .asam-hero-copy > p { font-size: .9375rem; }
+  .asam-photo-frame { height: 19rem; }
+  .asam-public .asam-cta-panel { padding: 2.25rem 1.25rem; }
+  .asam-public input, .asam-public select, .asam-public textarea { font-size: 1rem; }
+}
