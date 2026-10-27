@@ -31,6 +31,8 @@ const heroPhotos = [
 
 export default function Home() {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [photosPaused, setPhotosPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [primaryHeroImageFailed, setPrimaryHeroImageFailed] = useState(false);
   const [homepageSections, setHomepageSections] = useState<HomepageSection[]>([]);
   const [homepageLoaded, setHomepageLoaded] = useState(false);
@@ -109,6 +111,22 @@ export default function Home() {
     ? [heroImage, ...heroPhotos.filter((photo) => photo !== heroImage)]
     : heroPhotos, [heroImage, primaryHeroImageFailed]);
 
+  useEffect(() => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(preference.matches);
+    update();
+    preference.addEventListener('change', update);
+    return () => preference.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    if (photosPaused || reducedMotion || activeHeroPhotos.length < 2) return;
+    const timer = window.setInterval(() => {
+      if (!document.hidden) setActivePhotoIndex((index) => (index + 1) % activeHeroPhotos.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [photosPaused, reducedMotion, activeHeroPhotos.length]);
+
 
   return (
     <div className="flex flex-col">
@@ -135,7 +153,7 @@ export default function Home() {
               </div>
               <div className="asam-photo-controls" aria-label="Community photographs">
                 <span>TOGETHER, WE GO FURTHER</span>
-                <div className="flex gap-2">{activeHeroPhotos.map((photo, index) => <button key={photo} type="button" aria-label={`Show community photo ${index + 1}`} aria-pressed={activePhotoIndex % activeHeroPhotos.length === index} onClick={() => setActivePhotoIndex(index)} className={cn('asam-photo-dot', activePhotoIndex % activeHeroPhotos.length === index && 'is-active')} />)}</div>
+                <div className="flex items-center gap-1"><button type="button" onClick={() => setPhotosPaused((paused) => !paused)} disabled={reducedMotion} aria-label={photosPaused || reducedMotion ? 'Resume slideshow' : 'Pause slideshow'} className="asam-carousel-toggle">{reducedMotion ? 'Motion off' : photosPaused ? 'Play' : 'Pause'}</button>{activeHeroPhotos.map((photo, index) => <button key={photo} type="button" aria-label={`Show community photo ${index + 1}`} aria-pressed={activePhotoIndex % activeHeroPhotos.length === index} onClick={() => setActivePhotoIndex(index)} className={cn('asam-photo-dot', activePhotoIndex % activeHeroPhotos.length === index && 'is-active')} />)}</div>
               </div>
             </div>
           </div>
