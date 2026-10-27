@@ -16,13 +16,10 @@ export function PageHero({
   className,
 }: PageHeroProps) {
   return (
-    <section className={cn('relative pt-24 lg:pt-28 pb-10 lg:pb-12 overflow-hidden', className)}>
-      <div className="absolute inset-0 bg-grid opacity-40" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-      <div className="absolute top-20 right-0 w-96 h-96 rounded-full bg-gold/5 blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-navy/5 blur-3xl" />
+    <section className={cn('asam-page-hero relative overflow-hidden', className)}>
+      <div className="asam-page-motif" aria-hidden="true" />
       <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl animate-fade-up">
+        <div className="max-w-3xl animate-fade-up">
           {eyebrow && (
             <div className="inline-flex items-center gap-2 mb-5">
               <span className="h-px w-8 bg-gold" />
