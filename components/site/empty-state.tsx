@@ -11,7 +11,7 @@ export function EmptyState({ title, message, className }: EmptyStateProps) {
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center text-center p-7 lg:p-10 rounded-xl border border-dashed border-border bg-secondary/30',
+        'asam-empty-state flex flex-col items-center justify-center text-center p-7 lg:p-10 rounded-xl border border-border bg-secondary/30',
         className
       )}
     >

@@ -37,7 +37,7 @@ export function SiteHeader({ logoUrl = '/logo-512.png' }: { logoUrl?: string }) 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
 
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -80,6 +80,13 @@ export function SiteHeader({ logoUrl = '/logo-512.png' }: { logoUrl?: string }) 
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen && !searchOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previous; };
+  }, [mobileOpen, searchOpen]);
+
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLocaleLowerCase();
     if (!query) return searchablePages.slice(0, 6);
@@ -92,7 +99,7 @@ export function SiteHeader({ logoUrl = '/logo-512.png' }: { logoUrl?: string }) 
       <header
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
-          'glass-nav border-b border-border/50',
+          'asam-site-header glass-nav border-b border-border/50',
           scrolled && 'shadow-premium'
         )}
       >
@@ -101,16 +108,17 @@ export function SiteHeader({ logoUrl = '/logo-512.png' }: { logoUrl?: string }) 
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center group"
+              className="flex items-center gap-3 group shrink-0"
               aria-label="ASAM Home"
             >
-              <div className="relative h-12 w-12 overflow-hidden rounded-full lg:h-16 lg:w-16">
+              <div className="relative h-11 w-11 overflow-hidden rounded-full lg:h-12 lg:w-12">
                 <img
                   src={logoUrl}
                   alt="ASAM logo"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
+              <span className="asam-wordmark"><strong>ASAM<span>.</span></strong><small>AFGHAN STUDENTS · MALAYSIA</small></span>
             </Link>
 
             {/* Desktop Nav */}
@@ -123,6 +131,7 @@ export function SiteHeader({ logoUrl = '/logo-512.png' }: { logoUrl?: string }) 
                     item.children && setOpenDropdown(item.label)
                   }
                   onMouseLeave={() => setOpenDropdown(null)}
+                  onKeyDown={(event) => { if (event.key === 'Escape') { event.currentTarget.querySelector('button')?.focus(); setOpenDropdown(null); } }}
                   onFocusCapture={() => item.children && setOpenDropdown(item.label)}
                   onBlur={(event) => {
                     if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpenDropdown(null);
@@ -132,8 +141,8 @@ export function SiteHeader({ logoUrl = '/logo-512.png' }: { logoUrl?: string }) 
                     href={item.href}
                     aria-current={pathname === item.href || item.children?.some((child) => pathname === child.href.split('#')[0]) ? 'page' : undefined}
                     className={cn(
-                      'flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200',
-                      item.children && 'pr-8',
+                      'flex items-center gap-1 px-2 xl:px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200',
+                      item.children && 'pr-7 xl:pr-8',
                       (pathname === item.href || pathname.startsWith(`${item.href}/`) || item.children?.some((child) => pathname === child.href.split('#')[0] || pathname.startsWith(`${child.href.split('#')[0]}/`)))
                         ? 'text-foreground'
                         : 'text-muted-foreground hover:text-foreground'

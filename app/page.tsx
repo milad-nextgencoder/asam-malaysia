@@ -31,6 +31,8 @@ const heroPhotos = [
 
 export default function Home() {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [photosPaused, setPhotosPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [primaryHeroImageFailed, setPrimaryHeroImageFailed] = useState(false);
   const [homepageSections, setHomepageSections] = useState<HomepageSection[]>([]);
   const [homepageLoaded, setHomepageLoaded] = useState(false);
@@ -110,85 +112,55 @@ export default function Home() {
     : heroPhotos, [heroImage, primaryHeroImageFailed]);
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(preference.matches);
+    update();
+    preference.addEventListener('change', update);
+    return () => preference.removeEventListener('change', update);
+  }, []);
 
-    const interval = window.setInterval(() => {
-      setActivePhotoIndex((index) => (index + 1) % activeHeroPhotos.length);
-    }, 6000);
+  useEffect(() => {
+    if (photosPaused || reducedMotion || activeHeroPhotos.length < 2) return;
+    const timer = window.setInterval(() => {
+      if (!document.hidden) setActivePhotoIndex((index) => (index + 1) % activeHeroPhotos.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [photosPaused, reducedMotion, activeHeroPhotos.length]);
 
-    return () => window.clearInterval(interval);
-  }, [activeHeroPhotos.length]);
 
   return (
     <div className="flex flex-col">
       {/* HERO */}
-      <section style={sectionStyle('hero')} className="relative min-h-[78vh] flex items-center overflow-hidden bg-gradient-to-br from-background via-ivory to-secondary/70 pt-20">
-        {activeHeroPhotos.map((photo, index) => (
-          <Image
-            key={photo}
-            src={photo}
-            unoptimized={/^https?:/.test(photo) && !photo.startsWith((process.env.NEXT_PUBLIC_SUPABASE_URL || "") + "/storage/v1/object/public/")}
-            alt=""
-            fill
-            priority={index === 0}
-            sizes="100vw"
-            onError={() => { if (photo === heroImage) setPrimaryHeroImageFailed(true); }}
-            className={cn(
-              'object-cover transition-opacity duration-1000',
-              activePhotoIndex % activeHeroPhotos.length === index ? 'opacity-100' : 'opacity-0'
-            )}
-          />
-        ))}
-        {/*
-          Desktop uses the horizontal gradient below, which suits the narrow
-          text column on the left. On phones the hero copy spans the full width
-          and sat directly over the photograph, making "ONE COMMUNITY. MANY
-          UNIVERSITIES." unreadable against faces and clothing. This extra scrim
-          is mobile-only (`lg:hidden`) and is a no-op on desktop, so the existing
-          desktop appearance is untouched.
-        */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/55 via-background/20 to-background/5" />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-background/70 backdrop-blur-[2px] lg:hidden"
-        />
-
-        <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-gold/30 bg-gold/5 mb-5 animate-fade-down">
-              <Sparkles className="h-4 w-4 text-gold" />
-              <span className="text-xs font-semibold text-gold-dark uppercase tracking-wider">
-                {sectionValue('hero', 'subtitle', 'Afghan Students Association of Malaysia')}
-              </span>
+      <section style={sectionStyle('hero')} className="asam-hero">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="asam-hero-grid">
+            <div className="asam-hero-copy">
+              <div className="asam-eyebrow"><span />{sectionValue('hero', 'subtitle', 'Afghan Students Association of Malaysia')}</div>
+              <h1>{sectionValue('hero', 'title', 'One community. Many universities. One future.').split(/\n|(?<=\.)\s+/).filter(Boolean).map((line, index) => <span key={`${line}-${index}`} className={index === 1 ? 'asam-hero-accent' : undefined}>{line}</span>)}</h1>
+              <p>{sectionValue('hero', 'description', 'Connecting Afghan students across Malaysia through education, leadership, opportunity, culture, and community.')}</p>
+              <div className="asam-hero-actions">
+                <Link href={sectionHref('hero', 'button_url', '/membership')} className="asam-button asam-button-primary">{sectionValue('hero', 'button_text', 'Become a Member')}<ArrowRight className="h-4 w-4" /></Link>
+                <Link href={sectionHref('hero', 'secondary_button_url', '/about')} className="asam-button asam-button-outline">{sectionValue('hero', 'secondary_button_text', 'Discover ASAM')}<ArrowRight className="h-4 w-4" /></Link>
+              </div>
+              <div className="asam-hero-footnote"><Globe2 className="h-4 w-4" /><span>Rooted in Afghanistan. Connected across Malaysia.</span></div>
             </div>
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-tight tracking-tight animate-fade-up">
-              {sectionValue('hero', 'title', 'ONE COMMUNITY. MANY UNIVERSITIES. ONE FUTURE.').split(/\n|(?<=\.)\s+/).filter(Boolean).map((line, index) => <span key={`${line}-${index}`} className={cn('block', index === 1 && 'text-gold-dark')}>{line}</span>)}
-            </h1>
-            <p className="mt-5 text-lg text-muted-foreground leading-relaxed max-w-xl animate-fade-up stagger-1">
-              {sectionValue('hero', 'description', 'Connecting Afghan students across Malaysia through education, leadership, opportunity, culture, and community.')}
-            </p>
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 animate-fade-up stagger-2">
-              <Link
-                href={sectionHref('hero', 'button_url', '/membership')}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gold text-navy font-bold text-base shadow-gold hover:scale-[1.03] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
-              >
-                {sectionValue('hero', 'button_text', 'Become a Member')}
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-              <Link
-                href={sectionHref('hero', 'secondary_button_url', '/about')}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-navy/20 text-navy font-semibold text-base hover:bg-navy/5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
-              >
-                {sectionValue('hero', 'secondary_button_text', 'Explore ASAM')}
-              </Link>
+            <div className="asam-hero-visual">
+              <div className="asam-photo-frame">
+                {activeHeroPhotos.map((photo, index) => (
+                  <Image key={photo} src={photo} unoptimized={/^https?:/.test(photo) && !photo.startsWith((process.env.NEXT_PUBLIC_SUPABASE_URL || '') + '/storage/v1/object/public/')} alt={index === 0 ? 'ASAM community gathering in Malaysia' : ''} fill priority={index === 0} sizes="(max-width: 1023px) 100vw, 50vw" onError={() => { if (photo === heroImage) setPrimaryHeroImageFailed(true); }} className={cn('object-cover transition-opacity duration-1000', activePhotoIndex % activeHeroPhotos.length === index ? 'opacity-100' : 'opacity-0')} />
+                ))}
+                <div className="asam-photo-caption"><span>THE ASAM COMMUNITY</span><span>People. Purpose. Possibility.</span></div>
+              </div>
+              <div className="asam-photo-controls" aria-label="Community photographs">
+                <span>TOGETHER, WE GO FURTHER</span>
+                <div className="flex items-center gap-1"><button type="button" onClick={() => setPhotosPaused((paused) => !paused)} disabled={reducedMotion} aria-label={photosPaused || reducedMotion ? 'Resume slideshow' : 'Pause slideshow'} className="asam-carousel-toggle">{reducedMotion ? 'Motion off' : photosPaused ? 'Play' : 'Pause'}</button>{activeHeroPhotos.map((photo, index) => <button key={photo} type="button" aria-label={`Show community photo ${index + 1}`} aria-pressed={activePhotoIndex % activeHeroPhotos.length === index} onClick={() => setActivePhotoIndex(index)} className={cn('asam-photo-dot', activePhotoIndex % activeHeroPhotos.length === index && 'is-active')} />)}</div>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 animate-fade-in stagger-4">
-          <div className="text-xs text-muted-foreground uppercase tracking-widest">Scroll</div>
-          <div className="w-px h-12 bg-gradient-to-b from-navy/30 to-transparent" />
+          <nav aria-label="Explore student resources" className="asam-resource-bar">
+            <span className="asam-resource-label">YOUR NEXT CHAPTER<br /><strong>Starts here.</strong></span>
+            {[{label: 'Find your community', href: '/chapters', icon: Users}, {label: 'Explore opportunities', href: '/opportunities', icon: GraduationCap}, {label: 'See what’s happening', href: '/events', icon: Calendar}].map(({label, href, icon: Icon}) => <Link href={href} key={href}><Icon className="h-5 w-5" /><span>{label}</span><ArrowRight className="h-4 w-4" /></Link>)}
+          </nav>
         </div>
       </section>
 

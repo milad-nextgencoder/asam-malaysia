@@ -27,17 +27,18 @@ export async function SiteFooter() {
 
   const socials = settings?.social_links && typeof settings.social_links === 'object' ? Object.entries(settings.social_links as Record<string,string>).filter(([,url])=>typeof url==='string'&&/^https:\/\//i.test(url)) : [];
   return (
-    <footer className="relative mt-16 border-t border-border bg-card">
+    <footer className="asam-site-footer relative mt-16 border-t border-border bg-card">
       <div className="absolute inset-0 bg-grid opacity-30" />
       <div className="relative container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 lg:py-16">
         {/* Top Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Brand */}
           <div className="lg:col-span-4 space-y-6">
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center gap-4">
               <span className="relative block h-16 w-16 overflow-hidden rounded-full">
                 <img src={resolveLogoUrl(settings?.logo_url)} alt="ASAM logo" className="absolute inset-0 h-full w-full object-cover" />
               </span>
+              <span className="asam-footer-wordmark">ASAM<span>.</span><small>A community without boundaries.</small></span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
               {settings?.tagline || 'Building a national platform to connect, support, empower, and develop Afghan students and alumni in Malaysia through education, leadership, opportunity, culture, and community.'}
