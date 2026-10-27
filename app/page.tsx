@@ -142,7 +142,7 @@ export default function Home() {
                 <Link href={sectionHref('hero', 'button_url', '/membership')} className="asam-button asam-button-primary">{sectionValue('hero', 'button_text', 'Become a Member')}<ArrowRight className="h-4 w-4" /></Link>
                 <Link href={sectionHref('hero', 'secondary_button_url', '/about')} className="asam-button asam-button-outline">{sectionValue('hero', 'secondary_button_text', 'Discover ASAM')}<ArrowRight className="h-4 w-4" /></Link>
               </div>
-              <div className="asam-hero-footnote"><Globe2 className="h-4 w-4" /><span>Rooted in Afghanistan. Connected across Malaysia.</span></div>
+              <div className="asam-hero-footnote"><Globe2 className="h-4 w-4" /><span>Connected across Malaysia.</span></div>
             </div>
             <div className="asam-hero-visual">
               <div className="asam-photo-frame">
